@@ -4,6 +4,7 @@ import UIKit
 
 struct ArticleProfileView: View {
     @EnvironmentObject private var store: ArticleStore
+    @EnvironmentObject private var notifications: NotificationService
     @State private var activeSheet: ProfileInfoSheetKind?
 
     var body: some View {
@@ -174,6 +175,21 @@ struct ArticleProfileView: View {
                     .padding(.leading, 56)
 
                 ProfileToggleRow(
+                    systemImage: "bell.badge.fill",
+                    title: "Daily reminders (7am & 4pm)",
+                    isOn: Binding(
+                        get: { notifications.isEnabled },
+                        set: { newValue in
+                            Task { await notifications.setEnabled(newValue) }
+                        }
+                    )
+                )
+
+                Divider()
+                    .overlay(Palette.border)
+                    .padding(.leading, 56)
+
+                ProfileToggleRow(
                     systemImage: "iphone.radiowaves.left.and.right",
                     title: "Haptic",
                     isOn: Binding(
@@ -183,6 +199,13 @@ struct ArticleProfileView: View {
                 )
             }
             .cardBackground()
+
+            if notifications.permissionDenied {
+                Text("Notifications are turned off in iOS Settings. Enable them for One Read to get your morning and afternoon reads.")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .foregroundStyle(Palette.amber)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 
@@ -204,7 +227,7 @@ struct ArticleProfileView: View {
             }
             .cardBackground()
 
-            Text("Level 1 (A2) and Level 2 (B1) are rewritten by a cloud LLM using your API key. Level 3 always shows the original article.")
+            Text("Quick (~100 words) and Standard (~150 words) are condensed by a cloud LLM using your API key. Full always shows the original article.")
                 .font(.system(size: 14, weight: .medium, design: .rounded))
                 .foregroundStyle(Palette.muted)
                 .fixedSize(horizontal: false, vertical: true)

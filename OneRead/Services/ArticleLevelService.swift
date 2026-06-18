@@ -185,19 +185,19 @@ enum ArticleLevelService {
 
     private static var systemInstruction: String {
         """
-        You rewrite English news articles for English learners. Keep all facts and the \
-        original meaning. Do not add opinions, titles, labels, or commentary. Reply with \
-        only the rewritten article in English, and separate paragraphs with a blank line.
+        You are a sharp news editor. You condense English news articles into tight, \
+        accurate digests. Keep every important fact, name, number, and the core news. \
+        Do not add opinions, titles, labels, or commentary. Reply with only the \
+        condensed article in clear English, and separate paragraphs with a blank line.
         """
     }
 
     private static func userPrompt(source: String, level: ReadingLevel) -> String {
         let guidance: String
         switch level {
-        case .level1:
-            guidance = "Rewrite the article for a beginner English learner (CEFR A2). Use short, simple sentences, mostly under 12 words. Use common, everyday words and explain difficult ideas simply."
-        case .level2:
-            guidance = "Rewrite the article for an intermediate English learner (CEFR B1). Use clear sentences of moderate length and common vocabulary, while keeping the important details."
+        case .level1, .level2:
+            let target = level.wordTarget ?? 120
+            guidance = "Condense this news article into about \(target) words. Lead with the most important point, then the key supporting facts. Keep it factual and easy to read."
         case .level3:
             guidance = ""
         }

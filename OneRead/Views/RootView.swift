@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RootView: View {
     @EnvironmentObject private var articleStore: ArticleStore
+    @EnvironmentObject private var notifications: NotificationService
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -25,6 +26,7 @@ struct RootView: View {
         .preferredColorScheme(.dark)
         .task {
             await articleStore.refreshScheduledDailyArticlesIfNeeded()
+            await notifications.bootstrap()
         }
         .onChange(of: scenePhase) { _, newPhase in
             guard newPhase == .active else {

@@ -169,7 +169,7 @@ struct ArticleFeaturePage: View {
                         ProgressView()
                             .controlSize(.small)
                             .tint(Palette.muted)
-                        Text("Rewriting for \(readingLevel.title)…")
+                        Text(readingLevel.wordTarget.map { "Condensing to ~\($0) words…" } ?? "Loading…")
                             .font(.system(.footnote, design: .rounded, weight: .semibold))
                             .foregroundStyle(Palette.muted)
                     }
@@ -518,14 +518,10 @@ enum ArticleLevelAdapter {
         return output
     }
 
-    /// Level 1 readers get a shorter version; levels 2 and 3 show the full article.
+    /// Local fallback length used when no AI rewrite is available: Quick/Standard
+    /// trim toward their word target; Full shows the whole article.
     private static func wordBudget(for level: ReadingLevel) -> Int? {
-        switch level {
-        case .level1:
-            return 130
-        case .level2, .level3:
-            return nil
-        }
+        level.wordTarget
     }
 
     private static func fallbackParagraphs(for article: Article) -> [String] {

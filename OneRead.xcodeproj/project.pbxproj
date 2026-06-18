@@ -27,6 +27,7 @@
 		01A000000000000000000019 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000019 /* PrivacyInfo.xcprivacy */; };
 		01A000000000000000000020 /* NativeDictionaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000020 /* NativeDictionaryService.swift */; };
 		01A000000000000000000023 /* ArticleLevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000023 /* ArticleLevelService.swift */; };
+		01A000000000000000000037 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000037 /* NotificationService.swift */; };
 		01A000000000000000000021 /* ecdict.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000021 /* ecdict.sqlite */; };
 		01A000000000000000000022 /* ECDICT-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000022 /* ECDICT-LICENSE.txt */; };
 /* End PBXBuildFile section */
@@ -53,6 +54,7 @@
 		01B000000000000000000019 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		01B000000000000000000020 /* NativeDictionaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeDictionaryService.swift; sourceTree = "<group>"; };
 		01B000000000000000000023 /* ArticleLevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleLevelService.swift; sourceTree = "<group>"; };
+		01B000000000000000000037 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		01B000000000000000000021 /* ecdict.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = ecdict.sqlite; sourceTree = "<group>"; };
 		01B000000000000000000022 /* ECDICT-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ECDICT-LICENSE.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +120,7 @@
 				01B000000000000000000005 /* SpeechService.swift */,
 				01B000000000000000000020 /* NativeDictionaryService.swift */,
 				01B000000000000000000023 /* ArticleLevelService.swift */,
+				01B000000000000000000037 /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				01A000000000000000000018 /* ArticleDatabase.swift in Sources */,
 				01A000000000000000000020 /* NativeDictionaryService.swift in Sources */,
 				01A000000000000000000023 /* ArticleLevelService.swift in Sources */,
+				01A000000000000000000037 /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

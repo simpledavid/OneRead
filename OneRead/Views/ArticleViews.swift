@@ -9,8 +9,24 @@ enum ReadingLevel: Int, CaseIterable, Identifiable {
 
     var id: Int { rawValue }
 
+    /// Short label shown in the reading-length picker.
+    /// Quick/Standard are AI-condensed digests; Full is the original article.
     var title: String {
-        "Level \(rawValue)"
+        switch self {
+        case .level1: return "Quick"
+        case .level2: return "Standard"
+        case .level3: return "Full"
+        }
+    }
+
+    /// Approximate length, in words, for the AI-condensed versions.
+    /// `nil` means the original article is shown unchanged (no AI needed).
+    var wordTarget: Int? {
+        switch self {
+        case .level1: return 100
+        case .level2: return 150
+        case .level3: return nil
+        }
     }
 }
 
