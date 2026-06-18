@@ -192,13 +192,14 @@ struct ResilientRemoteImage<Placeholder: View>: View {
         var request = URLRequest(url: url)
         request.timeoutInterval = 12
         request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1", forHTTPHeaderField: "User-Agent")
-        request.setValue("image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8", forHTTPHeaderField: "Accept")
-        request.setValue("https://tldr.tech/", forHTTPHeaderField: "Referer")
+        request.setValue("image/avif,image/webp,image/apng,image/*,*/*;q=0.8", forHTTPHeaderField: "Accept")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse,
                   (200..<300).contains(httpResponse.statusCode),
+                  httpResponse.mimeType?.hasPrefix("image/") == true,
+                  data.count <= 15 * 1024 * 1024,
                   let loadedImage = UIImage(data: data) else {
                 return nil
             }

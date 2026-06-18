@@ -14,22 +14,30 @@
 		01A000000000000000000012 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000012 /* Article.swift */; };
 		01A000000000000000000013 /* SampleArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000013 /* SampleArticles.swift */; };
 		01A000000000000000000014 /* ArticleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000014 /* ArticleStore.swift */; };
-		01A000000000000000000030 /* FeedChannels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000030 /* FeedChannels.swift */; };
-		01A000000000000000000031 /* FeedSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000031 /* FeedSupport.swift */; };
-		01A000000000000000000032 /* ArticleRSSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000032 /* ArticleRSSParser.swift */; };
-		01A000000000000000000033 /* StringHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000033 /* StringHTML.swift */; };
 		01A000000000000000000015 /* ArticleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000015 /* ArticleViews.swift */; };
-		01A000000000000000000034 /* ProfileViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000034 /* ProfileViews.swift */; };
-		01A000000000000000000035 /* ArticleReadingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000035 /* ArticleReadingViews.swift */; };
-		01A000000000000000000036 /* ArticleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000036 /* ArticleComponents.swift */; };
 		01A000000000000000000017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000017 /* Assets.xcassets */; };
 		01A000000000000000000018 /* ArticleDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000018 /* ArticleDatabase.swift */; };
 		01A000000000000000000019 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000019 /* PrivacyInfo.xcprivacy */; };
 		01A000000000000000000020 /* NativeDictionaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000020 /* NativeDictionaryService.swift */; };
-		01A000000000000000000023 /* ArticleLevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000023 /* ArticleLevelService.swift */; };
-		01A000000000000000000037 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000037 /* NotificationService.swift */; };
 		01A000000000000000000021 /* ecdict.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000021 /* ecdict.sqlite */; };
 		01A000000000000000000022 /* ECDICT-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000022 /* ECDICT-LICENSE.txt */; };
+		01A000000000000000000023 /* ArticleLevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000023 /* ArticleLevelService.swift */; };
+		01A000000000000000000024 /* domain_glossary.json in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000024 /* domain_glossary.json */; };
+		01A000000000000000000025 /* DomainGlossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000025 /* DomainGlossary.swift */; };
+		01A000000000000000000026 /* WordEnrichmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000026 /* WordEnrichmentService.swift */; };
+		01A000000000000000000030 /* FeedChannels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000030 /* FeedChannels.swift */; };
+		01A000000000000000000031 /* FeedSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000031 /* FeedSupport.swift */; };
+		01A000000000000000000032 /* ArticleRSSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000032 /* ArticleRSSParser.swift */; };
+		01A000000000000000000033 /* StringHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000033 /* StringHTML.swift */; };
+		01A000000000000000000034 /* ProfileViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000034 /* ProfileViews.swift */; };
+		01A000000000000000000035 /* ArticleReadingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000035 /* ArticleReadingViews.swift */; };
+		01A000000000000000000036 /* ArticleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000036 /* ArticleComponents.swift */; };
+		01A000000000000000000037 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000037 /* NotificationService.swift */; };
+		01A000000000000000000038 /* ArticleCurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000038 /* ArticleCurationService.swift */; };
+		01A000000000000000000039 /* DailyContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000039 /* DailyContentService.swift */; };
+		1C9C02B92FE415AC00DA8FEE /* FeedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9C02B82FE415AC00DA8FEE /* FeedConfiguration.swift */; };
+		1C9C02BB2FE4161100DA8FEE /* StoreServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9C02BA2FE4161100DA8FEE /* StoreServices.swift */; };
+		01A000000000000000000040 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000040 /* FeedService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,22 +49,30 @@
 		01B000000000000000000012 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		01B000000000000000000013 /* SampleArticles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleArticles.swift; sourceTree = "<group>"; };
 		01B000000000000000000014 /* ArticleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleStore.swift; sourceTree = "<group>"; };
-		01B000000000000000000030 /* FeedChannels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedChannels.swift; sourceTree = "<group>"; };
-		01B000000000000000000031 /* FeedSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSupport.swift; sourceTree = "<group>"; };
-		01B000000000000000000032 /* ArticleRSSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleRSSParser.swift; sourceTree = "<group>"; };
-		01B000000000000000000033 /* StringHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHTML.swift; sourceTree = "<group>"; };
 		01B000000000000000000015 /* ArticleViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViews.swift; sourceTree = "<group>"; };
-		01B000000000000000000034 /* ProfileViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViews.swift; sourceTree = "<group>"; };
-		01B000000000000000000035 /* ArticleReadingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleReadingViews.swift; sourceTree = "<group>"; };
-		01B000000000000000000036 /* ArticleComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleComponents.swift; sourceTree = "<group>"; };
 		01B000000000000000000017 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01B000000000000000000018 /* ArticleDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDatabase.swift; sourceTree = "<group>"; };
 		01B000000000000000000019 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		01B000000000000000000020 /* NativeDictionaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeDictionaryService.swift; sourceTree = "<group>"; };
-		01B000000000000000000023 /* ArticleLevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleLevelService.swift; sourceTree = "<group>"; };
-		01B000000000000000000037 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		01B000000000000000000021 /* ecdict.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = ecdict.sqlite; sourceTree = "<group>"; };
 		01B000000000000000000022 /* ECDICT-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ECDICT-LICENSE.txt"; sourceTree = "<group>"; };
+		01B000000000000000000023 /* ArticleLevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleLevelService.swift; sourceTree = "<group>"; };
+		01B000000000000000000024 /* domain_glossary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = domain_glossary.json; sourceTree = "<group>"; };
+		01B000000000000000000025 /* DomainGlossary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainGlossary.swift; sourceTree = "<group>"; };
+		01B000000000000000000026 /* WordEnrichmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEnrichmentService.swift; sourceTree = "<group>"; };
+		01B000000000000000000030 /* FeedChannels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedChannels.swift; sourceTree = "<group>"; };
+		01B000000000000000000031 /* FeedSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSupport.swift; sourceTree = "<group>"; };
+		01B000000000000000000032 /* ArticleRSSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleRSSParser.swift; sourceTree = "<group>"; };
+		01B000000000000000000033 /* StringHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHTML.swift; sourceTree = "<group>"; };
+		01B000000000000000000034 /* ProfileViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViews.swift; sourceTree = "<group>"; };
+		01B000000000000000000035 /* ArticleReadingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleReadingViews.swift; sourceTree = "<group>"; };
+		01B000000000000000000036 /* ArticleComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleComponents.swift; sourceTree = "<group>"; };
+		01B000000000000000000037 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		01B000000000000000000038 /* ArticleCurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCurationService.swift; sourceTree = "<group>"; };
+		01B000000000000000000039 /* DailyContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyContentService.swift; sourceTree = "<group>"; };
+		1C9C02B82FE415AC00DA8FEE /* FeedConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedConfiguration.swift; sourceTree = "<group>"; };
+		1C9C02BA2FE4161100DA8FEE /* StoreServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreServices.swift; sourceTree = "<group>"; };
+		01B000000000000000000040 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -107,9 +123,12 @@
 				01B000000000000000000014 /* ArticleStore.swift */,
 				01B000000000000000000030 /* FeedChannels.swift */,
 				01B000000000000000000031 /* FeedSupport.swift */,
+				01B000000000000000000040 /* FeedService.swift */,
 				01B000000000000000000032 /* ArticleRSSParser.swift */,
 				01B000000000000000000033 /* StringHTML.swift */,
 				01B000000000000000000018 /* ArticleDatabase.swift */,
+				1C9C02B82FE415AC00DA8FEE /* FeedConfiguration.swift */,
+				1C9C02BA2FE4161100DA8FEE /* StoreServices.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -121,6 +140,10 @@
 				01B000000000000000000020 /* NativeDictionaryService.swift */,
 				01B000000000000000000023 /* ArticleLevelService.swift */,
 				01B000000000000000000037 /* NotificationService.swift */,
+				01B000000000000000000038 /* ArticleCurationService.swift */,
+				01B000000000000000000039 /* DailyContentService.swift */,
+				01B000000000000000000025 /* DomainGlossary.swift */,
+				01B000000000000000000026 /* WordEnrichmentService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -150,6 +173,7 @@
 			children = (
 				01B000000000000000000021 /* ecdict.sqlite */,
 				01B000000000000000000022 /* ECDICT-LICENSE.txt */,
+				01B000000000000000000024 /* domain_glossary.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -215,6 +239,7 @@
 				01A000000000000000000019 /* PrivacyInfo.xcprivacy in Resources */,
 				01A000000000000000000021 /* ecdict.sqlite in Resources */,
 				01A000000000000000000022 /* ECDICT-LICENSE.txt in Resources */,
+				01A000000000000000000024 /* domain_glossary.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,12 +256,15 @@
 				01A000000000000000000008 /* RootView.swift in Sources */,
 				01A000000000000000000012 /* Article.swift in Sources */,
 				01A000000000000000000013 /* SampleArticles.swift in Sources */,
+				1C9C02B92FE415AC00DA8FEE /* FeedConfiguration.swift in Sources */,
 				01A000000000000000000014 /* ArticleStore.swift in Sources */,
 				01A000000000000000000030 /* FeedChannels.swift in Sources */,
 				01A000000000000000000031 /* FeedSupport.swift in Sources */,
+				01A000000000000000000040 /* FeedService.swift in Sources */,
 				01A000000000000000000032 /* ArticleRSSParser.swift in Sources */,
 				01A000000000000000000033 /* StringHTML.swift in Sources */,
 				01A000000000000000000015 /* ArticleViews.swift in Sources */,
+				1C9C02BB2FE4161100DA8FEE /* StoreServices.swift in Sources */,
 				01A000000000000000000034 /* ProfileViews.swift in Sources */,
 				01A000000000000000000035 /* ArticleReadingViews.swift in Sources */,
 				01A000000000000000000036 /* ArticleComponents.swift in Sources */,
@@ -244,6 +272,10 @@
 				01A000000000000000000020 /* NativeDictionaryService.swift in Sources */,
 				01A000000000000000000023 /* ArticleLevelService.swift in Sources */,
 				01A000000000000000000037 /* NotificationService.swift in Sources */,
+				01A000000000000000000038 /* ArticleCurationService.swift in Sources */,
+				01A000000000000000000039 /* DailyContentService.swift in Sources */,
+				01A000000000000000000025 /* DomainGlossary.swift in Sources */,
+				01A000000000000000000026 /* WordEnrichmentService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,15 +407,15 @@
 				DEVELOPMENT_TEAM = N8XUPHU59N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "One Read";
+				INFOPLIST_KEY_CFBundleDisplayName = OneRead;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zdw.dailythree;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zdw.oneread;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -402,15 +434,15 @@
 				DEVELOPMENT_TEAM = N8XUPHU59N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "One Read";
+				INFOPLIST_KEY_CFBundleDisplayName = OneRead;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zdw.dailythree;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zdw.oneread;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

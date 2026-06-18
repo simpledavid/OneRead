@@ -220,4 +220,109 @@ enum SampleArticles {
             publishedAt: Date(timeIntervalSince1970: 1779212700)
         )
     ]
+
+    static func bundledEdition(for dateKey: String) -> DailyEdition {
+        let morning = all[0].withEdition(
+            date: dateKey,
+            slot: .morning,
+            status: .approved,
+            learningContent: anthropicAccessLearningContent
+        )
+        let afternoon = all[1].withEdition(
+            date: dateKey,
+            slot: .afternoon,
+            status: .approved,
+            learningContent: regulatedIndustriesLearningContent
+        )
+
+        return DailyEdition(
+            schemaVersion: 1,
+            date: dateKey,
+            generatedAt: Date(timeIntervalSince1970: 1_781_500_000),
+            status: .approved,
+            articles: [morning, afternoon]
+        )
+    }
+
+    private static let anthropicAccessLearningContent = ArticleLearningContent(
+        easy: ArticleLearningVersion(
+            paragraphs: [
+                "Anthropic stopped access to two AI models called Fable 5 and Mythos 5. The company said it received an order from the US government.",
+                "This was not a normal product change. It shows that powerful AI models can become a national security issue. Governments may decide who can use a model and what safety rules it needs.",
+                "The main point is simple: AI companies now need to think about technology, safety, and government policy at the same time."
+            ],
+            paragraphTranslations: [
+                "Anthropic 停止了对两款名为 Fable 5 和 Mythos 5 的 AI 模型的访问。该公司表示，它收到了美国政府的命令。",
+                "这不是一次普通的产品调整。它说明强大的 AI 模型可能成为国家安全问题。政府可能决定谁能使用模型，以及模型需要哪些安全规则。",
+                "核心很简单：AI 公司现在必须同时考虑技术、安全和政府政策。"
+            ],
+            targetWords: 100,
+            cefr: "A2-B1"
+        ),
+        standard: ArticleLearningVersion(
+            paragraphs: [
+                "Anthropic suspended access to Fable 5 and Mythos 5 after receiving a directive from the US government. The company described the move as a response to an official requirement rather than a normal product update.",
+                "The decision matters because advanced AI models are no longer only technical products. Governments are increasingly concerned about who can access powerful systems, whether safeguards can be bypassed, and how the technology could affect national security.",
+                "The case shows that AI companies must manage product design, safety controls, and regulation together. A model release can quickly become a policy issue when officials believe its capabilities may create public or security risks."
+            ],
+            paragraphTranslations: [
+                "Anthropic 在收到美国政府指令后，暂停了 Fable 5 和 Mythos 5 的访问。公司称此举是为了回应官方要求，而不是普通的产品更新。",
+                "这一决定很重要，因为先进 AI 模型已不再只是技术产品。政府越来越关注谁能使用强大系统、安全措施是否可能被绕过，以及技术会如何影响国家安全。",
+                "这个案例说明，AI 公司必须同时管理产品设计、安全控制与监管。当政府认为模型能力可能带来公共或安全风险时，一次模型发布会迅速变成政策问题。"
+            ],
+            targetWords: 150,
+            cefr: "B1-B2"
+        ),
+        vocabulary: [
+            ArticleVocabulary(word: "suspend", meaningZh: "暂停；暂时停止", phonetic: "/səˈspend/", example: "The company suspended access to the service.", exampleZh: "该公司暂停了这项服务的访问。"),
+            ArticleVocabulary(word: "directive", meaningZh: "正式指令；命令", phonetic: "/dəˈrektɪv/", example: "The agency issued a new directive.", exampleZh: "该机构发布了一项新指令。"),
+            ArticleVocabulary(word: "requirement", meaningZh: "要求；必要条件", phonetic: "/rɪˈkwaɪərmənt/", example: "Safety testing is a legal requirement.", exampleZh: "安全测试是一项法律要求。"),
+            ArticleVocabulary(word: "safeguard", meaningZh: "保护措施；安全机制", phonetic: "/ˈseɪfɡɑːrd/", example: "The model includes safeguards against misuse.", exampleZh: "该模型包含防止滥用的安全措施。"),
+            ArticleVocabulary(word: "bypass", meaningZh: "绕过；规避", phonetic: "/ˈbaɪpæs/", example: "Attackers tried to bypass the controls.", exampleZh: "攻击者试图绕过控制措施。"),
+            ArticleVocabulary(word: "regulation", meaningZh: "监管；法规", phonetic: "/ˌreɡjəˈleɪʃn/", example: "New regulation may affect AI companies.", exampleZh: "新的监管规定可能影响 AI 公司。")
+        ],
+        generatedAt: Date(timeIntervalSince1970: 1_781_500_000),
+        sourceFingerprint: "anthropic-access-v1"
+    )
+
+    private static let regulatedIndustriesLearningContent = ArticleLearningContent(
+        easy: ArticleLearningVersion(
+            paragraphs: [
+                "Anthropic and Tata Consultancy Services are working together. They want to bring Claude to industries with strict rules, such as banking, healthcare, and insurance.",
+                "These companies need strong security and clear controls. They cannot simply turn on an AI tool. They must connect it to old systems, train workers, and follow regulations.",
+                "The partnership shows an important trend: AI companies need trusted service partners to enter large and highly regulated businesses."
+            ],
+            paragraphTranslations: [
+                "Anthropic 正与塔塔咨询服务公司合作。他们希望把 Claude 带入银行、医疗和保险等规则严格的行业。",
+                "这些公司需要强大的安全保障和清晰的控制机制。它们不能只是打开一个 AI 工具，还必须接入旧系统、培训员工并遵守法规。",
+                "这项合作体现了一个重要趋势：AI 公司需要可信赖的服务伙伴，才能进入大型且高度受监管的行业。"
+            ],
+            targetWords: 100,
+            cefr: "A2-B1"
+        ),
+        standard: ArticleLearningVersion(
+            paragraphs: [
+                "Anthropic and Tata Consultancy Services announced a partnership to bring Claude into regulated industries such as banking, healthcare, insurance, and public services. These sectors must meet strict requirements for security, privacy, and reliability.",
+                "Large organizations rarely adopt AI by simply activating a new tool. They need to integrate it with existing systems, train employees, set risk controls, and create clear governance for how the model may be used.",
+                "The partnership highlights a broader enterprise AI trend. Model providers increasingly rely on experienced service companies to turn technical capability into a trustworthy system that can operate inside complex organizations."
+            ],
+            paragraphTranslations: [
+                "Anthropic 与塔塔咨询服务公司宣布合作，把 Claude 引入银行、医疗、保险和公共服务等受监管行业。这些行业必须满足严格的安全、隐私和可靠性要求。",
+                "大型组织很少能通过简单启用一个新工具来采用 AI。它们需要把 AI 与现有系统集成、培训员工、设置风险控制，并明确模型的使用治理规则。",
+                "这项合作体现了企业 AI 的更广泛趋势：模型提供商越来越依赖有经验的服务公司，把技术能力变成能在复杂组织中运行的可信系统。"
+            ],
+            targetWords: 150,
+            cefr: "B1-B2"
+        ),
+        vocabulary: [
+            ArticleVocabulary(word: "regulated", meaningZh: "受监管的", phonetic: "/ˈreɡjuleɪtɪd/", example: "Banks operate in a regulated industry.", exampleZh: "银行在受监管的行业中运营。"),
+            ArticleVocabulary(word: "compliance", meaningZh: "合规；遵守规定", phonetic: "/kəmˈplaɪəns/", example: "The team checks the system for compliance.", exampleZh: "团队检查该系统是否合规。"),
+            ArticleVocabulary(word: "reliability", meaningZh: "可靠性", phonetic: "/rɪˌlaɪəˈbɪləti/", example: "Hospitals require high reliability.", exampleZh: "医院要求很高的可靠性。"),
+            ArticleVocabulary(word: "integrate", meaningZh: "整合；集成", phonetic: "/ˈɪntɪɡreɪt/", example: "The company will integrate AI with its database.", exampleZh: "公司将把 AI 与数据库集成。"),
+            ArticleVocabulary(word: "governance", meaningZh: "治理；管理机制", phonetic: "/ˈɡʌvərnəns/", example: "Good governance defines how AI may be used.", exampleZh: "良好的治理会规定 AI 可以如何使用。"),
+            ArticleVocabulary(word: "enterprise", meaningZh: "企业级的；大型企业", phonetic: "/ˈentərpraɪz/", example: "Enterprise customers need stronger controls.", exampleZh: "企业客户需要更强的控制措施。")
+        ],
+        generatedAt: Date(timeIntervalSince1970: 1_781_500_000),
+        sourceFingerprint: "anthropic-tcs-v1"
+    )
 }

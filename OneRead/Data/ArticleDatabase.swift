@@ -10,7 +10,9 @@ final class ArticleDatabase {
         let schema = Schema([
             StoredArticle.self
         ])
-        let configuration = ModelConfiguration("DailyThreeLocalStore", schema: schema)
+        // This store is only an article cache. Version the file name when the
+        // cached Article schema changes so upgrades cannot block app launch.
+        let configuration = ModelConfiguration("OneReadLocalStoreV2", schema: schema)
         container = try ModelContainer(for: schema, configurations: [configuration])
         context = ModelContext(container)
     }
@@ -83,6 +85,10 @@ final class StoredArticle {
     var urlString: String
     var imageURLString: String
     var publishedAt: Date?
+    var editionDate: String?
+    var editionSlotRawValue: String?
+    var curationStatusRawValue: String?
+    var learningContentData: Data?
     var updatedAt: Date
 
     init(article: Article) {
@@ -102,6 +108,10 @@ final class StoredArticle {
         urlString = article.urlString
         imageURLString = article.imageURLString
         publishedAt = article.publishedAt
+        editionDate = article.editionDate
+        editionSlotRawValue = article.editionSlot?.rawValue
+        curationStatusRawValue = article.curationStatus?.rawValue
+        learningContentData = article.learningContent.map(Self.encode)
         updatedAt = Date()
     }
 
@@ -122,7 +132,13 @@ final class StoredArticle {
             vocabulary: Self.decode([ArticleVocabulary].self, from: vocabularyData, fallback: []),
             urlString: urlString,
             imageURLString: imageURLString,
-            publishedAt: publishedAt
+            publishedAt: publishedAt,
+            editionDate: editionDate,
+            editionSlot: editionSlotRawValue.flatMap(ArticleEditionSlot.init(rawValue:)),
+            curationStatus: curationStatusRawValue.flatMap(ArticleCurationStatus.init(rawValue:)),
+            learningContent: learningContentData.flatMap {
+                try? JSONDecoder().decode(ArticleLearningContent.self, from: $0)
+            }
         )
     }
 
@@ -142,6 +158,10 @@ final class StoredArticle {
         urlString = article.urlString
         imageURLString = article.imageURLString
         publishedAt = article.publishedAt
+        editionDate = article.editionDate
+        editionSlotRawValue = article.editionSlot?.rawValue
+        curationStatusRawValue = article.curationStatus?.rawValue
+        learningContentData = article.learningContent.map(Self.encode)
         updatedAt = Date()
     }
 

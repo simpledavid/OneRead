@@ -9,7 +9,7 @@ import UserNotifications
 /// isn't known when the repeating trigger is registered; embedding the real
 /// title would require remote push or daily rescheduling after each fetch.
 @MainActor
-final class NotificationService: ObservableObject {
+final class NotificationService: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
     /// Whether the user wants the daily reminders (intent), independent of the
     /// system-level permission which can still be denied.
     @Published private(set) var isEnabled: Bool
@@ -26,10 +26,21 @@ final class NotificationService: ObservableObject {
     private let morningHour = 7
     private let afternoonHour = 16
 
+    /// Notifications are temporarily hidden from the product. This cleanup is
+    /// safe to call on launch: it never requests permission or schedules work.
+    static func clearPreviouslyScheduledReminders() {
+        let center = UNUserNotificationCenter.current()
+        let identifiers = ["oneread.daily.morning", "oneread.daily.afternoon"]
+        center.removePendingNotificationRequests(withIdentifiers: identifiers)
+        center.removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         // Default ON: a scheduled-content product lives or dies by the reminder.
         self.isEnabled = defaults.object(forKey: enabledKey) as? Bool ?? true
+        super.init()
+        center.delegate = self
     }
 
     /// Call once on launch: reconcile the user's intent with the system
@@ -100,18 +111,26 @@ final class NotificationService: ObservableObject {
             identifier: morningIdentifier,
             hour: morningHour,
             title: "Your morning read is ready",
-            body: "Today's top AI & tech story is waiting. Two minutes, then you're done."
+            body: "Learn English with today's most important AI story.",
+            slot: .morning
         )
 
         addReminder(
             identifier: afternoonIdentifier,
             hour: afternoonHour,
             title: "Your afternoon read just dropped",
-            body: "A fresh story is in. Take a quick break and catch up."
+            body: "Your second AI English lesson is ready.",
+            slot: .afternoon
         )
     }
 
-    private func addReminder(identifier: String, hour: Int, title: String, body: String) {
+    private func addReminder(
+        identifier: String,
+        hour: Int,
+        title: String,
+        body: String,
+        slot: ArticleEditionSlot
+    ) {
         var components = DateComponents()
         components.hour = hour
         components.minute = 0
@@ -120,6 +139,10 @@ final class NotificationService: ObservableObject {
         content.title = title
         content.body = body
         content.sound = .default
+        content.userInfo = [
+            "oneReadEvent": "daily_notification",
+            "slot": slot.rawValue
+        ]
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
@@ -129,6 +152,24 @@ final class NotificationService: ObservableObject {
     private func clearScheduledReminders() {
         center.removePendingNotificationRequests(
             withIdentifiers: [morningIdentifier, afternoonIdentifier]
+        )
+    }
+
+    nonisolated func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .sound]
+    }
+
+    nonisolated func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse
+    ) async {
+        let userInfo = response.notification.request.content.userInfo
+        RetentionAnalytics.record(
+            "notification_open",
+            metadata: ["slot": userInfo["slot"] as? String ?? "unknown"]
         )
     }
 }

@@ -158,7 +158,7 @@ struct ArticleFeaturePage: View {
                 )
                 .shadow(color: .black.opacity(0.36), radius: 22, x: 0, y: 14)
 
-            ReadingTitleView(title: article.title, vocabulary: article.vocabulary)
+            ReadingTitleView(title: article.title, vocabulary: article.effectiveVocabulary)
                 .padding(.top, 2)
 
             articleReadingStats
@@ -187,17 +187,22 @@ struct ArticleFeaturePage: View {
                         paragraph: item.text,
                         translation: translation(for: item.originalIndex),
                         isTranslationVisible: isArticleTranslationVisible,
-                        vocabulary: article.vocabulary,
+                        vocabulary: article.effectiveVocabulary,
                         context: item.originalText,
                         onToggleTranslation: {}
                     )
                 }
+
+                completionSection
             }
             .padding(.top, 4)
         }
+        .frame(width: contentWidth, alignment: .leading)
         .padding(.horizontal, 20)
-        .padding(.top, 126)
-        .frame(maxWidth: .infinity, minHeight: height, alignment: .topLeading)
+        .padding(.top, 20)
+        .padding(.bottom, 20)
+        .frame(width: width, alignment: .top)
+        .frame(minHeight: height, alignment: .top)
         .background(LensBackground())
         .onAppear {
             store.markRead(article)
@@ -205,7 +210,11 @@ struct ArticleFeaturePage: View {
     }
 
     private var imageHeight: CGFloat {
-        218
+        176
+    }
+
+    private var contentWidth: CGFloat {
+        max(width - 40, 1)
     }
 
     private var articleReadingStats: some View {
@@ -215,7 +224,7 @@ struct ArticleFeaturePage: View {
             Text("\(readingMinutes) mins")
             Spacer(minLength: 6)
         }
-        .font(.system(size: 15, weight: .semibold, design: .rounded))
+        .font(.system(size: 14, weight: .semibold, design: .rounded))
         .foregroundStyle(Palette.muted)
         .lineLimit(1)
     }
@@ -241,23 +250,62 @@ struct ArticleFeaturePage: View {
     }
 
     private var isRewriting: Bool {
-        store.isGeneratingLevel(for: article, level: readingLevel)
+        guard article.learningContent == nil else {
+            return false
+        }
+        return store.isGeneratingLevel(for: article, level: readingLevel)
             && store.leveledRewrite(for: article, level: readingLevel) == nil
     }
 
     private func translation(for index: Int) -> String? {
-        guard article.paragraphTranslations.indices.contains(index) else {
+        let translations: [String]
+        switch readingLevel {
+        case .level1:
+            translations = article.learningContent?.easy.paragraphTranslations ?? []
+        case .level2:
+            translations = article.learningContent?.standard.paragraphTranslations ?? []
+        case .level3:
+            translations = article.paragraphTranslations
+        }
+
+        guard translations.indices.contains(index) else {
             return nil
         }
-        return article.paragraphTranslations[index]
+        return translations[index]
+    }
+
+    private var completionSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Button {
+                store.completeArticle(article)
+            } label: {
+                Label(
+                    store.isCompleted(article) ? "Completed" : "Finish this read",
+                    systemImage: store.isCompleted(article) ? "checkmark.circle.fill" : "checkmark.circle"
+                )
+                .font(.system(size: 17, weight: .heavy, design: .rounded))
+                .foregroundStyle(store.isCompleted(article) ? Color.green : Palette.background)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 15)
+                .background(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(store.isCompleted(article) ? Palette.surfaceRaised : Palette.accent)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(store.isCompleted(article) ? Color.green.opacity(0.5) : Palette.accent, lineWidth: 1)
+                )
+            }
+            .buttonStyle(.plain)
+            .disabled(store.isCompleted(article))
+        }
+        .padding(.top, 8)
     }
 
 }
 
 private struct ReadingTitleView: View {
-    @EnvironmentObject private var store: ArticleStore
     @State private var selectedLookup: WordLookup?
-    @State private var selectedTokenID: Int?
     let title: String
     let vocabulary: [ArticleVocabulary]
 
@@ -266,41 +314,37 @@ private struct ReadingTitleView: View {
             ForEach(tokens, id: \.id) { token in
                 Text(token.display)
                     .font(.system(size: titleFontSize, weight: .bold, design: .rounded))
-                    .foregroundStyle(color(for: token.lookup))
-                    .underline(isHighlighted(token.lookup), color: color(for: token.lookup).opacity(0.85))
+                    .foregroundStyle(Palette.ink)
                     .fixedSize()
                     .onTapGesture {
-                        selectedTokenID = token.id
                         selectedLookup = WordLookupResolver.lookup(
                             rawWord: token.lookup,
                             vocabulary: vocabulary,
                             context: title
                         )
                     }
-                    .popover(
-                        item: lookupBinding(for: token.id),
-                        attachmentAnchor: .rect(.bounds),
-                        arrowEdge: .bottom
-                    ) { lookup in
-                        WordLookupSheet(lookup: lookup)
-                            .frame(width: 292)
-                            .presentationCompactAdaptation(.popover)
-                    }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .sheet(item: $selectedLookup) { lookup in
+            WordLookupSheet(lookup: lookup)
+                .presentationDetents([.height(270), .large])
+                .presentationDragIndicator(.hidden)
+                .presentationCornerRadius(28)
+                .presentationBackground(Palette.surface)
+        }
     }
 
     private var titleFontSize: CGFloat {
         switch title.count {
         case ...34:
-            return 22
-        case 35...52:
             return 20
-        case 53...72:
+        case 35...52:
             return 18
-        default:
+        case 53...72:
             return 17
+        default:
+            return 16
         }
     }
 
@@ -312,44 +356,10 @@ private struct ReadingTitleView: View {
         }
     }
 
-    private func color(for word: String) -> Color {
-        guard store.highlightVocabularyEnabled else {
-            return Palette.ink
-        }
-
-        return isHighlighted(word) ? Palette.accent : Palette.ink
-    }
-
-    private func isHighlighted(_ word: String) -> Bool {
-        guard store.highlightVocabularyEnabled else {
-            return false
-        }
-        let cleaned = word.cleanedLookupWord
-        guard cleaned.count > 3 else {
-            return false
-        }
-        return vocabulary.contains { $0.word.lookupCandidates.contains(cleaned) } || CommonWordDictionary.lookup(cleaned) != nil
-    }
-
-    private func lookupBinding(for tokenID: Int) -> Binding<WordLookup?> {
-        Binding<WordLookup?>(
-            get: {
-                selectedTokenID == tokenID ? selectedLookup : nil
-            },
-            set: { value in
-                if value == nil {
-                    selectedLookup = nil
-                    selectedTokenID = nil
-                }
-            }
-        )
-    }
 }
 
 struct LearningParagraphView: View {
-    @EnvironmentObject private var store: ArticleStore
     @State private var selectedLookup: WordLookup?
-    @State private var selectedTokenID: Int?
     let paragraph: String
     let translation: String?
     let isTranslationVisible: Bool
@@ -362,27 +372,23 @@ struct LearningParagraphView: View {
             InlineWordFlowLayout(horizontalSpacing: 3, verticalSpacing: 5) {
                 ForEach(tokens, id: \.id) { token in
                     Text(token.display)
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                        .foregroundStyle(color(for: token.lookup))
-                        .underline(isHighlighted(token.lookup), color: color(for: token.lookup).opacity(0.86))
+                        .font(.system(size: 16, weight: .regular, design: .rounded))
+                        .foregroundStyle(Palette.ink)
                         .fixedSize()
                         .onTapGesture {
-                            selectedTokenID = token.id
                             selectedLookup = lookup(token.lookup)
-                        }
-                        .popover(
-                            item: lookupBinding(for: token.id),
-                            attachmentAnchor: .rect(.bounds),
-                            arrowEdge: .bottom
-                        ) { lookup in
-                            WordLookupSheet(lookup: lookup)
-                                .frame(width: 292)
-                                .presentationCompactAdaptation(.popover)
                         }
                 }
 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .sheet(item: $selectedLookup) { lookup in
+                WordLookupSheet(lookup: lookup)
+                    .presentationDetents([.height(270), .large])
+                    .presentationDragIndicator(.hidden)
+                    .presentationCornerRadius(28)
+                    .presentationBackground(Palette.surface)
+            }
 
             if isTranslationVisible, let translation, !translation.isEmpty {
                 Text(translation)
@@ -413,45 +419,6 @@ struct LearningParagraphView: View {
             }
     }
 
-    private func color(for word: String) -> Color {
-        guard store.highlightVocabularyEnabled else {
-            return Palette.ink
-        }
-
-        let cleaned = word.cleanedLookupWord
-        if vocabulary.contains(where: { $0.word.cleanedLookupWord == cleaned }) {
-            return Palette.accent
-        }
-
-        if CommonWordDictionary.lookup(cleaned) != nil {
-            return Palette.blue
-        }
-
-        return Palette.ink
-    }
-
-    private func isHighlighted(_ word: String) -> Bool {
-        guard store.highlightVocabularyEnabled else {
-            return false
-        }
-        let cleaned = word.cleanedLookupWord
-        return vocabulary.contains(where: { $0.word.cleanedLookupWord == cleaned }) || CommonWordDictionary.lookup(cleaned) != nil
-    }
-
-    private func lookupBinding(for tokenID: Int) -> Binding<WordLookup?> {
-        Binding<WordLookup?>(
-            get: {
-                selectedTokenID == tokenID ? selectedLookup : nil
-            },
-            set: { value in
-                if value == nil {
-                    selectedLookup = nil
-                    selectedTokenID = nil
-                }
-            }
-        )
-    }
-
     private func lookup(_ rawWord: String) -> WordLookup {
         WordLookupResolver.lookup(rawWord: rawWord, vocabulary: vocabulary, context: context)
     }
@@ -472,6 +439,18 @@ struct LeveledParagraph: Identifiable {
 
 enum ArticleLevelAdapter {
     static func paragraphs(for article: Article, level: ReadingLevel, rewritten: [String]? = nil) -> [LeveledParagraph] {
+        if let preGenerated = preGeneratedParagraphs(for: article, level: level),
+           !preGenerated.isEmpty {
+            return preGenerated.enumerated().map { index, text in
+                LeveledParagraph(
+                    id: "editorial-\(level.rawValue)-\(index)",
+                    originalIndex: index,
+                    text: text,
+                    originalText: text
+                )
+            }
+        }
+
         if let rewritten, !rewritten.isEmpty {
             return rewritten.enumerated().map { index, text in
                 LeveledParagraph(
@@ -518,8 +497,22 @@ enum ArticleLevelAdapter {
         return output
     }
 
-    /// Local fallback length used when no AI rewrite is available: Quick/Standard
-    /// trim toward their word target; Full shows the whole article.
+    private static func preGeneratedParagraphs(
+        for article: Article,
+        level: ReadingLevel
+    ) -> [String]? {
+        switch level {
+        case .level1:
+            return article.learningContent?.easy.paragraphs
+        case .level2:
+            return article.learningContent?.standard.paragraphs
+        case .level3:
+            return nil
+        }
+    }
+
+    /// Local fallback length used when no editorial or personal rewrite exists:
+    /// Easy/Standard trim toward their word target; Original shows everything.
     private static func wordBudget(for level: ReadingLevel) -> Int? {
         level.wordTarget
     }
@@ -659,6 +652,13 @@ enum WordLookupResolver {
             )
         }
 
+        // Curated AI/tech glossary — checked before ECDICT so the domain sense wins
+        // (Claude, Gemini, token, agent…) instead of the generic dictionary entry.
+        if var match = DomainGlossary.lookup(candidates: candidates) {
+            match.context = context
+            return match
+        }
+
         if let match = NativeDictionaryService.shared.lookup(candidates: candidates) {
             return WordLookup(
                 word: match.word,
@@ -671,16 +671,20 @@ enum WordLookupResolver {
             )
         }
 
-        if let match = candidates.compactMap(CommonWordDictionary.lookup).first {
-            var resolved = match
-            resolved.context = context
-            return resolved
-        }
+        return fallbackLookup(rawWord: rawWord, context: context)
+    }
 
-        let fallbackWord = rawWord.cleanedDisplayWord.isEmpty ? rawWord : rawWord.cleanedDisplayWord
+    /// Guarantees a tap always yields something useful, even for a word in no
+    /// offline source. Names get a "proper noun" label; anything else is marked
+    /// `needsAI` so the sheet can try the on-device model when it is available.
+    private static func fallbackLookup(rawWord: String, context: String) -> WordLookup {
+        let display = rawWord.cleanedDisplayWord.isEmpty ? rawWord : rawWord.cleanedDisplayWord
+        let meaning = isLikelyProperNoun(rawWord, context: context)
+            ? "专有名词（可能是公司、产品、人名或地名）"
+            : ""
         return WordLookup(
-            word: fallbackWord,
-            meaningZh: "",
+            word: display,
+            meaningZh: meaning,
             phonetic: "",
             example: "",
             exampleZh: "",
@@ -688,87 +692,164 @@ enum WordLookupResolver {
             needsAI: true
         )
     }
+
+    private static func isLikelyProperNoun(_ rawWord: String, context: String) -> Bool {
+        let cleaned = rawWord.cleanedDisplayWord
+        guard let first = cleaned.first, first.isUppercase else {
+            return false
+        }
+
+        // Internal capital (OpenAI, DeepSeek) is a strong brand signal.
+        if cleaned.dropFirst().contains(where: { $0.isUppercase }) {
+            return true
+        }
+
+        // A single leading capital counts as a name only when it is not the start
+        // of a sentence or title, which capitalize ordinary words too.
+        guard let range = context.range(of: rawWord) else {
+            return true
+        }
+        let preceding = context[..<range.lowerBound].trimmingCharacters(in: .whitespacesAndNewlines)
+        if preceding.isEmpty {
+            return false
+        }
+        if let last = preceding.last, ".!?:".contains(last) {
+            return false
+        }
+        return true
+    }
 }
 
 struct WordLookupSheet: View {
     @EnvironmentObject private var store: ArticleStore
     @EnvironmentObject private var speech: SpeechService
     let lookup: WordLookup
+    @State private var enrichedMeaning: String?
+    @State private var isEnriching = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(alignment: .center, spacing: 12) {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("Definition")
-                        .font(.system(.caption, design: .rounded, weight: .heavy))
-                        .foregroundStyle(Palette.muted)
-                        .textCase(.uppercase)
+        ZStack {
+            Palette.surface
+                .ignoresSafeArea()
 
-                    if !currentPhonetic.isEmpty {
-                        Text(currentPhonetic)
-                            .font(.system(size: 17, weight: .heavy, design: .rounded))
-                            .foregroundStyle(Palette.ink.opacity(0.76))
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 22) {
+                    Capsule(style: .continuous)
+                        .fill(Palette.border)
+                        .frame(width: 54, height: 5)
+                        .frame(maxWidth: .infinity)
+
+                    HStack(alignment: .center, spacing: 16) {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(displayWord)
+                                .font(.system(size: 30, weight: .heavy, design: .rounded))
+                                .foregroundStyle(Palette.accent)
+
+                            if !currentPhonetic.isEmpty {
+                                Text(currentPhonetic)
+                                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                                    .foregroundStyle(Palette.ink.opacity(0.78))
+                            }
+                        }
+
+                        Spacer(minLength: 8)
+
+                        wordToolButton(
+                            systemName: speech.isSpeaking(displayWord) ? "stop.fill" : "speaker.wave.2.fill",
+                            accessibilityLabel: "Pronounce \(displayWord)"
+                        ) {
+                            speech.speak(displayWord)
+                        }
+
+                        wordToolButton(
+                            systemName: store.isSavedWord(displayWord) ? "bookmark.fill" : "bookmark",
+                            accessibilityLabel: store.isSavedWord(displayWord) ? "Remove saved word" : "Save word"
+                        ) {
+                            store.toggleSavedWord(displayWord)
+                        }
                     }
+
+                    definitionContent
                 }
-
-                Spacer(minLength: 8)
-
-                wordToolButton(systemName: speech.isSpeaking(displayWord) ? "stop.fill" : "speaker.wave.2.fill") {
-                    speech.speak(displayWord)
-                }
-
-                wordToolButton(systemName: store.isSavedWord(displayWord) ? "bookmark.fill" : "bookmark") {
-                    store.toggleSavedWord(displayWord)
-                }
-            }
-
-            if !currentMeaning.isEmpty {
-                Text(currentMeaning)
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .lineSpacing(5)
-                    .foregroundStyle(Palette.ink)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 12)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Palette.glassStrong, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .stroke(Palette.border, lineWidth: 1)
-                    )
-            } else {
-                Text("No definition yet")
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Palette.muted)
+                .padding(.horizontal, 24)
+                .padding(.top, 10)
+                .padding(.bottom, 34)
             }
         }
-        .padding(14)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-        .background(Palette.surface.opacity(0.82), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .stroke(Palette.border, lineWidth: 1)
-        )
-        .shadow(color: .black.opacity(0.35), radius: 18, x: 0, y: 10)
+        .task(id: lookup.id) {
+            await enrichIfNeeded()
+        }
     }
 
-    private func wordToolButton(systemName: String, action: @escaping () -> Void) -> some View {
+    @ViewBuilder
+    private var definitionContent: some View {
+        if !currentMeaning.isEmpty {
+            Text(currentMeaning)
+                .font(.system(size: 18, weight: .medium, design: .rounded))
+                .lineSpacing(6)
+                .foregroundStyle(Palette.ink)
+                .fixedSize(horizontal: false, vertical: true)
+        } else if isEnriching {
+            HStack(spacing: 10) {
+                ProgressView()
+                    .controlSize(.small)
+                    .tint(Palette.accent)
+                Text("正在离线生成释义…")
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+            }
+        } else {
+            Text("暂无释义，可点击发音按钮朗读。")
+                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                .foregroundStyle(Palette.muted)
+        }
+    }
+
+    private func enrichIfNeeded() async {
+        guard lookup.needsAI, ArticleLevelService.isOnDeviceAvailable else {
+            return
+        }
+
+        if let cached = await WordEnrichmentService.shared.cachedMeaning(for: displayWord) {
+            if !cached.isEmpty {
+                enrichedMeaning = cached
+            }
+            return
+        }
+
+        isEnriching = true
+        let result = await WordEnrichmentService.shared.meaning(for: displayWord, context: lookup.context)
+        isEnriching = false
+        if let result, !result.isEmpty {
+            enrichedMeaning = result
+        }
+    }
+
+    private func wordToolButton(
+        systemName: String,
+        accessibilityLabel: String,
+        action: @escaping () -> Void
+    ) -> some View {
         Button(action: action) {
             Image(systemName: systemName)
-                .font(.system(size: 16, weight: .heavy))
+                .font(.system(size: 19, weight: .heavy))
                 .foregroundStyle(Palette.ink)
-                .frame(width: 38, height: 38)
-                .background(Palette.glassStrong, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .frame(width: 48, height: 48)
+                .background(Palette.surfaceRaised, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .stroke(Palette.border, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Palette.border, lineWidth: 1.5)
                 )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel)
     }
 
     private var currentMeaning: String {
-        lookup.meaningZh
+        if let enrichedMeaning, !enrichedMeaning.isEmpty {
+            return enrichedMeaning
+        }
+        return lookup.meaningZh
     }
 
     private var currentPhonetic: String {
@@ -780,70 +861,6 @@ struct WordLookupSheet: View {
         return cleaned.isEmpty ? lookup.word : cleaned
     }
 
-    private func annotatedExample(_ text: String) -> AttributedString {
-        let target = lookup.word.cleanedLookupWord
-        guard !target.isEmpty else {
-            var plain = AttributedString(text)
-            plain.foregroundColor = Palette.ink
-            return plain
-        }
-
-        let lowercasedText = text.lowercased()
-        guard let range = lowercasedText.range(of: target) else {
-            var plain = AttributedString(text)
-            plain.foregroundColor = Palette.ink
-            return plain
-        }
-
-        let before = String(text[..<range.lowerBound])
-        let matched = String(text[range])
-        let after = String(text[range.upperBound...])
-
-        var attributed = AttributedString(before)
-        attributed.foregroundColor = Palette.ink
-
-        var highlighted = AttributedString(matched)
-        highlighted.foregroundColor = Palette.blue
-        highlighted.backgroundColor = Palette.blue.opacity(0.16)
-        attributed += highlighted
-
-        if let note = inlineMeaning {
-            var meaning = AttributedString("（\(note)）")
-            meaning.foregroundColor = Palette.blue
-            meaning.font = .system(size: 15, weight: .semibold, design: .rounded)
-            attributed += meaning
-        }
-
-        var tail = AttributedString(after)
-        tail.foregroundColor = Palette.ink
-        attributed += tail
-
-        return attributed
-    }
-
-    private var inlineMeaning: String? {
-        let meaning = lookup.meaningZh
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !meaning.isEmpty else {
-            return nil
-        }
-
-        let separators = CharacterSet(charactersIn: "；;，,。.、")
-        let firstPart = meaning
-            .components(separatedBy: separators)
-            .first?
-            .trimmingCharacters(in: .whitespacesAndNewlines) ?? meaning
-
-        guard !firstPart.isEmpty else {
-            return nil
-        }
-
-        if firstPart.count > 8 {
-            return String(firstPart.prefix(8))
-        }
-
-        return firstPart
-    }
 }
 
 struct InlineWordFlowLayout: Layout {
@@ -892,6 +909,7 @@ struct InlineWordFlowLayout: Layout {
 
             subview.place(
                 at: point,
+                anchor: .topLeading,
                 proposal: ProposedViewSize(width: itemWidth, height: size.height)
             )
             point.x += itemWidth + horizontalSpacing
@@ -900,85 +918,6 @@ struct InlineWordFlowLayout: Layout {
     }
 }
 
-enum CommonWordDictionary {
-    static func lookup(_ rawWord: String) -> WordLookup? {
-        let word = rawWord.cleanedLookupWord
-        let entries: [String: WordLookup] = [
-            "acquire": WordLookup(word: "acquire", meaningZh: "收购；获得", example: "The company plans to acquire a smaller startup.", exampleZh: "这家公司计划收购一家更小的初创公司。"),
-            "acquisition": WordLookup(word: "acquisition", meaningZh: "收购；并购", example: "The acquisition could expand its AI business.", exampleZh: "这次收购可能扩大它的 AI 业务。"),
-            "agent": WordLookup(word: "agent", meaningZh: "智能体；代理程序", example: "The agent can complete a workflow.", exampleZh: "这个智能体可以完成一套工作流。"),
-            "ai": WordLookup(word: "AI", meaningZh: "人工智能", example: "AI is changing many products.", exampleZh: "人工智能正在改变许多产品。"),
-            "announce": WordLookup(word: "announce", meaningZh: "宣布", example: "The company will announce the update tomorrow.", exampleZh: "这家公司明天会宣布这次更新。"),
-            "anthropic": WordLookup(word: "Anthropic", meaningZh: "Anthropic，一家人工智能公司", example: "Anthropic builds Claude.", exampleZh: "Anthropic 开发 Claude。"),
-            "api": WordLookup(word: "API", meaningZh: "应用程序接口", example: "Developers can access the model through an API.", exampleZh: "开发者可以通过 API 访问这个模型。"),
-            "capability": WordLookup(word: "capability", meaningZh: "能力；功能", example: "The new capability helps teams automate tasks.", exampleZh: "这个新能力帮助团队自动化任务。"),
-            "celebrate": WordLookup(word: "celebrate", meaningZh: "庆祝", example: "Users celebrate the launch online.", exampleZh: "用户在网上庆祝这次发布。"),
-            "chip": WordLookup(word: "chip", meaningZh: "芯片", example: "The startup is building AI chips.", exampleZh: "这家初创公司正在研发 AI 芯片。"),
-            "claude": WordLookup(word: "Claude", meaningZh: "Claude，Anthropic 的 AI 助手/模型", example: "Claude can analyze long documents.", exampleZh: "Claude 可以分析长文档。"),
-            "cloud": WordLookup(word: "cloud", meaningZh: "云；云端服务", example: "The tool runs in the cloud.", exampleZh: "这个工具运行在云端。"),
-            "company": WordLookup(word: "company", meaningZh: "公司", example: "The company released a new tool.", exampleZh: "这家公司发布了一个新工具。"),
-            "complex": WordLookup(word: "complex", meaningZh: "复杂的", example: "The model can solve complex tasks.", exampleZh: "这个模型可以处理复杂任务。"),
-            "compute": WordLookup(word: "compute", meaningZh: "计算；算力相关", example: "AI labs need more compute.", exampleZh: "AI 实验室需要更多算力。"),
-            "controlled": WordLookup(word: "controlled", meaningZh: "受控制的；可控的", example: "The system runs in a customer-controlled environment.", exampleZh: "该系统运行在客户可控的环境中。"),
-            "customer": WordLookup(word: "customer", meaningZh: "客户；用户", example: "Enterprise customers want better security.", exampleZh: "企业客户希望有更好的安全性。"),
-            "data": WordLookup(word: "data", meaningZh: "数据", example: "Good data improves the result.", exampleZh: "好的数据会改善结果。"),
-            "decision": WordLookup(word: "decision", meaningZh: "决定；决策", example: "The board made a quick decision.", exampleZh: "董事会迅速作出了决定。"),
-            "deepseek": WordLookup(word: "DeepSeek", meaningZh: "DeepSeek，一家人工智能公司/模型品牌", example: "DeepSeek models are widely discussed.", exampleZh: "DeepSeek 模型被广泛讨论。"),
-            "deploy": WordLookup(word: "deploy", meaningZh: "部署；投放", example: "The team will deploy the model next week.", exampleZh: "团队将在下周部署这个模型。"),
-            "developer": WordLookup(word: "developer", meaningZh: "开发者", example: "Developers want clearer documentation.", exampleZh: "开发者希望文档更清晰。"),
-            "environment": WordLookup(word: "environment", meaningZh: "环境", example: "The agent runs in a secure environment.", exampleZh: "这个智能体运行在安全环境中。"),
-            "event": WordLookup(word: "event", meaningZh: "事件；活动", example: "The event drew attention across the industry.", exampleZh: "这场活动吸引了整个行业的关注。"),
-            "example": WordLookup(word: "example", meaningZh: "例子；示例", example: "This sentence is a simple example.", exampleZh: "这个句子是一个简单示例。"),
-            "execution": WordLookup(word: "execution", meaningZh: "执行", example: "The platform adds secure code execution.", exampleZh: "这个平台增加了安全的代码执行能力。"),
-            "feature": WordLookup(word: "feature", meaningZh: "功能；特性", example: "The app includes a new reading feature.", exampleZh: "这个应用加入了一个新的阅读功能。"),
-            "founder": WordLookup(word: "founder", meaningZh: "创始人", example: "The founder spoke about the roadmap.", exampleZh: "创始人谈到了路线图。"),
-            "funding": WordLookup(word: "funding", meaningZh: "融资；资金", example: "The startup is seeking fresh funding.", exampleZh: "这家初创公司正在寻求新的融资。"),
-            "generate": WordLookup(word: "generate", meaningZh: "生成；产生", example: "The model can generate a short summary.", exampleZh: "这个模型可以生成一段简短摘要。"),
-            "hostility": WordLookup(word: "hostility", meaningZh: "敌对；冲突状态", example: "The agreement may reduce hostilities.", exampleZh: "这项协议可能减少敌对状态。"),
-            "improve": WordLookup(word: "improve", meaningZh: "改进；提升", example: "The update should improve accuracy.", exampleZh: "这次更新应该会提升准确度。"),
-            "infrastructure": WordLookup(word: "infrastructure", meaningZh: "基础设施", example: "AI infrastructure is expensive to build.", exampleZh: "AI 基础设施建设成本很高。"),
-            "integration": WordLookup(word: "integration", meaningZh: "整合；集成", example: "The integration connects the app with other tools.", exampleZh: "这项集成把应用和其他工具连接起来。"),
-            "interface": WordLookup(word: "interface", meaningZh: "界面；交互方式", example: "The chat interface feels more natural.", exampleZh: "这个聊天界面感觉更自然。"),
-            "launch": WordLookup(word: "launch", meaningZh: "发布；推出", example: "The company plans to launch the service soon.", exampleZh: "这家公司计划很快推出这项服务。"),
-            "market": WordLookup(word: "market", meaningZh: "市场", example: "The market reacted quickly to the news.", exampleZh: "市场很快对这条消息作出了反应。"),
-            "model": WordLookup(word: "model", meaningZh: "模型；这里通常指 AI 模型", example: "The model can summarize long articles.", exampleZh: "这个模型可以总结长文章。"),
-            "ongoing": WordLookup(word: "ongoing", meaningZh: "持续进行中的", example: "The company is working on an ongoing project.", exampleZh: "这家公司正在推进一个持续进行中的项目。"),
-            "openai": WordLookup(word: "OpenAI", meaningZh: "OpenAI，一家人工智能公司", example: "OpenAI released a new model.", exampleZh: "OpenAI 发布了一个新模型。"),
-            "orchestration": WordLookup(word: "orchestration", meaningZh: "编排；协调调度", example: "The platform adds better orchestration for agents.", exampleZh: "这个平台为智能体加入了更好的编排能力。"),
-            "persistent": WordLookup(word: "persistent", meaningZh: "持续的；长期存在的", example: "The system keeps a persistent state.", exampleZh: "这个系统会保留持续状态。"),
-            "system": WordLookup(word: "system", meaningZh: "系统；由多个部分组成的工具或机制", example: "The system needs reliable data.", exampleZh: "这个系统需要可靠的数据。"),
-            "product": WordLookup(word: "product", meaningZh: "产品", example: "The product helps teams work faster.", exampleZh: "这个产品帮助团队更快地工作。"),
-            "research": WordLookup(word: "research", meaningZh: "研究", example: "The research attracted public attention.", exampleZh: "这项研究引起了公众关注。"),
-            "result": WordLookup(word: "result", meaningZh: "结果", example: "The result was better than expected.", exampleZh: "结果比预期更好。"),
-            "reliable": WordLookup(word: "reliable", meaningZh: "可靠的", example: "Users need a reliable assistant.", exampleZh: "用户需要一个可靠的助手。"),
-            "release": WordLookup(word: "release", meaningZh: "发布；推出", example: "The team will release the app this month.", exampleZh: "团队会在这个月发布这款应用。"),
-            "restrict": WordLookup(word: "restrict", meaningZh: "限制", example: "The new rule may restrict access.", exampleZh: "新规则可能会限制访问。"),
-            "revenue": WordLookup(word: "revenue", meaningZh: "营收；收入", example: "Cloud revenue continued to grow.", exampleZh: "云业务营收继续增长。"),
-            "risk": WordLookup(word: "risk", meaningZh: "风险", example: "The company must manage the risk.", exampleZh: "这家公司必须管理这个风险。"),
-            "route": WordLookup(word: "route", meaningZh: "路线；通道", example: "The route is important for global trade.", exampleZh: "这条通道对全球贸易很重要。"),
-            "running": WordLookup(word: "running", meaningZh: "运行中的；持续进行的", example: "The startup is building a long-running agent system.", exampleZh: "这家初创公司正在构建一个长期运行的智能体系统。"),
-            "secure": WordLookup(word: "secure", meaningZh: "安全的；受保护的", example: "The workflow runs in a secure environment.", exampleZh: "这套流程运行在安全环境中。"),
-            "security": WordLookup(word: "security", meaningZh: "安全；安全性", example: "Security matters in enterprise software.", exampleZh: "企业软件非常重视安全性。"),
-            "service": WordLookup(word: "service", meaningZh: "服务", example: "The company launched a new AI service.", exampleZh: "这家公司推出了一项新的 AI 服务。"),
-            "startup": WordLookup(word: "startup", meaningZh: "初创公司", example: "The startup raised fresh funding.", exampleZh: "这家初创公司获得了新的融资。"),
-            "support": WordLookup(word: "support", meaningZh: "支持；支撑", example: "The system is designed to support developers.", exampleZh: "这个系统旨在支持开发者。"),
-            "task": WordLookup(word: "task", meaningZh: "任务", example: "The agent can finish a task on its own.", exampleZh: "这个智能体可以独立完成一个任务。"),
-            "team": WordLookup(word: "team", meaningZh: "团队", example: "The team is testing the new workflow.", exampleZh: "团队正在测试这套新流程。"),
-            "technology": WordLookup(word: "technology", meaningZh: "技术", example: "The technology could reshape search.", exampleZh: "这项技术可能重塑搜索。"),
-            "tool": WordLookup(word: "tool", meaningZh: "工具", example: "This tool helps you read faster.", exampleZh: "这个工具帮助你更快阅读。"),
-            "trade": WordLookup(word: "trade", meaningZh: "贸易；交易", example: "The route matters for global trade.", exampleZh: "这条通道对全球贸易很重要。"),
-            "translation": WordLookup(word: "translation", meaningZh: "翻译", example: "Tap a word to see its translation.", exampleZh: "点击单词查看它的翻译。"),
-            "uncertainty": WordLookup(word: "uncertainty", meaningZh: "不确定性", example: "The market still faces uncertainty.", exampleZh: "市场仍然面临不确定性。"),
-            "update": WordLookup(word: "update", meaningZh: "更新", example: "The app received a major update.", exampleZh: "这个应用收到了一个重大更新。"),
-            "user": WordLookup(word: "user", meaningZh: "用户", example: "Users want a cleaner reading experience.", exampleZh: "用户希望有更清爽的阅读体验。"),
-            "valuation": WordLookup(word: "valuation", meaningZh: "估值", example: "The startup reached a high valuation.", exampleZh: "这家初创公司的估值达到了很高水平。"),
-            "workflow": WordLookup(word: "workflow", meaningZh: "工作流", example: "The agent can automate a workflow.", exampleZh: "这个智能体可以自动完成一套工作流。"),
-            "policy": WordLookup(word: "policy", meaningZh: "政策", example: "The policy may affect AI companies.", exampleZh: "这项政策可能影响 AI 公司。"),
-            "chatgpt": WordLookup(word: "ChatGPT", meaningZh: "ChatGPT，OpenAI 的 AI 助手产品", example: "ChatGPT can help explain an article.", exampleZh: "ChatGPT 可以帮助解释一篇文章。")
-        ]
-        return entries[word]
-    }
-}
 
 extension String {
     var cleanedLookupWord: String {
@@ -1114,4 +1053,3 @@ private enum LookupNormalizer {
         return roots
     }
 }
-

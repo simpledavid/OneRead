@@ -1,14 +1,35 @@
 # One Read
 
-A native SwiftUI iOS app that recommends three recent AI news articles each day.
+A native SwiftUI iOS app that helps CET-4-level learners study English through
+two high-quality AI and major technology stories each day.
 
 ## What is built
 
-- Daily feed with three latest AI news recommendations
+- Morning (07:00) and afternoon (16:00) editorial editions; notifications are currently hidden
+- Included Easy (~100 words, A2-B1), Standard (~150 words, B1-B2), and Original reading modes
+- Platform-generated vocabulary supports tap-to-translate lookup without colored word highlighting
 - Live RSS fetching from AI-focused news sources, with local fallback content
+- Source weighting plus optional LLM editorial scoring for the strongest candidates
+- Human review gate that publishes exactly two diverse stories
 - Article detail pages with source, summary, key points, and original-link handoff
 - Article library with category filters and search
-- Saved articles and read-state tracking
+- Saved articles, daily completion, streaks, and retention-event tracking
+- Optional personal API key only for rewriting extra library articles
+
+## Daily content service
+
+The app reads approved editions from a static JSON endpoint. Set
+`ONE_READ_CONTENT_BASE_URL` in the target Info.plist or the launch environment.
+The client requests `YYYY-MM-DD.json`, then `latest.json`; without a configured
+endpoint it loads a bundled approved preview edition.
+
+Use the two-stage editorial CLI described in
+[`content/README.md`](content/README.md) to prepare five candidates and publish
+two human-selected stories. Any static host or CDN can serve the output.
+
+Set `ONE_READ_ANALYTICS_URL` to an optional event collector. If it is absent,
+events remain queued on device and the profile still shows local streak,
+completion, active-day, and quiz metrics.
 
 ## Open
 
@@ -26,5 +47,6 @@ xcodebuild -project OneRead.xcodeproj -target OneRead -configuration Debug -sdk 
 - `Models`: article, category, and legacy vocabulary types
 - `Data`: RSS-backed article state, local fallback articles, and legacy word data
 - `Services`: local notification helpers and legacy speech service
+- `content` + `scripts/content_pipeline.py`: server-side generation and editorial review workflow
 - `Views`: SwiftUI screens
 - `Components`: shared visual helpers and reusable controls

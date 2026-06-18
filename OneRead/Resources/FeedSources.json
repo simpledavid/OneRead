@@ -1,0 +1,626 @@
+{
+  "schemaVersion": 1,
+  "topicGroups": [
+    {
+      "key": "openai",
+      "keywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-"
+      ]
+    },
+    {
+      "key": "anthropic",
+      "keywords": [
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos"
+      ]
+    },
+    {
+      "key": "meta",
+      "keywords": [
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai"
+      ]
+    },
+    {
+      "key": "google",
+      "keywords": [
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google"
+      ]
+    },
+    {
+      "key": "qwen",
+      "keywords": [
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope"
+      ]
+    },
+    {
+      "key": "deepseek",
+      "keywords": [
+        "deepseek"
+      ]
+    },
+    {
+      "key": "kimi",
+      "keywords": [
+        "kimi",
+        "moonshot"
+      ]
+    },
+    {
+      "key": "glm",
+      "keywords": [
+        "glm",
+        "zhipu",
+        "bigmodel"
+      ]
+    },
+    {
+      "key": "minimax",
+      "keywords": [
+        "minimax"
+      ]
+    },
+    {
+      "key": "xai",
+      "keywords": [
+        "xai",
+        "grok"
+      ]
+    },
+    {
+      "key": "spacex",
+      "keywords": [
+        "spacex",
+        "starship",
+        "starlink"
+      ]
+    },
+    {
+      "key": "chips",
+      "keywords": [
+        "nvidia",
+        "chip",
+        "gpu",
+        "semiconductor",
+        "compute"
+      ]
+    },
+    {
+      "key": "robotics",
+      "keywords": [
+        "robot",
+        "robotics",
+        "humanoid"
+      ]
+    },
+    {
+      "key": "policy",
+      "keywords": [
+        "policy",
+        "regulation",
+        "copyright",
+        "lawsuit",
+        "safety"
+      ]
+    },
+    {
+      "key": "agents",
+      "keywords": [
+        "agent",
+        "workflow",
+        "automation"
+      ]
+    }
+  ],
+  "feeds": [
+    {
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/news",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 15,
+      "specialParser": "anthropic-news"
+    },
+    {
+      "name": "Anthropic Research",
+      "url": "https://www.anthropic.com/research",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 12,
+      "specialParser": "anthropic-research"
+    },
+    {
+      "name": "The Verge AI",
+      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+      "category": "ai",
+      "authority": 0.78,
+      "itemLimit": 12
+    },
+    {
+      "name": "Ars Technica AI",
+      "url": "https://arstechnica.com/ai/feed/",
+      "category": "ai",
+      "authority": 0.9,
+      "itemLimit": 12
+    },
+    {
+      "name": "TechCrunch AI",
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "category": "ai",
+      "authority": 0.78,
+      "itemLimit": 12
+    },
+    {
+      "name": "MIT Technology Review AI",
+      "url": "https://www.technologyreview.com/feed/",
+      "category": "ai",
+      "authority": 0.9,
+      "itemLimit": 12
+    },
+    {
+      "name": "404 Media",
+      "url": "https://www.404media.co/rss/",
+      "category": "ai",
+      "authority": 0.9,
+      "itemLimit": 12
+    },
+    {
+      "name": "Platformer",
+      "url": "https://www.platformer.news/rss/",
+      "category": "ai",
+      "authority": 0.9,
+      "itemLimit": 8,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "Stratechery",
+      "url": "https://stratechery.com/feed/",
+      "category": "ai",
+      "authority": 0.9,
+      "itemLimit": 8,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "Big Technology",
+      "url": "https://www.bigtechnology.com/feed",
+      "category": "ai",
+      "authority": 0.9,
+      "itemLimit": 8,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "AI News",
+      "url": "https://www.artificialintelligence-news.com/feed/",
+      "category": "ai",
+      "authority": 0.62,
+      "itemLimit": 12
+    },
+    {
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/rss.xml",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 8
+    },
+    {
+      "name": "Google DeepMind",
+      "url": "https://deepmind.google/blog/rss.xml",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 10
+    },
+    {
+      "name": "Google AI",
+      "url": "https://blog.google/technology/ai/rss/",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 10
+    },
+    {
+      "name": "The Decoder",
+      "url": "https://the-decoder.com/feed/",
+      "category": "ai",
+      "authority": 0.78,
+      "itemLimit": 12
+    },
+    {
+      "name": "WIRED AI",
+      "url": "https://www.wired.com/feed/tag/ai/latest/rss",
+      "category": "ai",
+      "authority": 0.9,
+      "itemLimit": 12
+    },
+    {
+      "name": "Hugging Face",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 8
+    },
+    {
+      "name": "NVIDIA Blog",
+      "url": "https://blogs.nvidia.com/feed/",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 10,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "Meta News AI",
+      "url": "https://about.fb.com/news/feed/",
+      "category": "ai",
+      "authority": 1.0,
+      "itemLimit": 10,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "The Verge AI Companies",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "category": "ai",
+      "authority": 0.78,
+      "itemLimit": 10,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "Engadget AI Companies",
+      "url": "https://www.engadget.com/rss.xml",
+      "category": "ai",
+      "authority": 0.78,
+      "itemLimit": 10,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "Ars Technica AI Companies",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "category": "ai",
+      "authority": 0.85,
+      "itemLimit": 10,
+      "filterKeywords": [
+        "openai",
+        "chatgpt",
+        "sora",
+        "gpt-",
+        "anthropic",
+        "claude",
+        "fable",
+        "mythos",
+        "meta ai",
+        "meta",
+        "llama",
+        "facebook ai",
+        "spacex",
+        "starship",
+        "starlink",
+        "kimi",
+        "moonshot",
+        "glm",
+        "zhipu",
+        "bigmodel",
+        "deepseek",
+        "minimax",
+        "qwen",
+        "alibaba",
+        "tongyi",
+        "dashscope",
+        "google deepmind",
+        "deepmind",
+        "gemini",
+        "google",
+        "xai",
+        "grok",
+        "mistral",
+        "perplexity",
+        "cohere"
+      ]
+    },
+    {
+      "name": "The Verge Tech",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "category": "technology",
+      "authority": 0.75,
+      "itemLimit": 12,
+      "filterKeywords": [
+        "ai",
+        "startup",
+        "chip",
+        "robot",
+        "agent"
+      ]
+    },
+    {
+      "name": "Engadget",
+      "url": "https://www.engadget.com/rss.xml",
+      "category": "technology",
+      "authority": 0.78,
+      "itemLimit": 12,
+      "filterKeywords": [
+        "ai",
+        "tech",
+        "robot",
+        "chip",
+        "social media"
+      ]
+    },
+    {
+      "name": "TLDR AI",
+      "url": "https://bullrich.dev/tldr-rss/ai.rss",
+      "category": "ai",
+      "authority": 0.68,
+      "itemLimit": 12,
+      "channel": "ai"
+    },
+    {
+      "name": "TLDR Tech",
+      "url": "https://bullrich.dev/tldr-rss/tech.rss",
+      "category": "technology",
+      "authority": 0.68,
+      "itemLimit": 12,
+      "channel": "tech"
+    }
+  ]
+}

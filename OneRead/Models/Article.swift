@@ -55,6 +55,41 @@ enum ArticleCategory: String, CaseIterable, Codable, Identifiable, Sendable {
     }
 }
 
+enum ArticleEditionSlot: String, Codable, Sendable {
+    case morning
+    case afternoon
+}
+
+enum ArticleCurationStatus: String, Codable, Sendable {
+    case draft
+    case inReview = "in_review"
+    case approved
+    case published
+}
+
+struct ArticleLearningVersion: Hashable, Codable, Sendable {
+    let paragraphs: [String]
+    let paragraphTranslations: [String]
+    let targetWords: Int
+    let cefr: String
+}
+
+struct ArticleLearningContent: Hashable, Codable, Sendable {
+    let easy: ArticleLearningVersion
+    let standard: ArticleLearningVersion
+    let vocabulary: [ArticleVocabulary]
+    let generatedAt: Date?
+    let sourceFingerprint: String
+}
+
+struct DailyEdition: Hashable, Codable, Sendable {
+    let schemaVersion: Int
+    let date: String
+    let generatedAt: Date
+    let status: ArticleCurationStatus
+    let articles: [Article]
+}
+
 struct Article: Identifiable, Hashable, Codable, Sendable {
     let id: String
     let title: String
@@ -72,6 +107,10 @@ struct Article: Identifiable, Hashable, Codable, Sendable {
     let urlString: String
     let imageURLString: String
     let publishedAt: Date?
+    let editionDate: String?
+    let editionSlot: ArticleEditionSlot?
+    let curationStatus: ArticleCurationStatus?
+    let learningContent: ArticleLearningContent?
 
     init(
         id: String,
@@ -89,7 +128,11 @@ struct Article: Identifiable, Hashable, Codable, Sendable {
         vocabulary: [ArticleVocabulary] = [],
         urlString: String = "",
         imageURLString: String = "",
-        publishedAt: Date? = nil
+        publishedAt: Date? = nil,
+        editionDate: String? = nil,
+        editionSlot: ArticleEditionSlot? = nil,
+        curationStatus: ArticleCurationStatus? = nil,
+        learningContent: ArticleLearningContent? = nil
     ) {
         self.id = id
         self.title = title
@@ -107,6 +150,10 @@ struct Article: Identifiable, Hashable, Codable, Sendable {
         self.urlString = urlString
         self.imageURLString = imageURLString
         self.publishedAt = publishedAt
+        self.editionDate = editionDate
+        self.editionSlot = editionSlot
+        self.curationStatus = curationStatus
+        self.learningContent = learningContent
     }
 
     var url: URL? {
@@ -126,6 +173,11 @@ struct Article: Identifiable, Hashable, Codable, Sendable {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "EEEE, MM/dd HH:mm"
         return formatter.string(from: publishedAt)
+    }
+
+    var effectiveVocabulary: [ArticleVocabulary] {
+        let generated = learningContent?.vocabulary ?? []
+        return generated.isEmpty ? vocabulary : generated
     }
 }
 

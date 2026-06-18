@@ -4,29 +4,33 @@ import UIKit
 
 struct ArticleProfileView: View {
     @EnvironmentObject private var store: ArticleStore
-    @EnvironmentObject private var notifications: NotificationService
     @State private var activeSheet: ProfileInfoSheetKind?
 
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 26) {
-                    meHeader
-                    activitySection
-                    learnSection
-                    languageSection
-                    levelSection
-                    appSection
-                    aiRewriteSection
-                    supportSection
-                    othersSection
-                    footer
+            GeometryReader { proxy in
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 26) {
+                        meHeader
+                        activitySection
+                        learnSection
+                        languageSection
+                        levelSection
+                        appSection
+                        aiRewriteSection
+                        supportSection
+                        othersSection
+                        footer
+                    }
+                    .frame(width: max(proxy.size.width - 40, 1), alignment: .leading)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 42)
+                    .padding(.bottom, 112)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 42)
-                .padding(.bottom, 112)
+                .frame(width: proxy.size.width)
+                .clipped()
+                .background(LensBackground())
             }
-            .background(LensBackground())
             .toolbar(.hidden, for: .navigationBar)
             .sheet(item: $activeSheet) { sheet in
                 ProfileInfoSheet(kind: sheet)
@@ -85,18 +89,6 @@ struct ArticleProfileView: View {
                 }
                 .buttonStyle(.plain)
 
-                Divider()
-                    .overlay(Palette.border)
-                    .padding(.leading, 56)
-
-                ProfileToggleRow(
-                    systemImage: "textformat.alt",
-                    title: "Highlight key words",
-                    isOn: Binding(
-                        get: { store.highlightVocabularyEnabled },
-                        set: { store.setHighlightVocabularyEnabled($0) }
-                    )
-                )
             }
             .cardBackground()
         }
@@ -130,8 +122,8 @@ struct ArticleProfileView: View {
             VStack(spacing: 0) {
                 ProfileValueRow(
                     systemImage: "book.fill",
-                    title: "Articles read",
-                    value: "\(store.readCount)",
+                    title: "Articles completed",
+                    value: "\(store.completedCount)",
                     showsChevron: false
                 )
 
@@ -175,21 +167,6 @@ struct ArticleProfileView: View {
                     .padding(.leading, 56)
 
                 ProfileToggleRow(
-                    systemImage: "bell.badge.fill",
-                    title: "Daily reminders (7am & 4pm)",
-                    isOn: Binding(
-                        get: { notifications.isEnabled },
-                        set: { newValue in
-                            Task { await notifications.setEnabled(newValue) }
-                        }
-                    )
-                )
-
-                Divider()
-                    .overlay(Palette.border)
-                    .padding(.leading, 56)
-
-                ProfileToggleRow(
                     systemImage: "iphone.radiowaves.left.and.right",
                     title: "Haptic",
                     isOn: Binding(
@@ -200,18 +177,12 @@ struct ArticleProfileView: View {
             }
             .cardBackground()
 
-            if notifications.permissionDenied {
-                Text("Notifications are turned off in iOS Settings. Enable them for One Read to get your morning and afternoon reads.")
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundStyle(Palette.amber)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
         }
     }
 
     private var aiRewriteSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            profileSectionTitle("AI REWRITE")
+            profileSectionTitle("ADVANCED AI")
 
             VStack(spacing: 0) {
                 NavigationLink {
@@ -219,15 +190,15 @@ struct ArticleProfileView: View {
                 } label: {
                     ProfileValueRow(
                         systemImage: "wand.and.stars",
-                        title: "AI model & API key",
-                        value: store.hasAPIKey ? store.aiProvider.displayName : "Set up"
+                        title: "Personal rewrite & API key",
+                        value: store.hasAPIKey ? store.aiProvider.displayName : "Optional"
                     )
                 }
                 .buttonStyle(.plain)
             }
             .cardBackground()
 
-            Text("Quick (~100 words) and Standard (~150 words) are condensed by a cloud LLM using your API key. Full always shows the original article.")
+            Text("Easy and Standard versions for the two daily stories are included. Add your own key only for personal rewrites of extra library articles.")
                 .font(.system(size: 14, weight: .medium, design: .rounded))
                 .foregroundStyle(Palette.muted)
                 .fixedSize(horizontal: false, vertical: true)
@@ -250,7 +221,7 @@ struct ArticleProfileView: View {
                     .overlay(Palette.border)
                     .padding(.leading, 56)
 
-                ShareLink(item: "I’m using One Read to follow AI news in English.") {
+                ShareLink(item: "I’m using OneRead to follow AI news in English.") {
                     ProfileValueRow(systemImage: "square.and.arrow.up", title: "Share with friends", value: nil)
                 }
                 .buttonStyle(.plain)
@@ -310,7 +281,7 @@ struct ArticleProfileView: View {
     private var footer: some View {
         HStack {
             Spacer()
-            Text("One Read")
+            Text("OneRead")
                 .font(.system(size: 26, weight: .bold, design: .serif))
                 .foregroundStyle(Palette.muted.opacity(0.28))
             Spacer()
@@ -345,48 +316,36 @@ private struct ReadingActivityHeatmap: View {
         }
     }
 
-    private let cellSpacing: CGFloat = 7
+    private let cellSize: CGFloat = 16
+    private let cellSpacing: CGFloat = 5
 
     var body: some View {
-        GeometryReader { proxy in
-            let count = CGFloat(max(columns.count, 1))
-            let cell = max(10, (proxy.size.width - cellSpacing * (count - 1)) / count)
-
-            VStack(alignment: .leading, spacing: 16) {
-                HStack(alignment: .center) {
-                    ForEach(Array(monthLabels.enumerated()), id: \.offset) { _, label in
-                        Text(label)
-                            .font(.system(size: 13, weight: .semibold, design: .rounded))
-                            .foregroundStyle(Palette.muted)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .center) {
+                ForEach(Array(monthLabels.enumerated()), id: \.offset) { _, label in
+                    Text(label)
+                        .font(.system(size: 13, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Palette.muted)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+            }
 
-                HStack(alignment: .top, spacing: cellSpacing) {
-                    ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
-                        VStack(spacing: cellSpacing) {
-                            ForEach(column, id: \.self) { day in
-                                RoundedRectangle(cornerRadius: cell * 0.26, style: .continuous)
-                                    .fill(color(for: store.readingActivityValue(on: day)))
-                                    .frame(width: cell, height: cell)
-                            }
+            HStack(alignment: .top, spacing: cellSpacing) {
+                ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
+                    VStack(spacing: cellSpacing) {
+                        ForEach(column, id: \.self) { day in
+                            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                .fill(color(for: store.readingActivityValue(on: day)))
+                                .frame(width: cellSize, height: cellSize)
                         }
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(height: gridHeight)
         .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .cardBackground()
-    }
-
-    private var gridHeight: CGFloat {
-        let screenWidth = UIScreen.main.bounds.width
-        let available = screenWidth - 40 - 36
-        let count = CGFloat(max(columns.count, 1))
-        let cell = max(10, (available - cellSpacing * (count - 1)) / count)
-        let rows: CGFloat = 7
-        return rows * cell + (rows - 1) * cellSpacing + 16 + 18
     }
 
     private var monthLabels: [String] {
@@ -448,6 +407,8 @@ private struct ProfileValueRow: View {
             Text(title)
                 .font(.system(size: 17, weight: .bold, design: .rounded))
                 .foregroundStyle(Palette.ink)
+                .lineLimit(2)
+                .layoutPriority(1)
 
             Spacer(minLength: 12)
 
@@ -456,6 +417,8 @@ private struct ProfileValueRow: View {
                     .font(.system(size: 16, weight: .medium, design: .rounded))
                     .foregroundStyle(Palette.ink.opacity(0.82))
                     .multilineTextAlignment(.trailing)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
             }
 
             if showsChevron {
@@ -537,11 +500,11 @@ private enum ProfileInfoSheetKind: String, Identifiable {
     var title: String {
         switch self {
         case .rate:
-            return "Rate One Read"
+            return "Rate OneRead"
         case .wechat:
             return "WeChat"
         case .about:
-            return "About One Read"
+            return "About OneRead"
         case .privacy:
             return "Privacy"
         }
@@ -554,7 +517,7 @@ private enum ProfileInfoSheetKind: String, Identifiable {
         case .wechat:
             return "WeChat contact copied: simplezdwbtc"
         case .about:
-            return "One Read is a lightweight English reading app focused on current AI and tech stories, with real RSS sources and word lookup built in."
+            return "OneRead is a lightweight English reading app focused on current AI and tech stories, with real RSS sources and word lookup built in."
         case .privacy:
             return "Your saved words, reading settings, and article cache stay on device. RSS content is fetched from public sources when needed."
         }
@@ -576,7 +539,7 @@ private struct AILevelSettingsView: View {
                 apiKeySection
 
                 if store.isOnDeviceRewriteAvailable {
-                    Text("On-device Apple Intelligence is available and will be used automatically if you leave the API key empty.")
+                    Text("On-device Apple Intelligence is available for optional personal rewrites when you leave the API key empty.")
                         .font(.system(size: 14, weight: .medium, design: .rounded))
                         .foregroundStyle(Palette.muted)
                         .fixedSize(horizontal: false, vertical: true)
@@ -587,7 +550,7 @@ private struct AILevelSettingsView: View {
             .padding(.bottom, 40)
         }
         .background(LensBackground())
-        .navigationTitle("AI Rewrite")
+        .navigationTitle("Advanced AI")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             guard !didLoad else { return }
@@ -673,7 +636,7 @@ private struct AILevelSettingsView: View {
                     .padding(.vertical, 12)
                     .padding(.horizontal, 16)
 
-                Text("Get a key at \(store.aiProvider.keyHint). Stored securely in the iOS Keychain.")
+                Text("Optional: used only for personal rewrites of extra articles. Daily editorial stories work without a key. Get one at \(store.aiProvider.keyHint). Stored securely in the iOS Keychain.")
                     .font(.system(size: 13, weight: .medium, design: .rounded))
                     .foregroundStyle(Palette.muted)
                     .padding(.horizontal, 16)
@@ -750,4 +713,3 @@ private struct ProfileInfoSheet: View {
         .background(LensBackground())
     }
 }
-

@@ -9,13 +9,13 @@ enum ReadingLevel: Int, CaseIterable, Identifiable {
 
     var id: Int { rawValue }
 
-    /// Short label shown in the reading-length picker.
-    /// Quick/Standard are AI-condensed digests; Full is the original article.
+    /// Easy/Standard are editorial learning versions; Original keeps the
+    /// cleaned source article.
     var title: String {
         switch self {
-        case .level1: return "Quick"
+        case .level1: return "Easy"
         case .level2: return "Standard"
-        case .level3: return "Full"
+        case .level3: return "Original"
         }
     }
 
@@ -39,6 +39,7 @@ struct ArticleTodayView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 18) {
                         homeHeader
+                        dailyProgressCard
 
                         if let first = visibleArticles.first {
                             NavigationLink {
@@ -100,33 +101,65 @@ struct ArticleTodayView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .navigationBar)
             .onAppear {
-                store.refreshDailyRecommendationsIfNeeded()
+                store.refreshDailyEditionIfNeeded()
             }
         }
     }
 
     private func homeContentWidth(for screenWidth: CGFloat) -> CGFloat {
-        min(max(screenWidth - 40, 0), 360)
+        min(max(screenWidth - 40, 0), 560)
     }
 
     private var homeHeader: some View {
-        HStack(alignment: .center) {
-            Color.clear
-                .frame(width: 46, height: 46)
-
-            Spacer()
-            Text("One Read")
-                .font(.system(size: 25, weight: .heavy, design: .rounded))
+        VStack(alignment: .leading, spacing: 4) {
+            Text("OneRead")
+                .font(.system(size: 28, weight: .heavy, design: .rounded))
                 .foregroundStyle(Palette.ink)
-            Spacer()
-
-            Color.clear
-                .frame(width: 46, height: 46)
+            Text("Today’s English edition")
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .foregroundStyle(Palette.muted)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var visibleArticles: [Article] {
         store.dailyArticles
+    }
+
+    private var dailyProgressCard: some View {
+        HStack(spacing: 14) {
+            ZStack {
+                Circle()
+                    .stroke(Palette.border, lineWidth: 5)
+                Circle()
+                    .trim(from: 0, to: store.todayProgress)
+                    .stroke(
+                        store.isTodayComplete ? Color.green : Palette.accent,
+                        style: StrokeStyle(lineWidth: 5, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(-90))
+
+                Image(systemName: store.isTodayComplete ? "checkmark" : "book.fill")
+                    .font(.system(size: 16, weight: .heavy))
+                    .foregroundStyle(store.isTodayComplete ? Color.green : Palette.ink)
+            }
+            .frame(width: 48, height: 48)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(store.isTodayComplete ? "Today's learning is complete" : "\(store.todayGoalProgressCount) of \(store.dailyGoalTarget) reads completed")
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(Palette.ink)
+                Text(store.isTodayComplete ? "Come back tomorrow for the next edition" : "Complete one article to finish today")
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+            }
+
+            Spacer()
+        }
+        .padding(16)
+        .cardBackground()
+        .accessibilityElement(children: .combine)
+        .accessibilityValue("\(store.todayGoalProgressCount) of \(store.dailyGoalTarget) completed")
     }
 
     private var emptyState: some View {
@@ -166,8 +199,13 @@ struct ArticleHomeCard: View {
             HStack {
                 Text(displayDate)
                 Spacer()
-                Text(article.source)
-                    .lineLimit(1)
+                if store.isCompleted(article) {
+                    Label("Done", systemImage: "checkmark.circle.fill")
+                        .foregroundStyle(.green)
+                } else {
+                    Text(article.source)
+                        .lineLimit(1)
+                }
             }
             .font(.system(size: 14, weight: .medium, design: .rounded))
             .foregroundStyle(Palette.muted)
@@ -187,6 +225,9 @@ struct ArticleHomeCard: View {
         }
         .padding(rank == 1 ? 16 : 14)
         .cardBackground()
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(displayDate). \(article.title)")
+        .accessibilityValue(store.isCompleted(article) ? "Completed" : "\(article.readingMinutes) minute read")
     }
 
     private var displayDate: String {
@@ -231,23 +272,26 @@ struct ArticleReadingView: View {
                     pageCount: pageCount,
                     width: proxy.size.width,
                     height: proxy.size.height,
-                    readingLevel: readingLevel
+                    readingLevel: effectiveReadingLevel
                 )
-                .padding(.bottom, 172)
             }
+            .frame(width: proxy.size.width)
+            .clipped()
             .background(LensBackground())
-            .overlay(alignment: .top) {
+            .safeAreaInset(edge: .top, spacing: 0) {
                 readingTopBar
-            }
-            .overlay(alignment: .bottom) {
-                readingBottomBar
             }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
         .onAppear {
-            store.requestLeveledContent(for: article, level: readingLevel)
+            if store.hasAPIKey {
+                store.requestLeveledContent(for: article, level: readingLevel)
+                store.trackReadingLevel(readingLevel, for: article)
+            } else {
+                readingLevel = .level3
+            }
             guard !appliedInitialTranslationPreference else {
                 return
             }
@@ -255,112 +299,99 @@ struct ArticleReadingView: View {
             appliedInitialTranslationPreference = true
         }
         .onChange(of: readingLevel) { _, newLevel in
+            guard store.hasAPIKey else {
+                readingLevel = .level3
+                return
+            }
             store.requestLeveledContent(for: article, level: newLevel)
+            store.trackReadingLevel(newLevel, for: article)
+        }
+        .onChange(of: store.hasAPIKey) { _, hasAPIKey in
+            if !hasAPIKey {
+                readingLevel = .level3
+            }
+        }
+        .onDisappear {
+            speech.stop()
         }
     }
 
     private var readingTopBar: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 12) {
             Button {
                 dismiss()
             } label: {
                 Image(systemName: "xmark")
-                    .font(.system(size: 22, weight: .heavy))
+                    .font(.system(size: 18, weight: .bold))
                     .foregroundStyle(Palette.muted)
-                    .frame(width: 42, height: 42)
+                    .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Close reader")
 
-            HStack(spacing: 0) {
-                ForEach(ReadingLevel.allCases) { level in
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.16)) {
-                            readingLevel = level
-                        }
-                    } label: {
+            if store.hasAPIKey {
+                Picker("Reading level", selection: $readingLevel) {
+                    ForEach(ReadingLevel.allCases) { level in
                         Text(level.title)
-                            .font(.system(.caption, design: .rounded, weight: .heavy))
-                            .foregroundStyle(readingLevel == level ? Palette.ink : Palette.muted)
-                            .frame(width: 76)
-                            .padding(.vertical, 9)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(readingLevel == level ? Palette.glassStrong : Color.clear)
-                            )
+                            .tag(level)
                     }
-                    .buttonStyle(.plain)
                 }
+                .pickerStyle(.segmented)
+                .accessibilityLabel("Reading level")
+            } else {
+                Spacer(minLength: 0)
             }
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(Palette.border, lineWidth: 1)
-            )
 
-            Spacer()
-
-            Image(systemName: "ellipsis")
-                .font(.system(size: 22, weight: .heavy))
-                .foregroundStyle(Palette.muted)
-                .frame(width: 42, height: 42)
-        }
-        .padding(.horizontal, 22)
-        .padding(.top, 12)
-    }
-
-    private var readingBottomBar: some View {
-        let isSpeaking = speech.isSpeaking(speakableText)
-
-        return VStack(spacing: 14) {
-            ReadingWaveform(isActive: isSpeaking)
+            Button {
+                withAnimation(.easeInOut(duration: 0.18)) {
+                    isArticleTranslationVisible.toggle()
+                }
+            } label: {
+                Image(systemName: isArticleTranslationVisible ? "character.bubble.fill" : "character.bubble")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(isArticleTranslationVisible ? Palette.accent : Palette.muted)
+                    .frame(width: 44, height: 44)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isArticleTranslationVisible ? "Hide translations" : "Show translations")
 
             Button {
                 speech.speak(speakableText)
             } label: {
-                HStack(spacing: 10) {
-                    Image(systemName: isSpeaking ? "stop.fill" : "play.fill")
-                        .font(.system(size: 18, weight: .heavy))
-                    Text(isSpeaking ? "Stop" : "Listen")
-                        .font(.system(size: 17, weight: .heavy, design: .rounded))
-                }
-                .foregroundStyle(Palette.ink)
-                .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(Palette.border, lineWidth: 1)
-                )
+                Image(systemName: isSpeaking ? "stop.fill" : "play.fill")
+                    .font(.system(size: 18, weight: .heavy))
+                    .foregroundStyle(isSpeaking ? Palette.accent : Palette.muted)
+                    .frame(width: 44, height: 44)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(isSpeaking ? "Stop reading aloud" : "Read article aloud")
         }
-        .padding(.horizontal, 22)
-        .padding(.top, 18)
-        .padding(.bottom, 28)
-        .background(
-            LinearGradient(
-                colors: [
-                    Palette.background.opacity(0),
-                    Palette.background.opacity(0.92),
-                    Palette.background
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-        )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(.ultraThinMaterial)
+        .overlay(alignment: .bottom) {
+            Divider()
+                .overlay(Palette.border)
+        }
+    }
+
+    private var isSpeaking: Bool {
+        speech.isSpeaking(speakableText)
     }
 
     private var speakableText: String {
         ([article.title] + readingParagraphs.map(\.text)).joined(separator: ". ")
     }
 
+    private var effectiveReadingLevel: ReadingLevel {
+        store.hasAPIKey ? readingLevel : .level3
+    }
+
     private var readingParagraphs: [LeveledParagraph] {
         ArticleLevelAdapter.paragraphs(
             for: article,
-            level: readingLevel,
-            rewritten: store.leveledRewrite(for: article, level: readingLevel)
+            level: effectiveReadingLevel,
+            rewritten: store.leveledRewrite(for: article, level: effectiveReadingLevel)
         )
     }
 }
@@ -792,4 +823,3 @@ struct SavedWordsView: View {
         return cleaned.isEmpty ? fallback : cleaned
     }
 }
-

@@ -24,7 +24,15 @@ enum TLDRChannel: String, CaseIterable, Identifiable {
         }
     }
 
+    private var configuredFeed: FeedConfiguration.Feed? {
+        FeedConfiguration.bundled.feed(forChannel: rawValue)
+    }
+
     var feedURL: URL {
+        configuredFeed.flatMap { URL(string: $0.url) } ?? fallbackURL
+    }
+
+    private var fallbackURL: URL {
         switch self {
         case .ai:
             return URL(string: "https://bullrich.dev/tldr-rss/ai.rss")!
@@ -43,7 +51,7 @@ enum TLDRChannel: String, CaseIterable, Identifiable {
     }
 
     var sourceName: String {
-        "TLDR \(title)"
+        configuredFeed?.name ?? "TLDR \(title)"
     }
 
     var filterKeywords: [String] { [] }
@@ -132,4 +140,3 @@ enum ArticleLibraryShelf: String, CaseIterable, Identifiable {
         }
     }
 }
-

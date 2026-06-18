@@ -2,7 +2,6 @@ import SwiftUI
 
 struct RootView: View {
     @EnvironmentObject private var articleStore: ArticleStore
-    @EnvironmentObject private var notifications: NotificationService
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -25,8 +24,10 @@ struct RootView: View {
         .tint(Palette.accent)
         .preferredColorScheme(.dark)
         .task {
+            NotificationService.clearPreviouslyScheduledReminders()
+            RetentionAnalytics.record("app_session")
             await articleStore.refreshScheduledDailyArticlesIfNeeded()
-            await notifications.bootstrap()
+            RetentionAnalytics.flush()
         }
         .onChange(of: scenePhase) { _, newPhase in
             guard newPhase == .active else {
@@ -34,7 +35,9 @@ struct RootView: View {
             }
 
             Task {
+                RetentionAnalytics.record("app_session")
                 await articleStore.refreshScheduledDailyArticlesIfNeeded()
+                RetentionAnalytics.flush()
             }
         }
     }

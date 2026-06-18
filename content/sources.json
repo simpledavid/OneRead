@@ -1,0 +1,64 @@
+[
+  {
+    "name": "OpenAI News",
+    "url": "https://openai.com/news/rss.xml",
+    "category": "ai",
+    "authority": 1.0
+  },
+  {
+    "name": "Google DeepMind",
+    "url": "https://deepmind.google/blog/rss.xml",
+    "category": "ai",
+    "authority": 1.0
+  },
+  {
+    "name": "Google AI",
+    "url": "https://blog.google/technology/ai/rss/",
+    "category": "ai",
+    "authority": 1.0
+  },
+  {
+    "name": "The Verge AI",
+    "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+    "category": "ai",
+    "authority": 0.78
+  },
+  {
+    "name": "Ars Technica AI",
+    "url": "https://arstechnica.com/ai/feed/",
+    "category": "ai",
+    "authority": 0.9
+  },
+  {
+    "name": "TechCrunch AI",
+    "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+    "category": "ai",
+    "authority": 0.78
+  },
+  {
+    "name": "MIT Technology Review AI",
+    "url": "https://www.technologyreview.com/feed/",
+    "category": "ai",
+    "authority": 0.9
+  },
+  {
+    "name": "WIRED AI",
+    "url": "https://www.wired.com/feed/tag/ai/latest/rss",
+    "category": "ai",
+    "authority": 0.9
+  },
+  {
+    "name": "The Verge Tech",
+    "url": "https://www.theverge.com/rss/index.xml",
+    "category": "technology",
+    "authority": 0.75,
+    "filterKeywords": ["ai", "chip", "robot", "space", "quantum", "cybersecurity"]
+  },
+  {
+    "name": "Ars Technica Tech",
+    "url": "https://feeds.arstechnica.com/arstechnica/index",
+    "category": "technology",
+    "authority": 0.85,
+    "filterKeywords": ["ai", "chip", "robot", "space", "quantum", "cybersecurity"]
+  }
+]

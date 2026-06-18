@@ -107,10 +107,9 @@ enum KeychainStore {
 
 // MARK: - Level rewrite service
 
-/// Rewrites an article's body into a target reading level.
-/// Level 3 keeps the original text, so only Level 1 (A2) and Level 2 (B1) are
-/// generated. The cloud LLM (with an API key) is the primary path; Apple's
-/// on-device foundation model is an optional fallback.
+/// Creates a personalized fallback for non-editorial library articles.
+/// Daily editorial articles already include platform-generated Easy and
+/// Standard versions, so users never need an API key for the core experience.
 enum ArticleLevelService {
     enum Outcome: Sendable {
         case success([String])
@@ -168,7 +167,7 @@ enum ArticleLevelService {
             return await onDeviceRewrite(source: source, level: level)
         }
 
-        return .failure("No API key set. Add one in Me › AI Rewrite, or enable Apple Intelligence.")
+        return .failure("Personal rewrite needs an API key in Me › Advanced AI, or Apple Intelligence.")
     }
 
     // MARK: Prompt
@@ -185,19 +184,22 @@ enum ArticleLevelService {
 
     private static var systemInstruction: String {
         """
-        You are a sharp news editor. You condense English news articles into tight, \
-        accurate digests. Keep every important fact, name, number, and the core news. \
-        Do not add opinions, titles, labels, or commentary. Reply with only the \
-        condensed article in clear English, and separate paragraphs with a blank line.
+        You are an English-learning news editor for Chinese learners around CET-4 level. \
+        Rewrite articles without changing any fact, name, number, causal relationship, \
+        or uncertainty. Do not invent context. Use natural English, not childish English. \
+        Reply with only the rewritten article and separate paragraphs with a blank line.
         """
     }
 
     private static func userPrompt(source: String, level: ReadingLevel) -> String {
         let guidance: String
         switch level {
-        case .level1, .level2:
+        case .level1:
             let target = level.wordTarget ?? 120
-            guidance = "Condense this news article into about \(target) words. Lead with the most important point, then the key supporting facts. Keep it factual and easy to read."
+            guidance = "Rewrite this article to about \(target) words at CEFR A2-B1. Prefer common words, short sentences, and explicit subjects. Explain the central event first while preserving the most important supporting facts."
+        case .level2:
+            let target = level.wordTarget ?? 150
+            guidance = "Rewrite this article to about \(target) words at CEFR B1-B2. Keep important technical terms, names, numbers, and cause-effect relationships while making long sentences easier to follow."
         case .level3:
             guidance = ""
         }
