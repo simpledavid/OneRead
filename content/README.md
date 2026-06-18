@@ -1,12 +1,44 @@
 # OneRead editorial pipeline
 
-The pipeline has an explicit human-review gate:
+## Automatic edition (no human review)
+
+`auto` clusters the day's items across sources, ranks them, and publishes two
+diverse stories in one step:
 
 ```sh
 export ONE_READ_LLM_API_KEY="..."
 export ONE_READ_LLM_BASE_URL="https://api.deepseek.com"
 export ONE_READ_LLM_MODEL="deepseek-chat"
 
+python3 scripts/content_pipeline.py auto \
+  --date 2026-06-18 \
+  --output-dir /tmp/oneread-published
+
+python3 scripts/content_pipeline.py validate \
+  --file /tmp/oneread-published/2026-06-18.json
+```
+
+How it selects:
+
+- **Cross-source clustering** merges the same event reported by different
+  outlets (stdlib Jaccard + shared-entity matching, no embeddings). The
+  representative is the highest-authority source in each cluster.
+- **Corroboration ranking** boosts events covered by several independent
+  sources — the more outlets report it, the more it matters.
+- **Trending signal** gives a small boost to entities highlighted in today's
+  [smol.ai AINews](https://news.smol.ai/) digest. Pass `--no-trending` to skip;
+  any fetch failure degrades silently and never blocks the edition.
+- Morning is the top-ranked story; afternoon is the top-ranked story on a
+  different topic (`diversity_key`).
+
+`--dry-run` clusters, selects, and prints a source-health report without calling
+the LLM or writing an edition — useful for a no-key smoke test. Every run writes
+`sources_health.json` (per-source fetched / kept / AI-relevance %) next to the
+output.
+
+## Manual edition (optional human-review gate)
+
+```sh
 python3 scripts/content_pipeline.py prepare \
   --date 2026-06-18 \
   --output /tmp/oneread-review.json

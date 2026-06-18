@@ -44,6 +44,20 @@ TOPIC_GROUPS = {
     "policy": ("regulation", "lawsuit", "copyright", "government", "ban"),
     "robotics": ("robot", "robotics", "humanoid"),
 }
+STOPWORDS = {
+    "the", "a", "an", "to", "for", "of", "and", "in", "on", "with", "is",
+    "are", "as", "at", "by", "from", "its", "it", "this", "that", "be",
+    "has", "have", "will", "now", "you", "your", "we", "our", "but", "or",
+    "after", "into", "over", "amid", "says", "say", "how", "why", "what",
+}
+ENTITY_STOPWORDS = {
+    "The", "A", "An", "How", "Why", "What", "This", "These", "After", "With",
+    "And", "But", "For", "Its", "New", "Now", "Why", "When", "Where",
+}
+AI_TERMS = (
+    "ai", "artificial intelligence", "machine learning", "model", "llm",
+    "neural", "gpt", "chatbot", "agent", "openai", "anthropic", "gemini",
+)
 
 
 def iso_now() -> str:
@@ -225,9 +239,126 @@ def word_count(value: str) -> int:
 
 def story_key(candidate: dict[str, Any]) -> str:
     words = re.findall(r"[a-z0-9]+", candidate.get("title", "").lower())
-    ignored = {"the", "a", "an", "to", "for", "of", "and", "in", "on", "with"}
-    meaningful = [word for word in words if word not in ignored]
+    meaningful = [word for word in words if word not in STOPWORDS]
     return " ".join(meaningful[:8])
+
+
+def significant_tokens(text: str) -> set[str]:
+    words = re.findall(r"[a-z0-9][a-z0-9'-]*", text.lower())
+    return {word for word in words if len(word) >= 3 and word not in STOPWORDS}
+
+
+def entity_set(candidate: dict[str, Any]) -> set[str]:
+    """Distinctive entities used to recognize the same event across sources."""
+    blob = " ".join([candidate.get("title", ""), candidate.get("subtitle", "")])
+    found: set[str] = set()
+    low = blob.lower()
+    for key, terms in TOPIC_GROUPS.items():
+        if any(term in low for term in terms):
+            found.add(f"topic:{key}")
+    # model/version identifiers, e.g. "GPT-5", "Claude 3.5", "Gemini 2.0"
+    for match in re.findall(r"\b([A-Za-z][A-Za-z.]+[ -]?\d+(?:\.\d+)?)\b", blob):
+        found.add("model:" + match.lower().replace(" ", "-"))
+    # multi-word proper nouns (>=2 capitalized words) from the title
+    for match in re.findall(r"\b([A-Z][a-zA-Z0-9.&'+-]+(?:\s+[A-Z][a-zA-Z0-9.&'+-]+)+)\b", candidate.get("title", "")):
+        words = [word for word in match.split() if word not in ENTITY_STOPWORDS and len(word) > 1]
+        if len(words) >= 2:
+            found.add("name:" + " ".join(words).lower())
+    return found
+
+
+def jaccard(a: set[str], b: set[str]) -> float:
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
+def published_sort_key(item: dict[str, Any]) -> float:
+    parsed = parse_date(item.get("publishedAt") or "")
+    return parsed.timestamp() if parsed else 0.0
+
+
+def cluster_candidates(raw: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Group items that report the same event across sources.
+
+    Returns one representative per event (highest authority), annotated with
+    ``sourceCount`` and ``corroboratingSources`` so multi-source coverage can
+    drive ranking. Greedy single-pass clustering over title/subtitle token
+    Jaccard plus shared distinctive entities — stdlib only, no embeddings.
+    """
+    unique: dict[str, dict[str, Any]] = {}
+    for item in raw:
+        key = (item.get("urlString") or item.get("title", "")).strip().lower()
+        if key:
+            unique.setdefault(key, item)
+    items = list(unique.values())
+
+    clusters: list[dict[str, Any]] = []
+    for item in items:
+        tokens = significant_tokens(f"{item.get('title', '')} {item.get('subtitle', '')}")
+        entities = entity_set(item)
+        placed = False
+        for cluster in clusters:
+            overlap = jaccard(tokens, cluster["tokens"])
+            shared_entities = len(entities & cluster["entities"])
+            if overlap >= 0.45 or (shared_entities >= 1 and overlap >= 0.22):
+                cluster["members"].append(item)
+                cluster["entities"] |= entities
+                placed = True
+                break
+        if not placed:
+            clusters.append({"tokens": tokens, "entities": set(entities), "members": [item]})
+
+    representatives: list[dict[str, Any]] = []
+    for cluster in clusters:
+        members = cluster["members"]
+        representative = dict(max(
+            members,
+            key=lambda m: (
+                float(m.get("authority", 0.65)),
+                published_sort_key(m),
+                len(m.get("summary", "")),
+            ),
+        ))
+        sources: list[str] = []
+        for member in members:
+            name = member.get("source", "")
+            if name and name not in sources:
+                sources.append(name)
+        representative["sourceCount"] = len(sources)
+        representative["corroboratingSources"] = sources
+        representatives.append(representative)
+    return representatives
+
+
+def is_ai_relevant(item: dict[str, Any]) -> bool:
+    text = f"{item.get('title', '')} {item.get('summary', '')}".lower()
+    if any(term in text for term in AI_TERMS):
+        return True
+    return any(any(term in text for term in terms) for terms in TOPIC_GROUPS.values())
+
+
+def fetch_trending_entities() -> set[str]:
+    """Extract today's bold-highlighted entities from the smol.ai AINews digest.
+
+    Used only as a ranking signal (smol.ai is a per-day digest, not a per-story
+    feed). Any failure degrades to an empty set and never blocks an edition.
+    """
+    try:
+        root = ET.fromstring(fetch_bytes("https://news.smol.ai/rss.xml", timeout=20))
+        items = [e for e in root.iter() if local_name(e.tag) in ("item", "entry")]
+        blob = " ".join(
+            element_text(item, ("description", "summary", "encoded", "content"))
+            for item in items[:2]
+        )
+        entities: set[str] = set()
+        for match in re.findall(r"\*\*([^*]{2,40})\*\*", blob):
+            value = re.sub(r"\s+", " ", match.strip().lower())
+            if value and not value.isdigit():
+                entities.add(value)
+        return entities
+    except Exception:  # never block the edition on the trending signal
+        return set()
 
 
 def diversity_key(article: dict[str, Any]) -> str:
@@ -242,7 +373,11 @@ def diversity_key(article: dict[str, Any]) -> str:
     return story_key(article)
 
 
-def local_score(candidate: dict[str, Any], now: dt.datetime) -> float:
+def local_score(
+    candidate: dict[str, Any],
+    now: dt.datetime,
+    trending: set[str] | None = None,
+) -> float:
     text = " ".join([
         candidate.get("title", ""),
         candidate.get("subtitle", ""),
@@ -256,6 +391,11 @@ def local_score(candidate: dict[str, Any], now: dt.datetime) -> float:
     score += min(25, sum(4 for term in IMPACT_TERMS if term in text))
     score += min(12, word_count(candidate.get("summary", "")) / 20)
     score -= min(20, sum(5 for term in LOW_VALUE_TERMS if term in text))
+    # multi-source corroboration: several independent outlets => more important
+    score += min(24, (int(candidate.get("sourceCount", 1)) - 1) * 9)
+    # today's trending entities from the smol.ai AINews digest
+    if trending and any(entity in text for entity in trending):
+        score += 6
     return round(max(0, min(100, score)), 2)
 
 
@@ -365,38 +505,70 @@ def validate_learning_content(content: dict[str, Any]) -> None:
         raise ValueError("vocabulary must contain 5-8 items")
 
 
-def prepare(args: argparse.Namespace) -> None:
-    sources = read_json(args.sources)
-    now = dt.datetime.now(dt.timezone.utc)
+def collect_candidates(
+    sources: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Fetch every source, returning raw items plus per-source health stats."""
     raw: list[dict[str, Any]] = []
+    stats: list[dict[str, Any]] = []
     for source in sources:
+        entry = {"name": source["name"], "fetched": 0, "kept": 0, "aiRatio": 0.0, "error": None}
         try:
-            raw.extend(parse_feed(source))
-            print(f"fetched {source['name']}", file=sys.stderr)
+            items = parse_feed(source)
+            entry["fetched"] = len(items)
+            if items:
+                entry["aiRatio"] = round(sum(1 for it in items if is_ai_relevant(it)) / len(items), 2)
+            raw.extend(items)
+            print(f"fetched {source['name']} ({len(items)})", file=sys.stderr)
         except Exception as error:  # individual feeds must not stop the edition
+            entry["error"] = str(error)
             print(f"warning: {source['name']}: {error}", file=sys.stderr)
-    deduplicated: dict[str, dict[str, Any]] = {}
-    seen_story_keys: set[str] = set()
-    for item in raw:
-        key = (item.get("urlString") or item["title"]).lower()
-        normalized_story = story_key(item)
-        if normalized_story in seen_story_keys:
-            continue
-        deduplicated.setdefault(key, item)
-        seen_story_keys.add(normalized_story)
+        stats.append(entry)
+    return raw, stats
+
+
+def annotate_kept(stats: list[dict[str, Any]], clustered: list[dict[str, Any]]) -> None:
+    kept: dict[str, int] = {}
+    for representative in clustered:
+        name = representative.get("source", "")
+        kept[name] = kept.get(name, 0) + 1
+    for entry in stats:
+        entry["kept"] = kept.get(entry["name"], 0)
+
+
+def source_health_report(stats: list[dict[str, Any]]) -> None:
+    print("source health (fetched / kept / ai%):", file=sys.stderr)
+    for entry in sorted(stats, key=lambda e: e["fetched"], reverse=True):
+        flag = f" ERROR: {entry['error']}" if entry["error"] else ""
+        print(
+            f"  {entry['name']:<26} {entry['fetched']:>3} / {entry['kept']:>3}"
+            f" / {int(entry['aiRatio'] * 100):>3}%{flag}",
+            file=sys.stderr,
+        )
+
+
+def prepare(args: argparse.Namespace) -> None:
+    now = dt.datetime.now(dt.timezone.utc)
+    raw, stats = collect_candidates(read_json(args.sources))
+    clustered = cluster_candidates(raw)
+    annotate_kept(stats, clustered)
+    source_health_report(stats)
     ranked = sorted(
-        deduplicated.values(),
+        clustered,
         key=lambda item: local_score(item, now),
         reverse=True,
     )[:12]
     candidates = []
     for index, item in enumerate(ranked):
         article = enrich_article(item)
+        article["sourceCount"] = item.get("sourceCount", 1)
+        article["corroboratingSources"] = item.get("corroboratingSources", [])
+        score = local_score(article, now)
         candidates.append({
             "candidateID": f"C{index + 1:02d}",
-            "localScore": local_score(article, now),
+            "localScore": score,
             "editorialScore": None,
-            "finalScore": local_score(article, now),
+            "finalScore": score,
             "article": article,
             "learningContent": None,
         })
@@ -418,8 +590,10 @@ def prepare(args: argparse.Namespace) -> None:
 
 
 def validate_article(article: dict[str, Any]) -> None:
+    # imageURLString is optional: a missing original image falls back to
+    # rendered category artwork in the app, so it must not block publishing.
     required = (
-        "id", "title", "source", "body", "urlString", "imageURLString",
+        "id", "title", "source", "body", "urlString",
         "editionDate", "editionSlot", "curationStatus", "learningContent",
     )
     missing = [key for key in required if not article.get(key)]
@@ -444,6 +618,104 @@ def validate_edition(edition: dict[str, Any]) -> None:
         validate_article(article)
 
 
+def build_edition_article(candidate: dict[str, Any], date: str, slot: str) -> dict[str, Any]:
+    if not candidate.get("learningContent"):
+        raise ValueError(f"{candidate.get('candidateID', 'candidate')} has no generated learning content")
+    article = dict(candidate["article"])
+    article.pop("authority", None)
+    article["editionDate"] = date
+    article["editionSlot"] = slot
+    article["curationStatus"] = "approved"
+    article["learningContent"] = candidate["learningContent"]
+    article["vocabulary"] = candidate["learningContent"]["vocabulary"]
+    return article
+
+
+def assemble_edition(date: str, articles: list[dict[str, Any]]) -> dict[str, Any]:
+    edition = {
+        "schemaVersion": 1,
+        "date": date,
+        "generatedAt": iso_now(),
+        "status": "approved",
+        "articles": articles,
+    }
+    validate_edition(edition)
+    return edition
+
+
+def auto(args: argparse.Namespace) -> None:
+    """No-review path: cluster, rank, auto-select two diverse stories, publish."""
+    now = dt.datetime.now(dt.timezone.utc)
+    raw, stats = collect_candidates(read_json(args.sources))
+    clustered = cluster_candidates(raw)
+    annotate_kept(stats, clustered)
+
+    trending = fetch_trending_entities() if args.use_trending else set()
+    if trending:
+        print(f"trending entities from smol.ai: {len(trending)}", file=sys.stderr)
+
+    ranked = sorted(
+        clustered,
+        key=lambda item: local_score(item, now, trending),
+        reverse=True,
+    )[:12]
+    candidates = []
+    for index, item in enumerate(ranked):
+        article = enrich_article(item)
+        article["sourceCount"] = item.get("sourceCount", 1)
+        article["corroboratingSources"] = item.get("corroboratingSources", [])
+        score = local_score(item, now, trending)
+        candidates.append({
+            "candidateID": f"C{index + 1:02d}",
+            "localScore": score,
+            "editorialScore": None,
+            "finalScore": score,
+            "article": article,
+            "learningContent": None,
+        })
+    candidates = rerank_with_llm(candidates)
+
+    if not candidates:
+        raise ValueError("no candidates available from any source today")
+    morning = candidates[0]
+    morning_topic = diversity_key(morning["article"])
+    afternoon = next(
+        (item for item in candidates[1:] if diversity_key(item["article"]) != morning_topic),
+        None,
+    )
+    if afternoon is None:
+        raise ValueError("could not find a second story on a different topic; sources too narrow today")
+    selected = [morning, afternoon]
+
+    output_dir: Path = args.output_dir
+    write_json(output_dir / "sources_health.json", {"date": args.date, "generatedAt": iso_now(), "sources": stats})
+    source_health_report(stats)
+
+    print("auto-selected:", file=sys.stderr)
+    for slot, item in zip(("morning", "afternoon"), selected):
+        article = item["article"]
+        print(
+            f"  {slot:<9} [{item['finalScore']:>5}] {article['title'][:70]}"
+            f"  ({article.get('sourceCount', 1)} src: {', '.join(article.get('corroboratingSources', []))})",
+            file=sys.stderr,
+        )
+
+    if args.dry_run:
+        print(f"dry-run: {len(clustered)} events clustered, 2 stories selected, no edition written")
+        return
+
+    for item in selected:
+        item["learningContent"] = generate_learning_content(item["article"])
+    articles = [
+        build_edition_article(item, args.date, slot)
+        for slot, item in zip(("morning", "afternoon"), selected)
+    ]
+    edition = assemble_edition(args.date, articles)
+    write_json(output_dir / f"{args.date}.json", edition)
+    write_json(output_dir / "latest.json", edition)
+    print(f"published {args.date} to {output_dir}")
+
+
 def publish(args: argparse.Namespace) -> None:
     review = read_json(args.review)
     selected_ids = [value.strip().upper() for value in args.select.split(",") if value.strip()]
@@ -466,29 +738,11 @@ def publish(args: argparse.Namespace) -> None:
         raise ValueError(
             "selected stories cover the same company/topic; choose a more diverse pair"
         )
-    articles = []
-    for slot, candidate_id in zip(("morning", "afternoon"), selected_ids):
-        if candidate_id not in candidates:
-            raise ValueError(f"unknown candidate ID: {candidate_id}")
-        candidate = candidates[candidate_id]
-        if not candidate.get("learningContent"):
-            raise ValueError(f"{candidate_id} has no generated learning content")
-        article = dict(candidate["article"])
-        article.pop("authority", None)
-        article["editionDate"] = review["date"]
-        article["editionSlot"] = slot
-        article["curationStatus"] = "approved"
-        article["learningContent"] = candidate["learningContent"]
-        article["vocabulary"] = candidate["learningContent"]["vocabulary"]
-        articles.append(article)
-    edition = {
-        "schemaVersion": 1,
-        "date": review["date"],
-        "generatedAt": iso_now(),
-        "status": "approved",
-        "articles": articles,
-    }
-    validate_edition(edition)
+    articles = [
+        build_edition_article(candidate, review["date"], slot)
+        for slot, candidate in zip(("morning", "afternoon"), selected_candidates)
+    ]
+    edition = assemble_edition(review["date"], articles)
     output_dir: Path = args.output_dir
     write_json(output_dir / f"{review['date']}.json", edition)
     write_json(output_dir / "latest.json", edition)
@@ -513,6 +767,18 @@ def parser() -> argparse.ArgumentParser:
     )
     prepare_parser.add_argument("--output", type=Path, required=True)
     prepare_parser.set_defaults(function=prepare)
+
+    auto_parser = commands.add_parser("auto", help="cluster, rank, and auto-publish two diverse stories (no human review)")
+    auto_parser.add_argument("--date", required=True, help="edition date in YYYY-MM-DD")
+    auto_parser.add_argument(
+        "--sources",
+        type=Path,
+        default=Path(__file__).resolve().parents[1] / "content" / "sources.json",
+    )
+    auto_parser.add_argument("--output-dir", type=Path, required=True)
+    auto_parser.add_argument("--dry-run", action="store_true", help="cluster/select and report only; write no edition")
+    auto_parser.add_argument("--no-trending", dest="use_trending", action="store_false", help="skip the smol.ai trending signal")
+    auto_parser.set_defaults(function=auto, use_trending=True)
 
     publish_parser = commands.add_parser("publish", help="publish two human-selected candidates")
     publish_parser.add_argument("--review", type=Path, required=True)
