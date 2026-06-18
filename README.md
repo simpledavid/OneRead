@@ -44,9 +44,16 @@ xcodebuild -project OneRead.xcodeproj -target OneRead -configuration Debug -sdk 
 
 ## Architecture
 
-- `Models`: article, category, and legacy vocabulary types
-- `Data`: RSS-backed article state, local fallback articles, and legacy word data
-- `Services`: local notification helpers and legacy speech service
-- `content` + `scripts/content_pipeline.py`: server-side generation and editorial review workflow
-- `Views`: SwiftUI screens
+- `Models`: `Article`, category, and per-article vocabulary types
+- `Data`: article store and persistence (`ArticleStore`, `StoreServices`,
+  `ArticleDatabase`), RSS fetching and parsing (`FeedService`,
+  `FeedConfiguration`, `FeedChannels`, `FeedSupport`, `ArticleRSSParser`,
+  `StringHTML`), and local fallback content (`SampleArticles`)
+- `Services`: daily content and curation (`DailyContentService`,
+  `ArticleCurationService`), reading-level rewriting (`ArticleLevelService`),
+  dictionary and glossary lookup (`NativeDictionaryService`, `DomainGlossary`,
+  `WordEnrichmentService`), notifications, and speech
+- `Views`: SwiftUI screens (root, article list/reading, profile, shared components)
 - `Components`: shared visual helpers and reusable controls
+- `Resources`: bundled dictionary (`ecdict.sqlite`), domain glossary, and feed source list
+- `content` + `scripts/content_pipeline.py`: server-side generation and editorial review workflow
