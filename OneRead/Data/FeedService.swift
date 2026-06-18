@@ -33,11 +33,10 @@ enum FeedService {
         switch source.specialParser {
         case .anthropicNews, .anthropicResearch:
             let articles = await fetchAnthropicArticles(from: source)
-            let usable = articles.filter { !$0.imageURLString.isEmpty }
-            if usable.isEmpty {
-                feedLogger.warning("Feed \"\(source.name, privacy: .public)\" returned no usable articles (Anthropic scrape).")
+            if articles.isEmpty {
+                feedLogger.warning("Feed \"\(source.name, privacy: .public)\" returned no articles (Anthropic scrape).")
             }
-            return usable
+            return articles
         case nil:
             break
         }
@@ -57,11 +56,11 @@ enum FeedService {
         }
 
         let enrichedArticles = await enrichArticles(for: parsedArticles)
-        let usable = enrichedArticles.filter { !$0.imageURLString.isEmpty }
-        if usable.isEmpty {
-            feedLogger.notice("Feed \"\(source.name, privacy: .public)\": \(parsedArticles.count) parsed but none kept an image after enrichment.")
+        let withoutImage = enrichedArticles.filter { $0.imageURLString.isEmpty }.count
+        if withoutImage > 0 {
+            feedLogger.notice("Feed \"\(source.name, privacy: .public)\": \(withoutImage)/\(enrichedArticles.count) without an original image; using category fallback.")
         }
-        return usable
+        return enrichedArticles
     }
 
     // MARK: - Feed download

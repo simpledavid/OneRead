@@ -123,19 +123,49 @@ struct ArticleHeroImage: View {
     var body: some View {
         ResilientRemoteImage(
             primaryURL: article.imageURL,
-            placeholder: placeholder
+            placeholder: CategoryFallbackImage(article: article)
         )
         .id("\(article.id)|\(article.imageURLString)")
         .clipped()
     }
+}
 
-    private var placeholder: some View {
+/// Branded category artwork shown when an article has no original image
+/// (or while the original is still loading). Rendered, not bundled — works
+/// offline and scales to every category.
+struct CategoryFallbackImage: View {
+    let article: Article
+
+    var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Palette.surface)
+            LinearGradient(
+                colors: [tint.opacity(0.55), tint.opacity(0.14), Palette.surface],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
 
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Palette.glass.opacity(0.6))
+            VStack(spacing: 8) {
+                Image(systemName: article.category.systemImage)
+                    .font(.system(size: 30, weight: .semibold))
+                    .foregroundStyle(.white.opacity(0.92))
+                Text(article.source)
+                    .font(.system(.caption, design: .rounded, weight: .bold))
+                    .foregroundStyle(.white.opacity(0.78))
+                    .lineLimit(1)
+                    .padding(.horizontal, 12)
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
+
+    private var tint: Color {
+        switch article.category {
+        case .ai, .founders, .culture:
+            return Palette.accent
+        case .technology, .science:
+            return Palette.blue
+        case .crypto, .business, .life:
+            return Palette.amber
         }
     }
 }

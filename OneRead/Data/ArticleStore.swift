@@ -606,7 +606,7 @@ final class ArticleStore: ObservableObject {
             return []
         }
 
-        return articles.filter { !$0.imageURLString.isEmpty }
+        return articles
     }
 
     // MARK: - Article utilities

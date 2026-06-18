@@ -117,7 +117,6 @@ enum DailyContentService {
             return article.editionDate == edition.date
                 && (article.curationStatus == .approved || article.curationStatus == .published)
                 && !article.urlString.isEmpty
-                && !article.imageURLString.isEmpty
                 && !article.body.isEmpty
                 && !learning.easy.paragraphs.isEmpty
                 && !learning.standard.paragraphs.isEmpty

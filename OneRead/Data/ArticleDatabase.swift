@@ -30,7 +30,6 @@ final class ArticleDatabase {
             let records = try context.fetch(FetchDescriptor<StoredArticle>())
             return records
                 .map(\.article)
-                .filter { !$0.imageURLString.isEmpty }
                 .sorted { lhs, rhs in
                     (lhs.publishedAt ?? .distantPast) > (rhs.publishedAt ?? .distantPast)
                 }
