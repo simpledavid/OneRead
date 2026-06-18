@@ -52,13 +52,15 @@
     "url": "https://www.theverge.com/rss/index.xml",
     "category": "technology",
     "authority": 0.75,
-    "filterKeywords": ["ai", "chip", "robot", "space", "quantum", "cybersecurity"]
+    "filterKeywords": ["ai", "chip", "robot", "space", "quantum", "cybersecurity"],
+    "excludeKeywords": ["deal", "deals", "discount", "coupon", "sponsored", "giveaway", "best ", "how to"]
   },
   {
     "name": "Ars Technica Tech",
     "url": "https://feeds.arstechnica.com/arstechnica/index",
     "category": "technology",
     "authority": 0.85,
-    "filterKeywords": ["ai", "chip", "robot", "space", "quantum", "cybersecurity"]
+    "filterKeywords": ["ai", "chip", "robot", "space", "quantum", "cybersecurity"],
+    "excludeKeywords": ["deal", "deals", "discount", "coupon", "sponsored", "giveaway", "best ", "how to"]
   }
 ]

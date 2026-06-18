@@ -20,9 +20,13 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
+
+
+MAX_FETCH_WORKERS = 8
 
 
 USER_AGENT = "OneRead-Editorial/1.0 (+https://github.com/)"
@@ -121,6 +125,24 @@ def parse_date(value: str) -> dt.datetime | None:
         return None
 
 
+def passes_filters(title: str, summary: str, source: dict[str, Any]) -> bool:
+    """Per-source include/exclude keyword gate.
+
+    ``filterKeywords``  — if present, the item must contain at least one (include).
+    ``excludeKeywords`` — if present, the item is dropped on any match (exclude).
+    ``filterScope``     — "title" matches the title only; default "summary"
+                          matches title + RSS summary.
+    """
+    include = [term.lower() for term in source.get("filterKeywords", [])]
+    exclude = [term.lower() for term in source.get("excludeKeywords", [])]
+    text = title.lower() if source.get("filterScope") == "title" else f"{title} {summary}".lower()
+    if include and not any(term in text for term in include):
+        return False
+    if exclude and any(term in text for term in exclude):
+        return False
+    return True
+
+
 def parse_feed(source: dict[str, Any]) -> list[dict[str, Any]]:
     root = ET.fromstring(fetch_bytes(source["url"]))
     items = [
@@ -139,8 +161,7 @@ def parse_feed(source: dict[str, Any]) -> list[dict[str, Any]]:
                 break
         summary_html = element_text(item, ("encoded", "content", "summary", "description"))
         summary = clean_html(summary_html)
-        filters = [term.lower() for term in source.get("filterKeywords", [])]
-        if filters and not any(term in f"{title} {summary}".lower() for term in filters):
+        if not passes_filters(title, summary, source):
             continue
         author = clean_html(element_text(item, ("creator", "author", "name"))) or source["name"]
         published = parse_date(element_text(item, ("pubdate", "published", "updated", "date")))
@@ -505,26 +526,44 @@ def validate_learning_content(content: dict[str, Any]) -> None:
         raise ValueError("vocabulary must contain 5-8 items")
 
 
+def fetch_source(source: dict[str, Any]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    entry = {"name": source["name"], "fetched": 0, "kept": 0, "aiRatio": 0.0, "error": None}
+    try:
+        items = parse_feed(source)
+        entry["fetched"] = len(items)
+        if items:
+            entry["aiRatio"] = round(sum(1 for it in items if is_ai_relevant(it)) / len(items), 2)
+        print(f"fetched {source['name']} ({len(items)})", file=sys.stderr)
+        return entry, items
+    except Exception as error:  # individual feeds must not stop the edition
+        entry["error"] = str(error)
+        print(f"warning: {source['name']}: {error}", file=sys.stderr)
+        return entry, []
+
+
 def collect_candidates(
     sources: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Fetch every source, returning raw items plus per-source health stats."""
+    """Fetch every source in parallel, returning raw items plus health stats.
+
+    ``ThreadPoolExecutor.map`` preserves input order, so per-source stats stay
+    deterministic regardless of which feed responds first.
+    """
     raw: list[dict[str, Any]] = []
     stats: list[dict[str, Any]] = []
-    for source in sources:
-        entry = {"name": source["name"], "fetched": 0, "kept": 0, "aiRatio": 0.0, "error": None}
-        try:
-            items = parse_feed(source)
-            entry["fetched"] = len(items)
-            if items:
-                entry["aiRatio"] = round(sum(1 for it in items if is_ai_relevant(it)) / len(items), 2)
+    with ThreadPoolExecutor(max_workers=MAX_FETCH_WORKERS) as executor:
+        for entry, items in executor.map(fetch_source, sources):
+            stats.append(entry)
             raw.extend(items)
-            print(f"fetched {source['name']} ({len(items)})", file=sys.stderr)
-        except Exception as error:  # individual feeds must not stop the edition
-            entry["error"] = str(error)
-            print(f"warning: {source['name']}: {error}", file=sys.stderr)
-        stats.append(entry)
     return raw, stats
+
+
+def enrich_in_parallel(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Fetch + enrich article bodies/images concurrently (order preserved)."""
+    if not items:
+        return []
+    with ThreadPoolExecutor(max_workers=MAX_FETCH_WORKERS) as executor:
+        return list(executor.map(enrich_article, items))
 
 
 def annotate_kept(stats: list[dict[str, Any]], clustered: list[dict[str, Any]]) -> None:
@@ -559,10 +598,7 @@ def prepare(args: argparse.Namespace) -> None:
         reverse=True,
     )[:12]
     candidates = []
-    for index, item in enumerate(ranked):
-        article = enrich_article(item)
-        article["sourceCount"] = item.get("sourceCount", 1)
-        article["corroboratingSources"] = item.get("corroboratingSources", [])
+    for index, article in enumerate(enrich_in_parallel(ranked)):
         score = local_score(article, now)
         candidates.append({
             "candidateID": f"C{index + 1:02d}",
@@ -660,11 +696,8 @@ def auto(args: argparse.Namespace) -> None:
         reverse=True,
     )[:12]
     candidates = []
-    for index, item in enumerate(ranked):
-        article = enrich_article(item)
-        article["sourceCount"] = item.get("sourceCount", 1)
-        article["corroboratingSources"] = item.get("corroboratingSources", [])
-        score = local_score(item, now, trending)
+    for index, article in enumerate(enrich_in_parallel(ranked)):
+        score = local_score(article, now, trending)
         candidates.append({
             "candidateID": f"C{index + 1:02d}",
             "localScore": score,

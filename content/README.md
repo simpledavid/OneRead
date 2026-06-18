@@ -36,6 +36,19 @@ the LLM or writing an edition — useful for a no-key smoke test. Every run writ
 `sources_health.json` (per-source fetched / kept / AI-relevance %) next to the
 output.
 
+Feeds are fetched and enriched in parallel (thread pool), so adding sources
+does not slow the run linearly.
+
+## Source filtering
+
+Each entry in `content/sources.json` accepts:
+
+- `filterKeywords` — include gate: the item must contain at least one term.
+- `excludeKeywords` — exclude gate: the item is dropped on any match (used to
+  strip deals, sponsored posts, and how-to noise from broad tech feeds).
+- `filterScope` — `"title"` matches the title only; the default `"summary"`
+  matches title + RSS summary.
+
 ## Manual edition (optional human-review gate)
 
 ```sh
