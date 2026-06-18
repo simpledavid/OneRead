@@ -23,9 +23,6 @@ final class ArticleStore: ObservableObject {
     @Published private(set) var isRefreshing: Bool
     @Published private(set) var refreshErrorMessage: String?
     @Published private(set) var contentSourceLabel: String
-    @Published var selectedCategory: ArticleCategory?
-    @Published var selectedLibraryShelf: ArticleLibraryShelf
-    @Published var searchText: String
     @Published private(set) var selectedTLDRChannel: TLDRChannel
     @Published var highlightVocabularyEnabled: Bool
     @Published var showArticleTranslationsEnabled: Bool
@@ -80,9 +77,6 @@ final class ArticleStore: ObservableObject {
         self.isRefreshing = false
         self.refreshErrorMessage = nil
         self.contentSourceLabel = defaults.string(forKey: contentSourceLabelKey) ?? "Editorial edition"
-        self.selectedCategory = nil
-        self.selectedLibraryShelf = .all
-        self.searchText = ""
         let channelRawValue = defaults.string(forKey: selectedTLDRChannelKey) ?? TLDRChannel.ai.rawValue
         self.selectedTLDRChannel = TLDRChannel(rawValue: channelRawValue) ?? .ai
         self.highlightVocabularyEnabled = defaults.object(forKey: highlightVocabularyKey) as? Bool ?? true
@@ -122,21 +116,6 @@ final class ArticleStore: ObservableObject {
 
         let slate = Array((planned + fill).prefix(dailyLimit))
         return Array(slate.prefix(dailySchedule.releasedArticleCount(for: now)))
-    }
-
-    var filteredArticles: [Article] {
-        articles.filter { article in
-            let matchesCategory = selectedCategory.map { $0 == article.category } ?? true
-            let matchesShelf = selectedLibraryShelf.matches(article)
-            let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-            let matchesSearch = query.isEmpty
-                || article.title.lowercased().contains(query)
-                || article.subtitle.lowercased().contains(query)
-                || article.summary.lowercased().contains(query)
-                || article.body.joined(separator: " ").lowercased().contains(query)
-                || article.source.lowercased().contains(query)
-            return matchesCategory && matchesShelf && matchesSearch
-        }
     }
 
     var savedArticles: [Article] {
@@ -413,23 +392,6 @@ final class ArticleStore: ObservableObject {
         await refreshPreGeneratedEdition()
     }
 
-    func refreshLibraryManually() async {
-        isRefreshing = true
-        refreshErrorMessage = nil
-        defer {
-            isRefreshing = false
-        }
-
-        let libraryArticles = await FeedService.fetchArticles(from: feedConfiguration.librarySources)
-        guard !libraryArticles.isEmpty else {
-            refreshErrorMessage = "No library articles available right now. Try again later."
-            return
-        }
-
-        articles = mergedArticles(libraryArticles + articles)
-        persist()
-    }
-
     var learningLanguageLabel: String {
         "Chinese (Simplified)"
     }
@@ -547,13 +509,6 @@ final class ArticleStore: ObservableObject {
             config: aiRewrite.currentConfig,
             relativeTo: now
         )
-    }
-
-    private func fetchAllRSSArticles() async -> [Article] {
-        let sources = feedConfiguration.librarySources
-        let fetchedArticles = await FeedService.fetchArticles(from: sources)
-        let perSourceLimit = 40
-        return Array(mergedArticles(fetchedArticles).prefix(sources.count * perSourceLimit))
     }
 
     private func createFallbackEdition(force: Bool) {

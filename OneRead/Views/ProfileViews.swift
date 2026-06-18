@@ -73,22 +73,6 @@ struct ArticleProfileView: View {
                     )
                 }
                 .buttonStyle(.plain)
-
-                Divider()
-                    .overlay(Palette.border)
-                    .padding(.leading, 56)
-
-                NavigationLink {
-                    ArticleCatalogView()
-                } label: {
-                    ProfileValueRow(
-                        systemImage: "books.vertical.fill",
-                        title: "Library",
-                        value: "\(store.articles.count)"
-                    )
-                }
-                .buttonStyle(.plain)
-
             }
             .cardBackground()
         }
