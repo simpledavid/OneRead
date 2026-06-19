@@ -171,9 +171,9 @@ enum ReadingAccessPolicy {
         articleRank: Int,
         isPro: Bool
     ) -> Bool {
-        // Original is always free; Standard is free on the first article as a
-        // taste of the AI reading level, then Pro unlocks it everywhere.
-        isPro || level == .level3 || (level == .level2 && articleRank == 1)
+        // Reading is free at every level (Standard + Original) on every article.
+        // Pro sells the extras: full-article translation, unlimited saved words, etc.
+        true
     }
 
     static func visibleParagraphs(
