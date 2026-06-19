@@ -164,7 +164,7 @@ final class SubscriptionService: ObservableObject {
 enum ReadingAccessPolicy {
     static let freePreviewParagraphCount = 1
     static let freeVocabularyCount = 3
-    static let freeSavedWordCount = 2
+    static let freeSavedWordCount = 30
 
     static func hasFullReadingAccess(
         level: ReadingLevel,
