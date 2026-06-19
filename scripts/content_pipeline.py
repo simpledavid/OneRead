@@ -455,6 +455,9 @@ def llm_json(system: str, user: str) -> Any:
         ],
         "temperature": 0.1,
         "stream": False,
+        # Generous output budget: Moonshot's default max_tokens is small and would
+        # truncate the learning-content/translation JSON into an unparseable blob.
+        "max_tokens": 6144,
         # Force strict JSON output (OpenAI-compatible providers incl. Moonshot/Kimi
         # honor this). Prompts already say "JSON", which json_object mode requires.
         "response_format": {"type": "json_object"},
