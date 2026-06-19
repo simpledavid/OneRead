@@ -176,6 +176,18 @@ struct ResilientRemoteImage<Placeholder: View>: View {
     @State private var image: UIImage?
     @State private var activeRequestKey = ""
 
+    init(primaryURL: URL?, placeholder: Placeholder) {
+        self.primaryURL = primaryURL
+        self.placeholder = placeholder
+        // Seed from cache synchronously so the first rendered frame already
+        // shows the real image instead of flashing the placeholder and then
+        // "refreshing" to the photo.
+        if let primaryURL,
+           let cached = ArticleRemoteImageCache.shared.image(for: primaryURL) {
+            _image = State(initialValue: cached)
+        }
+    }
+
     var body: some View {
         ZStack {
             if let image {
@@ -196,6 +208,19 @@ struct ResilientRemoteImage<Placeholder: View>: View {
     }
 
     private func load(requestKey: String) async {
+        // Show an already-cached image immediately so we don't flash the
+        // placeholder and then "refresh" to the real image.
+        if let primaryURL,
+           let cached = ArticleRemoteImageCache.shared.image(for: primaryURL) {
+            await MainActor.run {
+                guard activeRequestKey == requestKey else {
+                    return
+                }
+                image = cached
+            }
+            return
+        }
+
         await MainActor.run {
             guard activeRequestKey == requestKey else {
                 return
@@ -246,19 +271,62 @@ private final class ArticleRemoteImageCache {
     static let shared = ArticleRemoteImageCache()
 
     private let cache = NSCache<NSURL, UIImage>()
+    private let diskDirectory: URL
+    private let diskQueue = DispatchQueue(label: "com.zdw.oneread.imagecache.disk", qos: .utility)
 
     private init() {
         cache.countLimit = 80
         cache.totalCostLimit = 48 * 1024 * 1024
+
+        let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: NSTemporaryDirectory())
+        diskDirectory = base.appendingPathComponent("ArticleRemoteImages", isDirectory: true)
+        try? FileManager.default.createDirectory(at: diskDirectory, withIntermediateDirectories: true)
     }
 
     func image(for url: URL) -> UIImage? {
-        cache.object(forKey: url as NSURL)
+        if let memory = cache.object(forKey: url as NSURL) {
+            return memory
+        }
+        // Cold-launch path: read the persisted copy synchronously so the first
+        // rendered frame can already show the real image instead of the
+        // placeholder. Only hit per image once per launch; afterwards memory serves.
+        guard let data = try? Data(contentsOf: diskFileURL(for: url)),
+              let image = UIImage(data: data) else {
+            return nil
+        }
+        cache.setObject(image, forKey: url as NSURL, cost: cost(of: image))
+        return image
     }
 
     func insert(_ image: UIImage, for url: URL) {
-        let cost = Int(image.size.width * image.size.height * image.scale * image.scale * 4)
-        cache.setObject(image, forKey: url as NSURL, cost: cost)
+        cache.setObject(image, forKey: url as NSURL, cost: cost(of: image))
+
+        let fileURL = diskFileURL(for: url)
+        diskQueue.async {
+            guard let data = image.jpegData(compressionQuality: 0.85) else {
+                return
+            }
+            try? data.write(to: fileURL, options: .atomic)
+        }
+    }
+
+    private func cost(of image: UIImage) -> Int {
+        Int(image.size.width * image.size.height * image.scale * image.scale * 4)
+    }
+
+    private func diskFileURL(for url: URL) -> URL {
+        return diskDirectory.appendingPathComponent(stableKey(for: url.absoluteString))
+    }
+
+    // Deterministic across launches (FNV-1a 64-bit); String.hashValue is not.
+    private func stableKey(for string: String) -> String {
+        var hash: UInt64 = 0xcbf29ce484222325
+        for byte in string.utf8 {
+            hash ^= UInt64(byte)
+            hash = hash &* 0x100000001b3
+        }
+        return String(hash, radix: 16)
     }
 }
 

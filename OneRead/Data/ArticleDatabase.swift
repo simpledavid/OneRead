@@ -38,6 +38,15 @@ final class ArticleDatabase {
         }
     }
 
+    func clearAll() {
+        do {
+            try context.delete(model: StoredArticle.self)
+            try context.save()
+        } catch {
+            context.rollback()
+        }
+    }
+
     func saveArticles(_ articles: [Article], limit: Int = 300) {
         do {
             let incoming = Array(articles.prefix(limit))

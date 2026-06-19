@@ -1,9 +1,11 @@
 import SwiftUI
 import NaturalLanguage
+import StoreKit
 import UIKit
 
 struct ArticleProfileView: View {
     @EnvironmentObject private var store: ArticleStore
+    @EnvironmentObject private var subscription: SubscriptionService
     @State private var activeSheet: ProfileInfoSheetKind?
 
     var body: some View {
@@ -17,7 +19,7 @@ struct ArticleProfileView: View {
                         languageSection
                         levelSection
                         appSection
-                        aiRewriteSection
+                        subscriptionSection
                         supportSection
                         othersSection
                         footer
@@ -164,25 +166,25 @@ struct ArticleProfileView: View {
         }
     }
 
-    private var aiRewriteSection: some View {
+    private var subscriptionSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            profileSectionTitle("ADVANCED AI")
+            profileSectionTitle("ONEREAD PRO")
 
             VStack(spacing: 0) {
                 NavigationLink {
-                    AILevelSettingsView()
+                    OneReadProView()
                 } label: {
                     ProfileValueRow(
-                        systemImage: "wand.and.stars",
-                        title: "Personal rewrite & API key",
-                        value: store.hasAPIKey ? store.aiProvider.displayName : "Optional"
+                        systemImage: subscription.isPro ? "checkmark.seal.fill" : "sparkles",
+                        title: subscription.isPro ? "OneRead Pro" : "Upgrade to Pro",
+                        value: subscription.statusLabel
                     )
                 }
                 .buttonStyle(.plain)
             }
             .cardBackground()
 
-            Text("Easy and Standard versions for the two daily stories are included. Add your own key only for personal rewrites of extra library articles.")
+            Text("Original articles stay free. Pro unlocks every AI reading level, complete translations, and saved-word review.")
                 .font(.system(size: 14, weight: .medium, design: .rounded))
                 .foregroundStyle(Palette.muted)
                 .fixedSize(horizontal: false, vertical: true)
@@ -508,171 +510,262 @@ private enum ProfileInfoSheetKind: String, Identifiable {
     }
 }
 
-private struct AILevelSettingsView: View {
-    @EnvironmentObject private var store: ArticleStore
-    @State private var apiKeyField = ""
-    @State private var modelField = ""
-    @State private var didLoad = false
-    @State private var savedConfirmation = false
+struct OneReadProView: View {
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var subscription: SubscriptionService
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 24) {
-                providerSection
-                modelSection
-                apiKeySection
+            VStack(alignment: .leading, spacing: 22) {
+                hero
+                benefits
 
-                if store.isOnDeviceRewriteAvailable {
-                    Text("On-device Apple Intelligence is available for optional personal rewrites when you leave the API key empty.")
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundStyle(Palette.muted)
-                        .fixedSize(horizontal: false, vertical: true)
+                if subscription.isPro {
+                    activeSubscriptionCard
+                } else {
+                    purchaseOptions
                 }
+
+                restoreButton
+                debugControls
+                subscriptionFinePrint
             }
             .padding(.horizontal, 20)
             .padding(.top, 22)
             .padding(.bottom, 40)
         }
         .background(LensBackground())
-        .navigationTitle("Advanced AI")
+        .navigationTitle("OneRead Pro")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            guard !didLoad else { return }
-            apiKeyField = store.currentAPIKey
-            modelField = store.aiModelOverride
-            didLoad = true
-        }
-    }
-
-    private var providerSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("PROVIDER")
-            VStack(spacing: 0) {
-                ForEach(Array(AIProvider.allCases.enumerated()), id: \.element.id) { index, provider in
-                    Button {
-                        store.setAIProvider(provider)
-                        apiKeyField = store.currentAPIKey
-                        modelField = store.aiModelOverride
-                    } label: {
-                        HStack(spacing: 14) {
-                            Image(systemName: store.aiProvider == provider ? "largecircle.fill.circle" : "circle")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundStyle(store.aiProvider == provider ? Palette.accent : Palette.muted)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(provider.displayName)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    .foregroundStyle(Palette.ink)
-                                Text("Default model: \(provider.defaultModel)")
-                                    .font(.system(size: 13, weight: .medium, design: .rounded))
-                                    .foregroundStyle(Palette.muted)
-                            }
-                            Spacer()
-                        }
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 16)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-
-                    if index < AIProvider.allCases.count - 1 {
-                        Divider()
-                            .overlay(Palette.border)
-                            .padding(.leading, 48)
-                    }
+        .toolbar(.visible, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Done") {
+                    dismiss()
                 }
+                .fontWeight(.semibold)
             }
-            .cardBackground()
+        }
+        .task {
+            await subscription.refresh()
         }
     }
 
-    private var modelSection: some View {
+    private var hero: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("MODEL")
-            VStack(alignment: .leading, spacing: 10) {
-                TextField(store.aiProvider.defaultModel, text: $modelField)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled(true)
-                    .font(.system(size: 16, weight: .medium, design: .rounded))
-                    .foregroundStyle(Palette.ink)
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 16)
-                    .onSubmit { store.setAIModelOverride(modelField) }
+            Image(systemName: "sparkles")
+                .font(.system(size: 34, weight: .bold))
+                .foregroundStyle(Palette.accent)
 
-                Text("Leave empty to use the provider default (\(store.aiProvider.defaultModel)).")
-                    .font(.system(size: 13, weight: .medium, design: .rounded))
-                    .foregroundStyle(Palette.muted)
-                    .padding(.horizontal, 16)
-            }
-            .padding(.vertical, 4)
-            .cardBackground()
+            Text("Learn from the whole story")
+                .font(.system(size: 28, weight: .heavy, design: .rounded))
+                .foregroundStyle(Palette.ink)
+
+            Text("OneRead's editorial AI turns current news into level-appropriate English, translations, and useful vocabulary. You never need to provide an API key.")
+                .font(.system(size: 15, weight: .medium, design: .rounded))
+                .lineSpacing(4)
+                .foregroundStyle(Palette.muted)
+                .fixedSize(horizontal: false, vertical: true)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var apiKeySection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            sectionTitle("API KEY")
-            VStack(alignment: .leading, spacing: 12) {
-                SecureField("Paste your \(store.aiProvider.displayName) API key", text: $apiKeyField)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled(true)
-                    .font(.system(size: 16, weight: .medium, design: .rounded))
-                    .foregroundStyle(Palette.ink)
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 16)
+    private var benefits: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            benefitRow(
+                icon: "text.book.closed.fill",
+                title: "All AI reading levels",
+                detail: "Read every daily story in Easy or Standard."
+            )
+            benefitRow(
+                icon: "character.bubble.fill",
+                title: "Complete translations",
+                detail: "Reveal translations for every paragraph."
+            )
+            benefitRow(
+                icon: "character.book.closed.fill",
+                title: "Save and review words",
+                detail: "Build a personal vocabulary list from every article."
+            )
 
-                Text("Optional: used only for personal rewrites of extra articles. Daily editorial stories work without a key. Get one at \(store.aiProvider.keyHint). Stored securely in the iOS Keychain.")
-                    .font(.system(size: 13, weight: .medium, design: .rounded))
-                    .foregroundStyle(Palette.muted)
-                    .padding(.horizontal, 16)
+            Divider()
+                .overlay(Palette.border)
+
+            HStack(spacing: 10) {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.green)
+                Text("Original articles, speech, lookup, and article bookmarking always remain free.")
+                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.ink)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .padding(.vertical, 4)
-            .cardBackground()
-
-            Button {
-                store.setAIModelOverride(modelField)
-                store.setAPIKey(apiKeyField)
-                savedConfirmation = true
-                store.triggerImpact(.medium)
-            } label: {
-                HStack {
-                    Spacer()
-                    Text(savedConfirmation ? "Saved" : "Save")
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
-                        .foregroundStyle(Palette.background)
-                    Spacer()
-                }
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(Palette.accent)
-                )
-            }
-            .buttonStyle(.plain)
-
-            if store.hasAPIKey {
-                Button(role: .destructive) {
-                    apiKeyField = ""
-                    store.setAPIKey("")
-                    savedConfirmation = false
-                } label: {
-                    Text("Remove key")
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
-                        .foregroundStyle(Palette.amber)
-                }
-                .buttonStyle(.plain)
-            }
         }
-        .onChange(of: apiKeyField) { _, _ in
-            savedConfirmation = false
+        .padding(18)
+        .cardBackground()
+    }
+
+    private func benefitRow(icon: String, title: String, detail: String) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 18, weight: .bold))
+                .foregroundStyle(Palette.accent)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(Palette.ink)
+                Text(detail)
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 
-    private func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 15, weight: .heavy, design: .rounded))
-            .tracking(0.8)
+    private var activeSubscriptionCard: some View {
+        HStack(spacing: 14) {
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 30, weight: .bold))
+                .foregroundStyle(.green)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text("OneRead Pro is active")
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .foregroundStyle(Palette.ink)
+                Text("All AI learning features are unlocked.")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+            }
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cardBackground()
+    }
+
+    @ViewBuilder
+    private var purchaseOptions: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if subscription.isLoading && subscription.products.isEmpty {
+                HStack(spacing: 10) {
+                    ProgressView()
+                        .tint(Palette.accent)
+                    Text("Loading App Store options…")
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Palette.muted)
+                }
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .cardBackground()
+            } else if subscription.products.isEmpty {
+                Text("No subscription products are available in this App Store environment yet.")
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(18)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .cardBackground()
+            } else {
+                ForEach(subscription.products, id: \.id) { product in
+                    Button {
+                        Task {
+                            await subscription.purchase(product)
+                        }
+                    } label: {
+                        HStack(spacing: 14) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(product.displayName)
+                                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                                    .foregroundStyle(Palette.ink)
+                                Text(product.id == SubscriptionService.yearlyProductID ? "Best value" : "Flexible monthly access")
+                                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                                    .foregroundStyle(
+                                        product.id == SubscriptionService.yearlyProductID
+                                            ? Palette.accent
+                                            : Palette.muted
+                                    )
+                            }
+
+                            Spacer(minLength: 12)
+
+                            if subscription.purchasingProductID == product.id {
+                                ProgressView()
+                                    .tint(Palette.background)
+                            } else {
+                                Text(product.displayPrice)
+                                    .font(.system(size: 16, weight: .heavy, design: .rounded))
+                                    .foregroundStyle(Palette.background)
+                            }
+                        }
+                        .padding(.horizontal, 18)
+                        .padding(.vertical, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .fill(Palette.accent)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(subscription.purchasingProductID != nil)
+                }
+            }
+
+            if let errorMessage = subscription.errorMessage {
+                Text(errorMessage)
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.amber)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var restoreButton: some View {
+        Button {
+            Task {
+                await subscription.restorePurchases()
+            }
+        } label: {
+            Text("Restore purchases")
+                .font(.system(size: 15, weight: .bold, design: .rounded))
+                .foregroundStyle(Palette.ink)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 13)
+                .background(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Palette.surfaceRaised)
+                )
+                .overlay {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Palette.border, lineWidth: 1)
+                }
+        }
+        .buttonStyle(.plain)
+        .disabled(subscription.isLoading)
+    }
+
+    @ViewBuilder
+    private var debugControls: some View {
+#if DEBUG
+        Toggle(
+            "Debug: unlock Pro",
+            isOn: Binding(
+                get: { subscription.debugProOverride },
+                set: { subscription.setDebugProOverride($0) }
+            )
+        )
+        .font(.system(size: 14, weight: .semibold, design: .rounded))
+        .tint(Palette.accent)
+        .padding(16)
+        .cardBackground()
+#endif
+    }
+
+    private var subscriptionFinePrint: some View {
+        Text("Payment is charged to your Apple ID. Subscriptions renew automatically unless canceled at least 24 hours before the end of the current period. Manage or cancel in App Store account settings.")
+            .font(.system(size: 12, weight: .medium, design: .rounded))
+            .lineSpacing(3)
             .foregroundStyle(Palette.muted)
+            .fixedSize(horizontal: false, vertical: true)
+            .multilineTextAlignment(.leading)
     }
 }
 

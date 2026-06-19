@@ -14,7 +14,8 @@ two high-quality AI and major technology stories each day.
 - Article detail pages with source, summary, key points, and original-link handoff
 - Article library with category filters and search
 - Saved articles, daily completion, streaks, and retention-event tracking
-- Optional personal API key only for rewriting extra library articles
+- StoreKit 2 subscriptions for complete AI reading levels, translations, and saved-word review
+- No user API key setup; platform AI runs in the editorial content pipeline
 
 ## Daily content service
 

@@ -28,6 +28,8 @@ final class SpeechService: NSObject, ObservableObject {
             synthesizer.stopSpeaking(at: .immediate)
         }
 
+        activateAudioSession()
+
         let utterance = AVSpeechUtterance(string: trimmedText)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = 0.45
@@ -41,6 +43,16 @@ final class SpeechService: NSObject, ObservableObject {
         synthesizer.stopSpeaking(at: .immediate)
         speakingWord = nil
         speakingText = nil
+    }
+
+    private func activateAudioSession() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+            try session.setActive(true)
+        } catch {
+            print("SpeechService: failed to activate audio session - \(error)")
+        }
     }
 
     func isSpeaking(_ text: String) -> Bool {

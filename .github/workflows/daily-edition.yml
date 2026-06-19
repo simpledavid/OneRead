@@ -1,0 +1,55 @@
+name: Daily edition
+
+# Generates the day's two-article editorial edition (with AI translations baked
+# in) and publishes the JSON to GitHub Pages (gh-pages branch). The LLM API key
+# lives only in repo secrets — it never ships in the app.
+
+on:
+  schedule:
+    # 22:10 UTC ≈ 06:10 Beijing time, daily. Adjust to taste.
+    - cron: "10 22 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-edition
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate today's edition
+        env:
+          ONE_READ_LLM_API_KEY: ${{ secrets.ONE_READ_LLM_API_KEY }}
+          ONE_READ_LLM_BASE_URL: ${{ secrets.ONE_READ_LLM_BASE_URL }}
+          ONE_READ_LLM_MODEL: ${{ secrets.ONE_READ_LLM_MODEL }}
+        run: |
+          set -euo pipefail
+          mkdir -p public
+          python3 scripts/content_pipeline.py auto \
+            --date "$(date -u +%F)" \
+            --output-dir public \
+            --sources content/sources.json
+          echo "Published files:"
+          ls -1 public
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          # Keep previously published <date>.json files; only overwrite the ones
+          # produced today (latest.json + today's dated file).
+          keep_files: true

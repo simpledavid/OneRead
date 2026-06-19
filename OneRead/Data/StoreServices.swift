@@ -109,13 +109,53 @@ final class VocabularyService: ObservableObject {
     @Published private(set) var knownWords: [String]
 
     private let defaults: UserDefaults
+    private let cloud: NSUbiquitousKeyValueStore
     private let savedKey = "savedVocabularyWords"
     private let knownKey = "knownVocabularyWords"
 
-    init(defaults: UserDefaults) {
+    init(defaults: UserDefaults, cloud: NSUbiquitousKeyValueStore = .default) {
         self.defaults = defaults
-        self.savedWords = defaults.stringArray(forKey: savedKey) ?? []
-        self.knownWords = defaults.stringArray(forKey: knownKey) ?? []
+        self.cloud = cloud
+
+        // Prefer the iCloud copy; fall back to the local copy (offline / first run).
+        let localSaved = defaults.stringArray(forKey: savedKey) ?? []
+        let localKnown = defaults.stringArray(forKey: knownKey) ?? []
+        self.savedWords = (cloud.array(forKey: savedKey) as? [String]) ?? localSaved
+        self.knownWords = (cloud.array(forKey: knownKey) as? [String]) ?? localKnown
+
+        // First run after enabling iCloud: seed the cloud from existing local data.
+        if cloud.array(forKey: savedKey) == nil, !localSaved.isEmpty {
+            cloud.set(localSaved, forKey: savedKey)
+        }
+        if cloud.array(forKey: knownKey) == nil, !localKnown.isEmpty {
+            cloud.set(localKnown, forKey: knownKey)
+        }
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(cloudStoreDidChange(_:)),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: cloud
+        )
+        cloud.synchronize()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    // Another device changed the vocabulary; adopt the cloud values.
+    @objc private func cloudStoreDidChange(_ notification: Notification) {
+        Task { @MainActor in
+            if let remoteSaved = cloud.array(forKey: savedKey) as? [String] {
+                savedWords = remoteSaved
+                defaults.set(remoteSaved, forKey: savedKey)
+            }
+            if let remoteKnown = cloud.array(forKey: knownKey) as? [String] {
+                knownWords = remoteKnown
+                defaults.set(remoteKnown, forKey: knownKey)
+            }
+        }
     }
 
     var learningWords: [String] {
@@ -152,6 +192,9 @@ final class VocabularyService: ObservableObject {
     private func persist() {
         defaults.set(savedWords, forKey: savedKey)
         defaults.set(knownWords, forKey: knownKey)
+        cloud.set(savedWords, forKey: savedKey)
+        cloud.set(knownWords, forKey: knownKey)
+        cloud.synchronize()
     }
 }
 
@@ -239,7 +282,9 @@ final class AIRewriteService: ObservableObject {
         statusMessages[requestKey] = "Preparing this reading level…"
 
         Task {
-            let outcome = await ArticleLevelService.rewrite(article: article, level: level, config: currentConfig)
+            // User-provided API keys are no longer part of the product flow.
+            // Missing editorial content may still use the on-device fallback.
+            let outcome = await ArticleLevelService.rewrite(article: article, level: level, config: nil)
             generatingKeys.remove(requestKey)
             switch outcome {
             case .success(let paragraphs):

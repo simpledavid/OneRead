@@ -35,6 +35,7 @@
 		01A000000000000000000037 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000037 /* NotificationService.swift */; };
 		01A000000000000000000038 /* ArticleCurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000038 /* ArticleCurationService.swift */; };
 		01A000000000000000000039 /* DailyContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000039 /* DailyContentService.swift */; };
+		01A000000000000000000041 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000041 /* SubscriptionService.swift */; };
 		1C9C02B92FE415AC00DA8FEE /* FeedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9C02B82FE415AC00DA8FEE /* FeedConfiguration.swift */; };
 		1C9C02BB2FE4161100DA8FEE /* StoreServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9C02BA2FE4161100DA8FEE /* StoreServices.swift */; };
 		01A000000000000000000040 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000040 /* FeedService.swift */; };
@@ -70,6 +71,7 @@
 		01B000000000000000000037 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		01B000000000000000000038 /* ArticleCurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCurationService.swift; sourceTree = "<group>"; };
 		01B000000000000000000039 /* DailyContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyContentService.swift; sourceTree = "<group>"; };
+		01B000000000000000000041 /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
 		1C9C02B82FE415AC00DA8FEE /* FeedConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedConfiguration.swift; sourceTree = "<group>"; };
 		1C9C02BA2FE4161100DA8FEE /* StoreServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreServices.swift; sourceTree = "<group>"; };
 		01B000000000000000000040 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				01B000000000000000000037 /* NotificationService.swift */,
 				01B000000000000000000038 /* ArticleCurationService.swift */,
 				01B000000000000000000039 /* DailyContentService.swift */,
+				01B000000000000000000041 /* SubscriptionService.swift */,
 				01B000000000000000000025 /* DomainGlossary.swift */,
 				01B000000000000000000026 /* WordEnrichmentService.swift */,
 			);
@@ -274,6 +277,7 @@
 				01A000000000000000000037 /* NotificationService.swift in Sources */,
 				01A000000000000000000038 /* ArticleCurationService.swift in Sources */,
 				01A000000000000000000039 /* DailyContentService.swift in Sources */,
+				01A000000000000000000041 /* SubscriptionService.swift in Sources */,
 				01A000000000000000000025 /* DomainGlossary.swift in Sources */,
 				01A000000000000000000026 /* WordEnrichmentService.swift in Sources */,
 			);

@@ -20,10 +20,13 @@ enum SampleArticles {
             body: [
                 "Anthropic said it suspended access to Fable 5 and Mythos 5 after receiving a directive from the US government. The company described the move as a response to official requirements, not a normal product update. That makes the story important for understanding AI policy.",
                 "The case shows that advanced AI models are no longer only a technical topic. Governments may care about who can access powerful systems, how safeguards work, and whether a model could be misused. Companies must now think about product design, safety, and regulation together.",
-                "For English learners, the key words include directive, suspend, access, safeguards, national security, and compliance. These words often appear when technology companies respond to regulators or government agencies.",
                 "A clear summary is: Anthropic paused access to two models because of a government directive. The larger lesson is that frontier AI products can quickly become part of debates about security, trust, and public policy."
             ],
-            paragraphTranslations: [],
+            paragraphTranslations: [
+                "Anthropic 表示，在收到美国政府的一项指令后，它暂停了对 Fable 5 和 Mythos 5 的访问。公司称此举是对官方要求的回应，而非常规的产品更新。这使得这则新闻对于理解 AI 政策很重要。",
+                "这一案例表明，先进的 AI 模型已不再只是技术话题。政府可能会关心谁能使用强大的系统、安全机制如何运作，以及模型是否可能被滥用。如今企业必须把产品设计、安全与监管放在一起考虑。",
+                "一个清晰的总结是：Anthropic 因一项政府指令暂停了两款模型的访问。更深层的启示是，前沿 AI 产品可能迅速卷入关于安全、信任与公共政策的讨论。"
+            ],
             vocabulary: [
                 ArticleVocabulary(word: "directive", meaningZh: "指令；正式要求", example: "The company followed a government directive."),
                 ArticleVocabulary(word: "suspend", meaningZh: "暂停", example: "The service was suspended after the notice."),
@@ -51,10 +54,13 @@ enum SampleArticles {
             body: [
                 "Anthropic and Tata Consultancy Services announced a partnership to bring Claude into regulated industries. These are sectors such as banking, healthcare, insurance, or public services, where companies must follow strict rules. The goal is to make AI useful while keeping security and reliability in mind.",
                 "The partnership matters because large organizations rarely adopt AI by simply turning on a tool. They need integration with existing systems, employee training, risk controls, and clear governance. A model can be powerful, but the deployment process decides whether it becomes useful.",
-                "For English learners, this article is a good place to study words like regulated, industry, partnership, compliance, integration, and governance. These words appear often in enterprise technology news and help explain how AI moves into serious business settings.",
                 "You can retell the news in one sentence: Anthropic is working with TCS so companies in rule-heavy industries can use Claude more safely. The broader trend is that AI providers are building partnerships to reach customers that require trust and structure."
             ],
-            paragraphTranslations: [],
+            paragraphTranslations: [
+                "Anthropic 与塔塔咨询服务公司（TCS）宣布建立合作，将 Claude 引入受监管行业。这些行业包括银行、医疗、保险或公共服务，企业必须遵守严格的规定。目标是在兼顾安全与可靠性的同时，让 AI 发挥作用。",
+                "这项合作之所以重要，是因为大型机构很少只靠开启一个工具就采用 AI。它们需要与现有系统集成、对员工进行培训、建立风险控制以及清晰的治理。模型可能很强大，但部署过程才决定它是否真正有用。",
+                "你可以用一句话复述这则新闻：Anthropic 正与 TCS 合作，让规则繁多行业的企业能更安全地使用 Claude。更大的趋势是，AI 提供商正通过建立合作伙伴关系，去触达那些需要信任与规范的客户。"
+            ],
             vocabulary: [
                 ArticleVocabulary(word: "regulated", meaningZh: "受监管的", example: "Banks work in a regulated industry."),
                 ArticleVocabulary(word: "integration", meaningZh: "集成；整合", example: "Integration connects AI with existing systems."),
@@ -82,10 +88,13 @@ enum SampleArticles {
             body: [
                 "Anthropic published results from its first Public Record, a process meant to gather and share public views on AI-related questions. The idea is to make policy discussions more visible. It also gives readers a way to see how an AI company explains its responsibilities.",
                 "This kind of process matters because AI policy is no longer only a private company issue. Governments, researchers, users, and civil society groups all want to understand how powerful systems are built and controlled. Public input can help companies notice risks that internal teams may miss.",
-                "For English learners, focus on words such as public record, transparency, accountability, policy, stakeholder, and governance. These words are common when people discuss trust in AI companies and the social impact of new technology.",
                 "A simple summary is: Anthropic is trying to make part of its policy conversation more public. The broader trend is that AI companies are under pressure to explain their choices, not just release faster models."
             ],
-            paragraphTranslations: [],
+            paragraphTranslations: [
+                "Anthropic 公布了其首份公共记录（Public Record）的结果，这是一个旨在收集并分享公众对 AI 相关问题看法的过程。其理念是让政策讨论更加公开，也让读者得以看到一家 AI 公司如何解释自身的责任。",
+                "这类过程之所以重要，是因为 AI 政策已不再只是私营公司的事务。政府、研究者、用户和公民社会团体都想了解强大的系统是如何被构建和管控的。公众的意见可以帮助企业发现内部团队可能忽视的风险。",
+                "一个简单的总结是：Anthropic 正试图让它的部分政策讨论更加公开。更大的趋势是，AI 公司正面临压力，需要解释自己的选择，而不只是发布更快的模型。"
+            ],
             vocabulary: [
                 ArticleVocabulary(word: "accountability", meaningZh: "问责；负责机制", example: "Accountability matters when AI affects the public."),
                 ArticleVocabulary(word: "stakeholder", meaningZh: "利益相关者", example: "Stakeholders gave feedback on the policy."),
@@ -113,10 +122,13 @@ enum SampleArticles {
             body: [
                 "The Verge reported that Anthropic changed course on a safety measure connected to Claude Fable. Some users criticized the guardrail because it was not clearly visible. The company then adjusted its approach, showing how quickly AI product decisions can become public debates.",
                 "This story is important because safety controls are necessary, but users also want transparency. If a system changes output silently, people may wonder whether they understand the product. AI companies have to explain what their tools are doing and why certain limits exist.",
-                "For English learners, focus on words such as guardrail, transparency, criticism, adjust, safety measure, and trust. These terms are common in AI articles about product design and model behavior.",
                 "A short retelling could be: Anthropic modified a hidden guardrail after users pushed back. The broader lesson is that AI safety is not only a research question. It is also a communication problem between companies and the people who use their products."
             ],
-            paragraphTranslations: [],
+            paragraphTranslations: [
+                "据 The Verge 报道，Anthropic 调整了与 Claude Fable 相关的一项安全措施。一些用户批评该护栏，因为它并不明显可见。随后公司调整了做法，这显示出 AI 产品决策能多快地演变为公众争论。",
+                "这则报道之所以重要，是因为安全控制是必要的，但用户同样希望有透明度。如果系统在不声不响中改变输出，人们可能会怀疑自己是否真正了解这款产品。AI 公司必须解释它们的工具在做什么，以及为什么存在某些限制。",
+                "可以这样简短复述：在用户反对之后，Anthropic 修改了一项隐藏的护栏。更深层的启示是，AI 安全不仅是一个研究问题，也是企业与产品使用者之间的沟通问题。"
+            ],
             vocabulary: [
                 ArticleVocabulary(word: "guardrail", meaningZh: "护栏；安全限制", example: "The model uses guardrails to reduce risky output."),
                 ArticleVocabulary(word: "transparency", meaningZh: "透明度", example: "Users asked for more transparency."),
@@ -144,10 +156,13 @@ enum SampleArticles {
             body: [
                 "Anthropic shut off access to its Fable and Mythos models after receiving a directive from the US Commerce Department.",
                 "The decision came shortly after the models launched, showing how quickly frontier AI systems can become part of national security debates.",
-                "Officials were reportedly concerned that a jailbreak could let users bypass safeguards around cybersecurity, chemistry, or biology topics.",
-                "For English learners, this story is useful because it includes common technology and policy vocabulary such as directive, export controls, safeguards, and national security."
+                "Officials were reportedly concerned that a jailbreak could let users bypass safeguards around cybersecurity, chemistry, or biology topics."
             ],
-            paragraphTranslations: [],
+            paragraphTranslations: [
+                "在收到美国商务部的一项指令后，Anthropic 关闭了对其 Fable 和 Mythos 模型的访问。",
+                "这一决定是在这些模型发布后不久作出的，显示出前沿 AI 系统能多快地卷入国家安全的争论。",
+                "据报道，官员们担心模型被越狱后，可能让用户绕过围绕网络安全、化学或生物等话题的安全防护。"
+            ],
             vocabulary: [
                 ArticleVocabulary(word: "directive", meaningZh: "指令；正式要求", example: "The company received a government directive."),
                 ArticleVocabulary(word: "safeguard", meaningZh: "保护措施；安全机制", example: "The model includes safeguards for risky topics."),
@@ -175,10 +190,13 @@ enum SampleArticles {
             body: [
                 "A new report said US officials were concerned that Anthropic's Mythos model may have been accessed by a group linked to China.",
                 "If a foreign government had access to an advanced model, it could try to study the model or train another system to copy some of its behavior.",
-                "This is why AI access is increasingly discussed not only as a product issue, but also as a security and policy issue.",
-                "For learners, notice phrases like export restrictions, national security risk, and reverse engineer."
+                "This is why AI access is increasingly discussed not only as a product issue, but also as a security and policy issue."
             ],
-            paragraphTranslations: [],
+            paragraphTranslations: [
+                "一份新报告称，美国官员担心 Anthropic 的 Mythos 模型可能已被一个与中国有关联的团体访问。",
+                "如果外国政府能够访问一款先进模型，它可能会试图研究该模型，或训练另一套系统来复制它的部分行为。",
+                "正因如此，AI 的访问权限越来越多地不仅被当作产品问题来讨论，也被视为安全与政策问题。"
+            ],
             vocabulary: [
                 ArticleVocabulary(word: "restriction", meaningZh: "限制", example: "The government introduced new restrictions."),
                 ArticleVocabulary(word: "geopolitical", meaningZh: "地缘政治的", example: "AI is becoming a geopolitical issue."),
@@ -206,10 +224,13 @@ enum SampleArticles {
             body: [
                 "Google redesigned the search box for the first time in many years, turning it from a simple keyword input into a more flexible AI interface.",
                 "The new experience is designed for longer questions and multimodal inputs such as images, files, videos, and open browser tabs.",
-                "Google also wants users to continue into follow-up conversations instead of choosing between a traditional results page and an AI experience.",
-                "For English learners, this story is useful because it includes common product vocabulary such as interface, multimodal, query, and seamless."
+                "Google also wants users to continue into follow-up conversations instead of choosing between a traditional results page and an AI experience."
             ],
-            paragraphTranslations: [],
+            paragraphTranslations: [
+                "谷歌多年来首次重新设计了搜索框，把它从简单的关键词输入变成了一个更灵活的 AI 交互界面。",
+                "新的体验专为更长的问题和多模态输入而设计，例如图片、文件、视频以及打开的浏览器标签页。",
+                "谷歌还希望用户能继续进行后续对话，而不必在传统的结果页和 AI 体验之间做出取舍。"
+            ],
             vocabulary: [
                 ArticleVocabulary(word: "multimodal", meaningZh: "多模态的", example: "The system supports multimodal input."),
                 ArticleVocabulary(word: "interface", meaningZh: "界面；交互方式", example: "The search box became an AI interface."),

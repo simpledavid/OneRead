@@ -111,15 +111,10 @@ struct ArticleTodayView: View {
     }
 
     private var homeHeader: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("OneRead")
-                .font(.system(size: 28, weight: .heavy, design: .rounded))
-                .foregroundStyle(Palette.ink)
-            Text("Today’s English edition")
-                .font(.system(size: 14, weight: .semibold, design: .rounded))
-                .foregroundStyle(Palette.muted)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        Text("OneRead")
+            .font(.system(size: 28, weight: .heavy, design: .rounded))
+            .foregroundStyle(Palette.ink)
+            .frame(maxWidth: .infinity, alignment: .center)
     }
 
     private var visibleArticles: [Article] {
@@ -248,9 +243,11 @@ struct ArticleReadingView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var store: ArticleStore
     @EnvironmentObject private var speech: SpeechService
+    @EnvironmentObject private var subscription: SubscriptionService
     @State private var readingLevel: ReadingLevel
     @State private var isArticleTranslationVisible = false
     @State private var appliedInitialTranslationPreference = false
+    @State private var isPaywallPresented = false
     let article: Article
     let rank: Int
     let pageCount: Int
@@ -272,7 +269,10 @@ struct ArticleReadingView: View {
                     pageCount: pageCount,
                     width: proxy.size.width,
                     height: proxy.size.height,
-                    readingLevel: effectiveReadingLevel
+                    readingLevel: readingLevel,
+                    onUpgrade: {
+                        isPaywallPresented = true
+                    }
                 )
             }
             .frame(width: proxy.size.width)
@@ -285,13 +285,15 @@ struct ArticleReadingView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            if store.hasAPIKey {
-                store.requestLeveledContent(for: article, level: readingLevel)
-                store.trackReadingLevel(readingLevel, for: article)
-            } else {
-                readingLevel = .level3
+        .sheet(isPresented: $isPaywallPresented) {
+            NavigationStack {
+                OneReadProView()
             }
+            .environmentObject(subscription)
+        }
+        .onAppear {
+            store.requestLeveledContent(for: article, level: readingLevel)
+            store.trackReadingLevel(readingLevel, for: article)
             guard !appliedInitialTranslationPreference else {
                 return
             }
@@ -299,17 +301,8 @@ struct ArticleReadingView: View {
             appliedInitialTranslationPreference = true
         }
         .onChange(of: readingLevel) { _, newLevel in
-            guard store.hasAPIKey else {
-                readingLevel = .level3
-                return
-            }
             store.requestLeveledContent(for: article, level: newLevel)
             store.trackReadingLevel(newLevel, for: article)
-        }
-        .onChange(of: store.hasAPIKey) { _, hasAPIKey in
-            if !hasAPIKey {
-                readingLevel = .level3
-            }
         }
         .onDisappear {
             speech.stop()
@@ -329,18 +322,14 @@ struct ArticleReadingView: View {
             .buttonStyle(.plain)
             .accessibilityLabel("Close reader")
 
-            if store.hasAPIKey {
-                Picker("Reading level", selection: $readingLevel) {
-                    ForEach(ReadingLevel.allCases) { level in
-                        Text(level.title)
-                            .tag(level)
-                    }
+            Picker("Reading level", selection: $readingLevel) {
+                ForEach(ReadingLevel.allCases) { level in
+                    Text(level.title)
+                        .tag(level)
                 }
-                .pickerStyle(.segmented)
-                .accessibilityLabel("Reading level")
-            } else {
-                Spacer(minLength: 0)
             }
+            .pickerStyle(.segmented)
+            .accessibilityLabel("Reading level")
 
             Button {
                 withAnimation(.easeInOut(duration: 0.18)) {
@@ -383,15 +372,17 @@ struct ArticleReadingView: View {
         ([article.title] + readingParagraphs.map(\.text)).joined(separator: ". ")
     }
 
-    private var effectiveReadingLevel: ReadingLevel {
-        store.hasAPIKey ? readingLevel : .level3
-    }
-
     private var readingParagraphs: [LeveledParagraph] {
-        ArticleLevelAdapter.paragraphs(
+        let paragraphs = ArticleLevelAdapter.paragraphs(
             for: article,
-            level: effectiveReadingLevel,
-            rewritten: store.leveledRewrite(for: article, level: effectiveReadingLevel)
+            level: readingLevel,
+            rewritten: store.leveledRewrite(for: article, level: readingLevel)
+        )
+        return ReadingAccessPolicy.visibleParagraphs(
+            from: paragraphs,
+            level: readingLevel,
+            articleRank: rank,
+            isPro: subscription.isPro
         )
     }
 }

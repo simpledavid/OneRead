@@ -50,7 +50,7 @@ final class ArticleStore: ObservableObject {
     private let highlightVocabularyKey = "highlightVocabularyEnabled"
     private let showArticleTranslationsKey = "showArticleTranslationsEnabled"
     private let hapticsEnabledKey = "articleHapticsEnabled"
-    private let currentDailyEditionVersion = 12
+    private let currentDailyEditionVersion = 13
     private let dailyLimit = 2
     private let dailyGoal = 1
 
@@ -69,6 +69,14 @@ final class ArticleStore: ObservableObject {
             dailyGoal: dailyGoal
         )
         self.feedConfiguration = FeedConfiguration.bundled
+
+        // One-time content reset when the bundled content version changes: drop
+        // every stored/fetched article so updated seeds and a fresh fetch win.
+        // Saved words and reading progress live under separate keys and are kept.
+        if defaults.integer(forKey: dailyEditionVersionKey) != currentDailyEditionVersion {
+            self.database?.clearAll()
+            defaults.removeObject(forKey: articleCacheKey)
+        }
 
         let databaseArticles = self.database?.loadArticles() ?? []
         let cachedArticles = Self.loadCachedArticles(from: defaults)
@@ -506,7 +514,7 @@ final class ArticleStore: ObservableObject {
 
         return await ArticleCurationService.rank(
             ai,
-            config: aiRewrite.currentConfig,
+            config: nil,
             relativeTo: now
         )
     }

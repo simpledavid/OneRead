@@ -1,6 +1,29 @@
 import SwiftUI
 import NaturalLanguage
+import Translation
 import UIKit
+
+// On-device translation (Apple Translation framework) used to translate any
+// paragraph that has no editorial/AI translation — notably the original text and
+// freshly fetched articles. Results are cached in memory, keyed by source text.
+@MainActor
+final class OnDeviceTranslator: ObservableObject {
+    @Published private(set) var translations: [String: String] = [:]
+
+    func translate(_ texts: [String], using session: TranslationSession) async {
+        let pending = texts.filter { !$0.isEmpty && translations[$0] == nil }
+        guard !pending.isEmpty else {
+            return
+        }
+        let requests = pending.map { TranslationSession.Request(sourceText: $0) }
+        guard let responses = try? await session.translations(from: requests) else {
+            return
+        }
+        for response in responses {
+            translations[response.sourceText] = response.targetText
+        }
+    }
+}
 
 struct ArticleDetailView: View {
     @EnvironmentObject private var store: ArticleStore
@@ -138,6 +161,7 @@ struct ArticleDetailView: View {
 
 struct ArticleFeaturePage: View {
     @EnvironmentObject private var store: ArticleStore
+    @EnvironmentObject private var subscription: SubscriptionService
     @Binding var isArticleTranslationVisible: Bool
     let article: Article
     let rank: Int
@@ -145,6 +169,10 @@ struct ArticleFeaturePage: View {
     let width: CGFloat
     let height: CGFloat
     let readingLevel: ReadingLevel
+    let onUpgrade: () -> Void
+
+    @StateObject private var onDeviceTranslator = OnDeviceTranslator()
+    @State private var translationConfig: TranslationSession.Configuration?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -158,7 +186,7 @@ struct ArticleFeaturePage: View {
                 )
                 .shadow(color: .black.opacity(0.36), radius: 22, x: 0, y: 14)
 
-            ReadingTitleView(title: article.title, vocabulary: article.effectiveVocabulary)
+            ReadingTitleView(title: article.title, vocabulary: visibleVocabulary)
                 .padding(.top, 2)
 
             articleReadingStats
@@ -182,15 +210,26 @@ struct ArticleFeaturePage: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
-                ForEach(leveledParagraphs, id: \.id) { item in
+                ForEach(Array(visibleLeveledParagraphs.enumerated()), id: \.element.id) { displayIndex, item in
                     LearningParagraphView(
                         paragraph: item.text,
-                        translation: translation(for: item.originalIndex),
+                        translation: translationText(
+                            for: item,
+                            displayedIndex: displayIndex
+                        ),
                         isTranslationVisible: isArticleTranslationVisible,
-                        vocabulary: article.effectiveVocabulary,
+                        vocabulary: visibleVocabulary,
                         context: item.originalText,
                         onToggleTranslation: {}
                     )
+                }
+
+                if !hasFullReadingAccess {
+                    readingUpgradeCard
+                } else if isArticleTranslationVisible,
+                          !subscription.isPro,
+                          leveledParagraphs.count > ReadingAccessPolicy.freePreviewParagraphCount {
+                    translationUpgradeCard
                 }
 
                 completionSection
@@ -204,8 +243,47 @@ struct ArticleFeaturePage: View {
         .frame(width: width, alignment: .top)
         .frame(minHeight: height, alignment: .top)
         .background(LensBackground())
+        .translationTask(translationConfig) { session in
+            await onDeviceTranslator.translate(paragraphsNeedingOnDeviceTranslation, using: session)
+        }
         .onAppear {
             store.markRead(article)
+            refreshOnDeviceTranslation()
+        }
+        .onChange(of: isArticleTranslationVisible) { _, _ in
+            refreshOnDeviceTranslation()
+        }
+        .onChange(of: readingLevel) { _, _ in
+            refreshOnDeviceTranslation()
+        }
+    }
+
+    // Kicks off on-device translation for any visible paragraph that lacks a
+    // built-in translation (original text, fetched articles, AI rewrites without
+    // a translation). No-op when everything is already covered.
+    private func refreshOnDeviceTranslation() {
+        guard isArticleTranslationVisible, !paragraphsNeedingOnDeviceTranslation.isEmpty else {
+            return
+        }
+        if translationConfig == nil {
+            translationConfig = TranslationSession.Configuration(
+                source: Locale.Language(identifier: "en"),
+                target: Locale.Language(identifier: "zh-Hans")
+            )
+        } else {
+            translationConfig?.invalidate()
+        }
+    }
+
+    private var paragraphsNeedingOnDeviceTranslation: [String] {
+        let builtIn = builtInTranslations(for: readingLevel)
+        return visibleLeveledParagraphs.compactMap { item in
+            if builtIn.indices.contains(item.originalIndex),
+               !builtIn[item.originalIndex].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                return nil
+            }
+            let text = item.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            return text.isEmpty ? nil : text
         }
     }
 
@@ -249,6 +327,30 @@ struct ArticleFeaturePage: View {
         )
     }
 
+    private var visibleLeveledParagraphs: [LeveledParagraph] {
+        ReadingAccessPolicy.visibleParagraphs(
+            from: leveledParagraphs,
+            level: readingLevel,
+            articleRank: rank,
+            isPro: subscription.isPro
+        )
+    }
+
+    private var visibleVocabulary: [ArticleVocabulary] {
+        ReadingAccessPolicy.visibleVocabulary(
+            from: article.effectiveVocabulary,
+            isPro: subscription.isPro
+        )
+    }
+
+    private var hasFullReadingAccess: Bool {
+        ReadingAccessPolicy.hasFullReadingAccess(
+            level: readingLevel,
+            articleRank: rank,
+            isPro: subscription.isPro
+        )
+    }
+
     private var isRewriting: Bool {
         guard article.learningContent == nil else {
             return false
@@ -257,21 +359,87 @@ struct ArticleFeaturePage: View {
             && store.leveledRewrite(for: article, level: readingLevel) == nil
     }
 
-    private func translation(for index: Int) -> String? {
-        let translations: [String]
-        switch readingLevel {
+    private func builtInTranslations(for level: ReadingLevel) -> [String] {
+        switch level {
         case .level1:
-            translations = article.learningContent?.easy.paragraphTranslations ?? []
+            return article.learningContent?.easy.paragraphTranslations ?? []
         case .level2:
-            translations = article.learningContent?.standard.paragraphTranslations ?? []
+            return article.learningContent?.standard.paragraphTranslations ?? []
         case .level3:
-            translations = article.paragraphTranslations
+            return article.paragraphTranslations
         }
+    }
 
-        guard translations.indices.contains(index) else {
+    private func translationText(for item: LeveledParagraph, displayedIndex: Int) -> String? {
+        guard ReadingAccessPolicy.canShowTranslation(
+            paragraphIndex: displayedIndex,
+            isPro: subscription.isPro
+        ) else {
             return nil
         }
-        return translations[index]
+
+        let builtIn = builtInTranslations(for: readingLevel)
+        if builtIn.indices.contains(item.originalIndex),
+           !builtIn[item.originalIndex].trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return builtIn[item.originalIndex]
+        }
+
+        // Fall back to the on-device translation, keyed by the displayed text.
+        let key = item.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return onDeviceTranslator.translations[key]
+    }
+
+    private var readingUpgradeCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("\(readingLevel.title) preview", systemImage: "lock.fill")
+                .font(.system(size: 17, weight: .heavy, design: .rounded))
+                .foregroundStyle(Palette.ink)
+
+            Text("The first paragraph is free. Switch to Original to keep reading the full source article, or unlock every AI learning version with Pro.")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .lineSpacing(4)
+                .foregroundStyle(Palette.muted)
+                .fixedSize(horizontal: false, vertical: true)
+
+            upgradeButton
+        }
+        .padding(18)
+        .cardBackground()
+    }
+
+    private var translationUpgradeCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("Translation preview", systemImage: "character.bubble")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .foregroundStyle(Palette.ink)
+
+            Text("The first paragraph translation is free. Pro reveals translations for the complete article.")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(Palette.muted)
+                .fixedSize(horizontal: false, vertical: true)
+
+            upgradeButton
+        }
+        .padding(18)
+        .cardBackground()
+    }
+
+    private var upgradeButton: some View {
+        Button(action: onUpgrade) {
+            HStack {
+                Spacer()
+                Text("Unlock OneRead Pro")
+                    .font(.system(size: 15, weight: .heavy, design: .rounded))
+                    .foregroundStyle(Palette.background)
+                Spacer()
+            }
+            .padding(.vertical, 13)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Palette.accent)
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     private var completionSection: some View {
@@ -305,34 +473,48 @@ struct ArticleFeaturePage: View {
 }
 
 private struct ReadingTitleView: View {
+    @EnvironmentObject private var store: ArticleStore
     @State private var selectedLookup: WordLookup?
+    @State private var selectedTokenID: Int?
     let title: String
     let vocabulary: [ArticleVocabulary]
 
     var body: some View {
+        let savedCandidates = SavedWordHighlighter.candidateSet(for: store.savedWords)
         InlineWordFlowLayout(horizontalSpacing: 3, verticalSpacing: 2) {
             ForEach(tokens, id: \.id) { token in
-                Text(token.display)
-                    .font(.system(size: titleFontSize, weight: .bold, design: .rounded))
-                    .foregroundStyle(Palette.ink)
-                    .fixedSize()
-                    .onTapGesture {
-                        selectedLookup = WordLookupResolver.lookup(
-                            rawWord: token.lookup,
-                            vocabulary: vocabulary,
-                            context: title
-                        )
-                    }
+                InteractiveWordTokenView(
+                    token: token,
+                    isHighlighted: isHighlightedToken(token, savedCandidates: savedCandidates),
+                    font: .system(size: titleFontSize, weight: .bold, design: .rounded)
+                ) {
+                    selectedTokenID = token.id
+                    selectedLookup = WordLookupResolver.lookup(
+                        rawWord: token.lookup,
+                        vocabulary: vocabulary,
+                        context: title
+                    )
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .sheet(item: $selectedLookup) { lookup in
-            WordLookupSheet(lookup: lookup)
+        .sheet(item: $selectedLookup, onDismiss: { selectedTokenID = nil }) { lookup in
+            WordLookupSheet(
+                lookup: lookup,
+                onBookmarkChange: { _ in }
+            )
                 .presentationDetents([.height(270), .large])
                 .presentationDragIndicator(.hidden)
                 .presentationCornerRadius(28)
                 .presentationBackground(Palette.surface)
         }
+    }
+
+    private func isHighlightedToken(_ token: WordToken, savedCandidates: Set<String>) -> Bool {
+        if token.id == selectedTokenID {
+            return true
+        }
+        return SavedWordHighlighter.isSaved(rawWord: token.lookup, in: savedCandidates)
     }
 
     private var titleFontSize: CGFloat {
@@ -359,7 +541,9 @@ private struct ReadingTitleView: View {
 }
 
 struct LearningParagraphView: View {
+    @EnvironmentObject private var store: ArticleStore
     @State private var selectedLookup: WordLookup?
+    @State private var selectedTokenID: Int?
     let paragraph: String
     let translation: String?
     let isTranslationVisible: Bool
@@ -368,22 +552,26 @@ struct LearningParagraphView: View {
     let onToggleTranslation: () -> Void
 
     var body: some View {
+        let savedCandidates = SavedWordHighlighter.candidateSet(for: store.savedWords)
         VStack(alignment: .leading, spacing: 8) {
             InlineWordFlowLayout(horizontalSpacing: 3, verticalSpacing: 5) {
                 ForEach(tokens, id: \.id) { token in
-                    Text(token.display)
-                        .font(.system(size: 16, weight: .regular, design: .rounded))
-                        .foregroundStyle(Palette.ink)
-                        .fixedSize()
-                        .onTapGesture {
-                            selectedLookup = lookup(token.lookup)
-                        }
+                    InteractiveWordTokenView(
+                        token: token,
+                        isHighlighted: isHighlightedToken(token, savedCandidates: savedCandidates)
+                    ) {
+                        selectedTokenID = token.id
+                        selectedLookup = lookup(token.lookup)
+                    }
                 }
 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .sheet(item: $selectedLookup) { lookup in
-                WordLookupSheet(lookup: lookup)
+            .sheet(item: $selectedLookup, onDismiss: { selectedTokenID = nil }) { lookup in
+                WordLookupSheet(
+                    lookup: lookup,
+                    onBookmarkChange: { _ in }
+                )
                     .presentationDetents([.height(270), .large])
                     .presentationDragIndicator(.hidden)
                     .presentationCornerRadius(28)
@@ -422,12 +610,35 @@ struct LearningParagraphView: View {
     private func lookup(_ rawWord: String) -> WordLookup {
         WordLookupResolver.lookup(rawWord: rawWord, vocabulary: vocabulary, context: context)
     }
+
+    private func isHighlightedToken(_ token: WordToken, savedCandidates: Set<String>) -> Bool {
+        if token.id == selectedTokenID {
+            return true
+        }
+        return SavedWordHighlighter.isSaved(rawWord: token.lookup, in: savedCandidates)
+    }
 }
 
 private struct WordToken: Identifiable {
     let id: Int
     let display: String
     let lookup: String
+}
+
+private struct InteractiveWordTokenView: View {
+    let token: WordToken
+    let isHighlighted: Bool
+    var font: Font = .system(size: 16, weight: .regular, design: .rounded)
+    let onTap: () -> Void
+
+    var body: some View {
+        Text(token.display)
+            .font(font)
+            .fontWeight(isHighlighted ? .bold : nil)
+            .foregroundStyle(isHighlighted ? Palette.accent : Palette.ink)
+            .fixedSize()
+            .onTapGesture(perform: onTap)
+    }
 }
 
 struct LeveledParagraph: Identifiable {
@@ -723,9 +934,12 @@ enum WordLookupResolver {
 struct WordLookupSheet: View {
     @EnvironmentObject private var store: ArticleStore
     @EnvironmentObject private var speech: SpeechService
+    @EnvironmentObject private var subscription: SubscriptionService
     let lookup: WordLookup
+    var onBookmarkChange: ((Bool) -> Void)? = nil
     @State private var enrichedMeaning: String?
     @State private var isEnriching = false
+    @State private var isPaywallPresented = false
 
     var body: some View {
         ZStack {
@@ -762,14 +976,24 @@ struct WordLookupSheet: View {
                         }
 
                         wordToolButton(
-                            systemName: store.isSavedWord(displayWord) ? "bookmark.fill" : "bookmark",
-                            accessibilityLabel: store.isSavedWord(displayWord) ? "Remove saved word" : "Save word"
+                            systemName: bookmarkSystemName,
+                            accessibilityLabel: bookmarkAccessibilityLabel
                         ) {
-                            store.toggleSavedWord(displayWord)
+                            handleBookmarkTap()
                         }
                     }
 
                     definitionContent
+
+                    if store.isSavedWord(displayWord) {
+                        Text("已收藏")
+                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .foregroundStyle(Palette.accent)
+                    } else if !subscription.isPro {
+                        Text(saveQuotaHint)
+                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .foregroundStyle(Palette.muted)
+                    }
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 10)
@@ -778,6 +1002,12 @@ struct WordLookupSheet: View {
         }
         .task(id: lookup.id) {
             await enrichIfNeeded()
+        }
+        .sheet(isPresented: $isPaywallPresented) {
+            NavigationStack {
+                OneReadProView()
+            }
+            .environmentObject(subscription)
         }
     }
 
@@ -833,7 +1063,7 @@ struct WordLookupSheet: View {
         Button(action: action) {
             Image(systemName: systemName)
                 .font(.system(size: 19, weight: .heavy))
-                .foregroundStyle(Palette.ink)
+                .foregroundStyle(Palette.accent)
                 .frame(width: 48, height: 48)
                 .background(Palette.surfaceRaised, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .overlay(
@@ -854,6 +1084,50 @@ struct WordLookupSheet: View {
 
     private var currentPhonetic: String {
         lookup.phonetic
+    }
+
+    private var bookmarkSystemName: String {
+        store.isSavedWord(displayWord) ? "bookmark.fill" : "bookmark"
+    }
+
+    private var bookmarkAccessibilityLabel: String {
+        if store.isSavedWord(displayWord) {
+            return "Remove saved word"
+        }
+        if canSaveNewWord {
+            return "Save word"
+        }
+        return "Save more words with OneRead Pro"
+    }
+
+    private var canSaveNewWord: Bool {
+        ReadingAccessPolicy.canSaveWord(
+            savedCount: store.savedWords.count,
+            isPro: subscription.isPro
+        )
+    }
+
+    private var saveQuotaHint: String {
+        let remaining = max(0, ReadingAccessPolicy.freeSavedWordCount - store.savedWords.count)
+        if remaining == 0 {
+            return "免费版最多收藏 \(ReadingAccessPolicy.freeSavedWordCount) 个单词，开通 Pro 可无限收藏。"
+        }
+        return "免费版还可收藏 \(remaining) 个单词（共 \(ReadingAccessPolicy.freeSavedWordCount) 个）。"
+    }
+
+    private func handleBookmarkTap() {
+        if store.isSavedWord(displayWord) {
+            store.toggleSavedWord(displayWord)
+            onBookmarkChange?(false)
+            return
+        }
+
+        if canSaveNewWord {
+            store.toggleSavedWord(displayWord)
+            onBookmarkChange?(true)
+        } else {
+            isPaywallPresented = true
+        }
     }
 
     private var displayWord: String {
@@ -930,6 +1204,29 @@ extension String {
 
     var cleanedDisplayWord: String {
         trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+    }
+}
+
+/// Decides whether a word token should show the "saved" highlight, driven by the
+/// persisted saved-words list (so highlights survive relaunching the app/article)
+/// rather than ephemeral per-session token IDs. Matching goes through the same
+/// lemma-aware candidates used for saving, so inflected forms still match.
+enum SavedWordHighlighter {
+    static func candidateSet(for savedWords: [String]) -> Set<String> {
+        var set = Set<String>()
+        for word in savedWords {
+            for candidate in word.lookupCandidates {
+                set.insert(candidate)
+            }
+        }
+        return set
+    }
+
+    static func isSaved(rawWord: String, in candidateSet: Set<String>) -> Bool {
+        guard !candidateSet.isEmpty else {
+            return false
+        }
+        return rawWord.lookupCandidates.contains(where: candidateSet.contains)
     }
 }
 

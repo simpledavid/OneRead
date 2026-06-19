@@ -28,13 +28,19 @@ How it selects:
 - **Trending signal** gives a small boost to entities highlighted in today's
   [smol.ai AINews](https://news.smol.ai/) digest. Pass `--no-trending` to skip;
   any fetch failure degrades silently and never blocks the edition.
+- **Multi-dimensional editorial scoring** evaluates the strongest candidates
+  for relevance, reporting quality, and timeliness. The review JSON preserves
+  the three scores, a category, keywords, and a concise selection reason. If
+  the model call or response format fails, local ranking remains usable.
+  The rubric is a OneRead-specific adaptation of the public design used by
+  [ai-daily-digest](https://github.com/vigorX777/ai-daily-digest).
 - Morning is the top-ranked story; afternoon is the top-ranked story on a
   different topic (`diversity_key`).
 
-`--dry-run` clusters, selects, and prints a source-health report without calling
-the LLM or writing an edition — useful for a no-key smoke test. Every run writes
-`sources_health.json` (per-source fetched / kept / AI-relevance %) next to the
-output.
+`--dry-run` clusters, selects, and prints a source-health report without writing
+an edition. Leave `ONE_READ_LLM_API_KEY` unset for a no-LLM smoke test. Every
+run writes `sources_health.json` (per-source fetched / kept / AI-relevance %)
+next to the output.
 
 Feeds are fetched and enriched in parallel (thread pool), so adding sources
 does not slow the run linearly.
