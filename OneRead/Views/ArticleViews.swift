@@ -307,6 +307,7 @@ struct ArticleReadingView: View {
             appliedInitialTranslationPreference = true
         }
         .onChange(of: readingLevel) { _, newLevel in
+            store.triggerImpact()
             store.requestLeveledContent(for: article, level: newLevel)
             store.trackReadingLevel(newLevel, for: article)
         }

@@ -309,7 +309,7 @@ struct DailyEditionSchedule {
     private let calendar: Calendar
     private let dailyLimit: Int
     private let dailyGoal: Int
-    private let morningReleaseHour = 7
+    private let morningReleaseHour = 8
     private let afternoonReleaseHour = 16
 
     init(calendar: Calendar, dailyLimit: Int, dailyGoal: Int) {
@@ -333,7 +333,14 @@ struct DailyEditionSchedule {
 
     func releasedArticleCount(for date: Date) -> Int {
         guard dailyLimit > 1 else { return dailyLimit }
-        return calendar.component(.hour, from: date) >= afternoonReleaseHour ? dailyLimit : 1
+        let hour = calendar.component(.hour, from: date)
+        if hour >= afternoonReleaseHour {
+            return dailyLimit          // both articles from 16:00
+        }
+        if hour >= morningReleaseHour {
+            return 1                   // first article from 08:00
+        }
+        return 0                       // nothing before 08:00
     }
 
     func isEligibleHomeArticle(_ article: Article, relativeTo now: Date) -> Bool {
