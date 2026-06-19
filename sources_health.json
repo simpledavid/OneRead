@@ -1,0 +1,76 @@
+{
+  "date": "2026-06-19",
+  "generatedAt": "2026-06-19T06:02:19Z",
+  "sources": [
+    {
+      "name": "OpenAI News",
+      "fetched": 20,
+      "kept": 20,
+      "aiRatio": 0.95,
+      "error": null
+    },
+    {
+      "name": "Google DeepMind",
+      "fetched": 20,
+      "kept": 19,
+      "aiRatio": 0.7,
+      "error": null
+    },
+    {
+      "name": "Google AI",
+      "fetched": 20,
+      "kept": 19,
+      "aiRatio": 0.9,
+      "error": null
+    },
+    {
+      "name": "The Verge AI",
+      "fetched": 10,
+      "kept": 10,
+      "aiRatio": 0.9,
+      "error": null
+    },
+    {
+      "name": "Ars Technica AI",
+      "fetched": 20,
+      "kept": 20,
+      "aiRatio": 1.0,
+      "error": null
+    },
+    {
+      "name": "TechCrunch AI",
+      "fetched": 20,
+      "kept": 19,
+      "aiRatio": 0.8,
+      "error": null
+    },
+    {
+      "name": "MIT Technology Review AI",
+      "fetched": 10,
+      "kept": 10,
+      "aiRatio": 0.8,
+      "error": null
+    },
+    {
+      "name": "WIRED AI",
+      "fetched": 10,
+      "kept": 9,
+      "aiRatio": 0.8,
+      "error": null
+    },
+    {
+      "name": "The Verge Tech",
+      "fetched": 1,
+      "kept": 0,
+      "aiRatio": 1.0,
+      "error": null
+    },
+    {
+      "name": "Ars Technica Tech",
+      "fetched": 8,
+      "kept": 6,
+      "aiRatio": 0.62,
+      "error": null
+    }
+  ]
+}
