@@ -1,169 +1,169 @@
 {
   "schemaVersion": 1,
   "date": "2026-06-19",
-  "generatedAt": "2026-06-19T08:54:10Z",
+  "generatedAt": "2026-06-19T23:13:35Z",
   "status": "approved",
   "articles": [
     {
-      "title": "The White House Is Making Up Its Rules for AI in Real Time",
-      "subtitle": "Anthropic still can’t distribute Claude Mythos or Fable 5 after running afoul of the Trump administration. But no one can say exactly what the company did wrong.",
-      "source": "WIRED AI",
-      "author": "Maxwell Zeff",
+      "title": "Is the US government’s Anthropic ban accidentally helping the brand?",
+      "subtitle": "Just as last week was ending, the US government forced Anthropic to pull its two newest models, Fable 5 and Mythos 5, citing national security concerns after Amazon researchers allegedly found a way to bypass Fable 5’s guardrails. Cybersecu",
+      "source": "TechCrunch AI",
+      "author": "Theresa Loconsolo",
       "category": "ai",
-      "summary": "Anthropic still can’t distribute Claude Mythos or Fable 5 after running afoul of the Trump administration. But no one can say exactly what the company did wrong.",
-      "urlString": "https://www.wired.com/story/anthropic-mythos-export-controls-ai-regulations/",
-      "imageURLString": "https://simpledavid.github.io/OneRead/images/e5b23f303b9737e9da74126a.webp",
-      "publishedAt": "2026-06-18T21:03:43Z",
+      "summary": "Just as last week was ending, the US government forced Anthropic to pull its two newest models, Fable 5 and Mythos 5, citing national security concerns after Amazon researchers allegedly found a way to bypass Fable 5’s guardrails. Cybersecurity researchers have since signed an open letter calling the move dangerous, and Anthropic itself noted the same jailbreaks exist in other models. So is […]",
+      "urlString": "https://techcrunch.com/video/is-the-us-governments-anthropic-ban-accidentally-helping-the-brand/",
+      "imageURLString": "https://simpledavid.github.io/OneRead/images/a72532f8748ceb52acf88ddb.webp",
+      "publishedAt": "2026-06-19T16:08:17Z",
       "sourceCount": 1,
       "corroboratingSources": [
-        "WIRED AI"
+        "TechCrunch AI"
       ],
       "body": [
-        "It’s been nearly a week since the Trump administration sent an export control directive to Anthropic, forcing one of the world’s leading AI labs to pull its most advanced models offline. After days of negotiations between Anthropic and the White House, the two still remain at odds about how to bring Claude Mythos and Fable 5 back. Why? Well, it depends whom you ask.",
-        "Throughout this entire debacle, Anthropic doesn’t believe it violated any concrete procedures or rules laid out by the Trump administration, according to a person close to the company. But the White House contends that Anthropic behaved recklessly, demonstrating that it can’t be trusted to safely roll out frontier technology.",
-        "This saga proved to me that we’re now officially in the Wild West era of American AI regulation. While there are few laws on the books governing frontier AI development, that doesn’t mean companies won’t end up in trouble with Trump’s White House when they cross unspoken lines.",
-        "“The problem here is that the White House has been in this extreme anti-regulatory posture, and they’re now faced with the real AI capabilities that people have been predicting for many years,” says a former White House technology official, who asked to remain anonymous to avoid jeopardizing their professional relationships. “There should have been preparation and policies to systematically deal with this, managing the benefits and risks, but instead it's just this slap-dash approach that puts the AI industry in a real quandary.”",
-        "The Trump administration has repeatedly blocked efforts to impose guardrails on the AI industry, often arguing the rules could hamper US innovation and lead the country to fall behind rivals like China. Since he returned to the White House, President Trump has signed executive orders that reversed a Biden-era effort to create a national AI framework and created a federal task force to challenge state laws that could be deemed onerous .",
-        "While WIRED and other publications have made details of the negotiations between Anthropic and the White House public over the last week, the dispute is still defined by its opaqueness. At no point has the US government clearly stated what Anthropic did wrong—the best we have is a post on X outlining the general situation from White House technology adviser David Sacks.",
-        "Ironically, the White House’s actions have likely hampered the very kind of innovation it wants to protect. The Trump administration demanded that Anthropic prohibit all foreign nationals from accessing Mythos and Fable 5, preventing many of the AI lab’s own employees from accessing its most cutting-edge models, which the company says have sped up its research and development in recent months. All of Anthropic’s customers are locked out, too, including Apple, Meta, and much of the Fortune 500.",
-        "The White House may have had legitimate reasons to be concerned about Anthropic’s models. As my colleagues and I reported on Wednesday, US officials grew concerned when they learned earlier this month that Anthropic shared Mythos with SK Telecom , a South Korean telecom giant they allege has ties to China. Separately, Amazon CEO Andy Jassy raised concerns to US Treasury secretary Scott Bessent that some of the guardrails on Claude Fable 5, a safeguarded version of Mythos, could be circumvented.",
-        "Even if these worries are legitimate, that doesn’t mean the White House handled them adequately. In the first case, Anthropic says it coordinated with the US government on the rollout of Mythos, suggesting there may have been a chance for officials to raise alarm about SK Telecom ahead of time. Anthropic has also been working with the Korean company for years, and the arrangement seemingly never caused it to run into national security problems before. And when the White House raised concerns about SK Telecom to Anthropic, it revoked access to the model immediately, we reported.",
-        "In the second case, WIRED and other outlets have written at length about how every large language model can be jailbroken to varying extents. Anthropic and independent cybersecurity researchers argue that solving jailbreaks is not an easy or isolated issue. Because AI models are probabilistic, not deterministic, tech companies can’t guarantee what exactly they will generate in response to a given prompt. If the White House won’t let Anthropic release Claude Fable 5 until the jailbreaking problem is solved, I wouldn’t hold my breath.",
-        "But ultimately, the problem here is not that the US government is trying to ensure that advanced AI models have proper safeguards or stay out of the hands of America’s foes. It’s that the Trump administration is now in a position where it has to make these regulatory decisions in real time.",
-        "I can assure you that other AI labs like OpenAI, Google, and Meta have been watching Anthropic’s misfortune with bated breath. I’ve been asking AI executives the same question all week: How can you avoid a fate similar to Anthropic’s?"
+        "Loading the player… var playerInstance_31346081 = jwplayer( \"jwppp-video-31346081\" ); playerInstance_31346081.setup({ playlist: \"https://cdn.jwplayer.com/v2/media/UdkrWKnw\", })",
+        "Just as last week was ending, the US government forced Anthropic to pull its two newest models , Fable 5 and Mythos 5, citing national security concerns after Amazon researchers allegedly found a way to bypass Fable 5’s guardrails.",
+        "Cybersecurity researchers have since signed an open letter calling the move dangerous, and Anthropic itself noted the same jailbreaks exist in other models. So is this a genuine security concern, or just the latest chapter in a messy relationship between Anthropic and the Trump administration?",
+        "On this episode of TechCrunch’s Equity podcast, hosts Anthony Ha, Sean O’Kane, and Rebecca Bellan unpack what the ban means for developers building on Anthropic’s platform and for anyone watching the IPO, why it might accidentally be good for the company , and more of the week’s headlines.",
+        "Subscribe to Equity on YouTube , Apple Podcasts , Overcast , Spotify and all the casts. You also can follow Equity on X and Threads , at @EquityPod.",
+        "Get an inside look at what it takes to scale and succeed from leaders at Mach Industries, Founders Fund, and Shinkei Systems. Through candid fireside chats and high-impact networking, you’ll walk away with valuable insights and new connections.",
+        "NASA picks Eric Schmidt’s rocket company for Mars mission, setting up a race with SpaceX Tim Fernholz",
+        "SpaceX to acquire Cursor for $60B in stock, days after blockbuster IPO Sean O'Kane",
+        "The US government’s Anthropic models ban was never about an AI jailbreak Zack Whittaker",
+        "As Anthropic suspends access to new models, India debates its AI future Jagmeet Singh",
+        "Amazon CEO reportedly raised Anthropic model concerns before government crackdown Anthony Ha",
+        "The FBI built its own replica small town to simulate real-world cyberattacks Zack Whittaker"
       ],
-      "readingMinutes": 5,
+      "readingMinutes": 2,
       "publishNote": "Editorial candidate",
       "keyPoints": [
-        "It’s been nearly a week since the Trump administration sent an export control directive to Anthropic, forcing one of the world’s leading AI labs to pull its most advanced models offline. After days of negotiations between Anthropic and the White House, the two still remain at odds about how to bring Claude Mythos and Fable 5 back. Why? Well, it depends whom you ask.",
-        "Throughout this entire debacle, Anthropic doesn’t believe it violated any concrete procedures or rules laid out by the Trump administration, according to a person close to the company. But the White House contends that Anthropic behaved recklessly, demonstrating that it can’t be trusted to safely roll out frontier technology.",
-        "This saga proved to me that we’re now officially in the Wild West era of American AI regulation. While there are few laws on the books governing frontier AI development, that doesn’t mean companies won’t end up in trouble with Trump’s White House when they cross unspoken lines."
+        "Loading the player… var playerInstance_31346081 = jwplayer( \"jwppp-video-31346081\" ); playerInstance_31346081.setup({ playlist: \"https://cdn.jwplayer.com/v2/media/UdkrWKnw\", })",
+        "Just as last week was ending, the US government forced Anthropic to pull its two newest models , Fable 5 and Mythos 5, citing national security concerns after Amazon researchers allegedly found a way to bypass Fable 5’s guardrails.",
+        "Cybersecurity researchers have since signed an open letter calling the move dangerous, and Anthropic itself noted the same jailbreaks exist in other models. So is this a genuine security concern, or just the latest chapter in a messy relationship between Anthropic and the Trump administration?"
       ],
       "paragraphTranslations": [
-        "自特朗普政府向人类公司发送出口控制指令以来，已经过去了将近一周，迫使这个世界领先的人工智能实验室之一将其最先进的模型下线。在人类公司和白宫之间经过数天的谈判后，双方在如何恢复克劳德·米索斯和法布尔5的问题上仍然存在分歧。为什么呢？这取决于你问谁。",
-        "在整个这场混乱中，人类公司不相信它违反了特朗普政府制定的任何具体程序或规则，据一位接近公司的人说。但白宫坚称人类公司的行为鲁莽，表明它不能被信任安全推出前沿技术。",
-        "这段经历让我确信，我们现在正式进入了美国人工智能监管的狂野西部时代。尽管几乎没有法律书籍管理前沿人工智能开发，但这并不意味着公司在越过未言明的界限时不会遇到特朗普白宫的麻烦。",
-        "“这里的问题是，白宫一直处于这种极端的反监管姿态，他们现在面临着人们多年来一直在预测的真正的人工智能能力，”一位要求匿名以避免危及其职业关系的前白宫技术官员说。“应该有准备和政策来系统地处理这个问题，管理利益和风险，但相反，这只是这种临时的方法，让人工智能行业陷入真正的困境。”",
-        "特朗普政府一再阻止对人工智能行业施加监管的努力，经常争辩说规则可能会阻碍美国的创新，导致国家落后于像中国这样的竞争对手。自从他回到白宫以来，特朗普总统签署了行政命令，撤销了拜登时代创建国家人工智能框架的努力，并创建了一个联邦特别工作组，挑战可能被视为繁琐的国家法律。",
-        "虽然《连线》杂志和其他出版物在过去一周公开了人类公司和白宫之间谈判的细节，但争端仍然以其不透明性为特征。美国政府从未明确指出人类公司做错了什么——我们所拥有的最好的是白宫技术顾问大卫·萨克斯在X上发表的一篇概述一般情况的帖子。",
-        "具有讽刺意味的是，白宫的行动可能阻碍了它想要保护的那种创新。特朗普政府要求人类公司禁止所有外国公民访问米索斯和法布尔5，阻止了许多人工智能实验室自己的员工访问其最先进的模型，公司表示这些模型加快了其最近几个月的研究和开发。人类公司的所有客户也被锁定在外，包括苹果、Meta和财富500强的大部分。",
-        "白宫可能有合理的理由对人类公司的模型表示担忧。正如我和我的同事们在周三报道的那样，美国官员在本月早些时候得知人类公司与SK电讯共享米索斯时感到担忧，SK电讯是他们声称与中国有联系的韩国电信巨头。另外，亚马逊首席执行官安迪·贾西向美国财政部长斯科特·贝森特提出了担忧，即克劳德·法布尔5的一些监管措施，这是米索斯的一个受保护版本，可能被规避。",
-        "即使这些担忧是合理的，那并不意味着白宫妥善处理了它们。在第一种情况下，人类公司表示它与美国政府协调推出了米索斯，这表明官员们可能有机会提前对SK电讯提出警报。人类公司也与韩国公司合作多年，这种安排似乎从未导致它遇到国家安全问题。当白宫向人类公司提出对SK电讯的担忧时，它立即撤销了对模型的访问，我们报道了这一点。",
-        "在第二种情况下，《连线》和其他媒体已经详细报道了每个大型语言模型都可以在不同程度上被越狱。人类公司和独立的网络安全研究人员认为，解决越狱问题不是一个容易或孤立的问题。因为人工智能模型是概率性的，而不是确定性的，科技公司不能保证它们会对给定的提示产生什么确切的反应。如果白宫不让人类公司发布克劳德·法布尔5，直到越狱问题得到解决，我不会屏住呼吸。",
-        "但归根结底，这里的问题是，美国政府并不是试图确保先进的人工智能模型有适当的安全措施，或者不让美国的敌人掌握。而是特朗普政府现在处于一个必须实时做出这些监管决定的位置。",
-        "我可以向你保证，其他像OpenAI、谷歌和Meta这样的人工智能实验室一直在屏息关注人类公司的不幸。我一直在问人工智能高管同样的问题：你如何避免与人类公司类似的命运？"
+        "加载播放器… var playerInstance_31346081 = jwplayer( \"jwppp-video-31346081\" ); playerInstance_31346081.setup({ playlist: \"https://cdn.jwplayer.com/v2/media/UdkrWKnw\", })",
+        "就在上周即将结束时，美国政府以国家安全为由，迫使Anthropic撤回其两款最新型号Fable 5和Mythos 5，此前亚马逊研究人员声称找到了绕过Fable 5安全防护的方法。",
+        "网络安全研究人员随后签署了一封公开信，称此举危险，Anthropic本身也指出其他型号存在相同的越狱行为。那么，这是一个真正的安全问题，还是Anthropic与特朗普政府之间混乱关系的最新篇章呢？",
+        "在这一期的TechCrunch股权播客中，主持人安东尼·哈、肖恩·奥凯恩和丽贝卡·贝兰解析了禁令对在Anthropic平台上构建的开发者以及任何关注IPO的人意味着什么，为什么它可能无意中对公司有好处，以及本周的更多头条新闻。",
+        "在YouTube、Apple Podcasts、Overcast、Spotify以及所有播客平台上订阅Equity。你还可以在X和Threads上关注Equity，@EquityPod。",
+        "深入了解Mach Industries、Founders Fund和Shinkei Systems的领导者们是如何扩大规模并取得成功的。通过坦率的炉边谈话和高影响力的网络连接，你将获得宝贵的见解和新的联系。",
+        "美国宇航局选择埃里克·施密特的火箭公司执行火星任务，与SpaceX展开竞争 蒂姆·费尔诺尔茨",
+        "SpaceX以6000亿美元的股票收购Cursor，继重磅IPO几天后 肖恩·奥凯恩",
+        "美国政府禁止Anthropic模型从未与AI越狱有关 扎克·惠特克",
+        "随着Anthropic暂停访问新模型，印度辩论其AI未来 贾格米特·辛格",
+        "据报道，亚马逊首席执行官在政府打击之前提出了Anthropic模型的担忧 安东尼·哈",
+        "联邦调查局建立了自己的复制小镇，以模拟现实世界的网络攻击 扎克·惠特克"
       ],
       "vocabulary": [
+        {
+          "word": "withdraw",
+          "meaningZh": "撤回",
+          "phonetic": "/wɪðˈdrɔː/",
+          "example": "The company decided to withdraw its faulty product from the market.",
+          "exampleZh": "公司决定从市场上撤回其有缺陷的产品。"
+        },
+        {
+          "word": "bypass",
+          "meaningZh": "绕过",
+          "phonetic": "/ˈbaɪpæs/",
+          "example": "The hackers tried to bypass the security system.",
+          "exampleZh": "黑客试图绕过安全系统。"
+        },
+        {
+          "word": "vulnerabilities",
+          "meaningZh": "漏洞",
+          "phonetic": "/ˌvʌlnərəˈbɪlɪtiz/",
+          "example": "The software update aimed to fix several known vulnerabilities.",
+          "exampleZh": "软件更新旨在修复几个已知的漏洞。"
+        },
+        {
+          "word": "spark",
+          "meaningZh": "引发",
+          "phonetic": "/spɑːrk/",
+          "example": "The incident sparked a debate among the community.",
+          "exampleZh": "这一事件在社区中引发了一场辩论。"
+        },
+        {
+          "word": "strained",
+          "meaningZh": "紧张的",
+          "phonetic": "/streɪnd/",
+          "example": "Their relationship has been strained since the argument.",
+          "exampleZh": "自从争吵之后，他们的关系一直很紧张。"
+        },
         {
           "word": "administration",
           "meaningZh": "政府",
           "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
-          "example": "The administration is working on new policies.",
-          "exampleZh": "政府正在研究新政策。"
-        },
-        {
-          "word": "export control",
-          "meaningZh": "出口控制",
-          "phonetic": "/ˈekspɔːt kənˈtroʊl/",
-          "example": "Export control laws regulate the sale of certain goods.",
-          "exampleZh": "出口控制法律规范某些商品的销售。"
-        },
-        {
-          "word": "reckless",
-          "meaningZh": "鲁莽的",
-          "phonetic": "/ˈrekləs/",
-          "example": "His reckless driving caused the accident.",
-          "exampleZh": "他鲁莽的驾驶导致了事故。"
-        },
-        {
-          "word": "highlight",
-          "meaningZh": "突出",
-          "phonetic": "/ˈhaɪlaɪt/",
-          "example": "The speech highlighted the main issues.",
-          "exampleZh": "演讲突出了主要问题。"
-        },
-        {
-          "word": "dispute",
-          "meaningZh": "争议",
-          "phonetic": "/dɪˈspjuːt/",
-          "example": "The dispute was settled out of court.",
-          "exampleZh": "争议在庭外和解。"
-        },
-        {
-          "word": "innovation",
-          "meaningZh": "创新",
-          "phonetic": "/ˌɪnəˈveɪʃn/",
-          "example": "Innovation is key to the company's success.",
-          "exampleZh": "创新是公司成功的关键。"
+          "example": "The new administration has promised tax cuts.",
+          "exampleZh": "新政府承诺减税。"
         }
       ],
-      "id": "e5b23f303b9737e9da74126a",
+      "id": "a72532f8748ceb52acf88ddb",
       "editionDate": "2026-06-19",
       "editionSlot": "morning",
       "curationStatus": "approved",
       "learningContent": {
         "standard": {
           "paragraphs": [
-            "The Trump administration forced Anthropic, a top AI lab, to take down its advanced models, Claude Mythos and Fable 5, due to export control issues. Anthropic argues it didn't break any rules, while the White House claims Anthropic was reckless. This situation highlights the lack of clear AI regulations in the US. The Trump administration has opposed creating a national AI framework, fearing it might hinder US innovation. The dispute is unclear, with the US government not specifying what Anthropic did wrong. The White House's actions may have hurt innovation, as Anthropic's models are inaccessible to foreign nationals, including its own employees and customers like Apple and Meta."
+            "The US government recently forced Anthropic to withdraw its two latest AI models, Fable 5 and Mythos 5, due to national security concerns. This decision came after Amazon researchers claimed to have found a way to bypass Fable 5’s safety measures. Despite cybersecurity researchers signing an open letter against the ban and Anthropic pointing out that similar vulnerabilities exist in other models, the move has sparked debate on whether it is a genuine security issue or a reflection of Anthropic's strained relationship with the Trump administration."
           ],
           "paragraphTranslations": [
-            "特朗普政府因出口控制问题迫使顶级人工智能实验室Anthropic下线其先进的模型，克劳德·米索斯和法布尔5。Anthropic辩称它没有违反任何规则，而白宫则声称Anthropic行为鲁莽。这种情况突显了美国缺乏明确的人工智能法规。特朗普政府一直反对建立国家人工智能框架，担心这可能会阻碍美国的创新。这场争议尚不明朗，美国政府没有具体说明Anthropic做错了什么。白宫的行动可能损害了创新，因为Anthropic的模型对外国公民不可访问，包括其自己的员工和客户，如苹果和Meta。"
+            "美国政府最近强迫Anthropic撤回其两个最新的人工智能模型，Fable 5和Mythos 5，原因是国家安全问题。这一决定是在亚马逊研究人员声称找到了绕过Fable 5安全措施的方法之后做出的。尽管网络安全研究人员签署了一封反对禁令的公开信，Anthropic也指出其他模型中存在类似的漏洞，但此举引发了关于这是否是一个真正的安全问题，还是Anthropic与特朗普政府紧张关系的一个反映的辩论。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
         },
         "vocabulary": [
           {
+            "word": "withdraw",
+            "meaningZh": "撤回",
+            "phonetic": "/wɪðˈdrɔː/",
+            "example": "The company decided to withdraw its faulty product from the market.",
+            "exampleZh": "公司决定从市场上撤回其有缺陷的产品。"
+          },
+          {
+            "word": "bypass",
+            "meaningZh": "绕过",
+            "phonetic": "/ˈbaɪpæs/",
+            "example": "The hackers tried to bypass the security system.",
+            "exampleZh": "黑客试图绕过安全系统。"
+          },
+          {
+            "word": "vulnerabilities",
+            "meaningZh": "漏洞",
+            "phonetic": "/ˌvʌlnərəˈbɪlɪtiz/",
+            "example": "The software update aimed to fix several known vulnerabilities.",
+            "exampleZh": "软件更新旨在修复几个已知的漏洞。"
+          },
+          {
+            "word": "spark",
+            "meaningZh": "引发",
+            "phonetic": "/spɑːrk/",
+            "example": "The incident sparked a debate among the community.",
+            "exampleZh": "这一事件在社区中引发了一场辩论。"
+          },
+          {
+            "word": "strained",
+            "meaningZh": "紧张的",
+            "phonetic": "/streɪnd/",
+            "example": "Their relationship has been strained since the argument.",
+            "exampleZh": "自从争吵之后，他们的关系一直很紧张。"
+          },
+          {
             "word": "administration",
             "meaningZh": "政府",
             "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
-            "example": "The administration is working on new policies.",
-            "exampleZh": "政府正在研究新政策。"
-          },
-          {
-            "word": "export control",
-            "meaningZh": "出口控制",
-            "phonetic": "/ˈekspɔːt kənˈtroʊl/",
-            "example": "Export control laws regulate the sale of certain goods.",
-            "exampleZh": "出口控制法律规范某些商品的销售。"
-          },
-          {
-            "word": "reckless",
-            "meaningZh": "鲁莽的",
-            "phonetic": "/ˈrekləs/",
-            "example": "His reckless driving caused the accident.",
-            "exampleZh": "他鲁莽的驾驶导致了事故。"
-          },
-          {
-            "word": "highlight",
-            "meaningZh": "突出",
-            "phonetic": "/ˈhaɪlaɪt/",
-            "example": "The speech highlighted the main issues.",
-            "exampleZh": "演讲突出了主要问题。"
-          },
-          {
-            "word": "dispute",
-            "meaningZh": "争议",
-            "phonetic": "/dɪˈspjuːt/",
-            "example": "The dispute was settled out of court.",
-            "exampleZh": "争议在庭外和解。"
-          },
-          {
-            "word": "innovation",
-            "meaningZh": "创新",
-            "phonetic": "/ˌɪnəˈveɪʃn/",
-            "example": "Innovation is key to the company's success.",
-            "exampleZh": "创新是公司成功的关键。"
+            "example": "The new administration has promised tax cuts.",
+            "exampleZh": "新政府承诺减税。"
           }
         ],
-        "sourceFingerprint": "c7d9a144f13e2e964f783fc1cc9d8495ef0177850364668a2af1f47ed1f1a748",
-        "generatedAt": "2026-06-19T08:53:33Z",
+        "sourceFingerprint": "7056854f85eca6d4b5e31ce18b8b8eae0b8e6791556b694195ab1ff746e65330",
+        "generatedAt": "2026-06-19T23:12:34Z",
         "easy": {
           "paragraphs": [
-            "The Trump administration forced Anthropic, a top AI lab, to take down its advanced models, Claude Mythos and Fable 5, due to export control issues. Anthropic argues it didn't break any rules, while the White House claims Anthropic was reckless. This situation highlights the lack of clear AI regulations in the US. The Trump administration has opposed creating a national AI framework, fearing it might hinder US innovation. The dispute is unclear, with the US government not specifying what Anthropic did wrong. The White House's actions may have hurt innovation, as Anthropic's models are inaccessible to foreign nationals, including its own employees and customers like Apple and Meta."
+            "The US government recently forced Anthropic to withdraw its two latest AI models, Fable 5 and Mythos 5, due to national security concerns. This decision came after Amazon researchers claimed to have found a way to bypass Fable 5’s safety measures. Despite cybersecurity researchers signing an open letter against the ban and Anthropic pointing out that similar vulnerabilities exist in other models, the move has sparked debate on whether it is a genuine security issue or a reflection of Anthropic's strained relationship with the Trump administration."
           ],
           "paragraphTranslations": [
-            "特朗普政府因出口控制问题迫使顶级人工智能实验室Anthropic下线其先进的模型，克劳德·米索斯和法布尔5。Anthropic辩称它没有违反任何规则，而白宫则声称Anthropic行为鲁莽。这种情况突显了美国缺乏明确的人工智能法规。特朗普政府一直反对建立国家人工智能框架，担心这可能会阻碍美国的创新。这场争议尚不明朗，美国政府没有具体说明Anthropic做错了什么。白宫的行动可能损害了创新，因为Anthropic的模型对外国公民不可访问，包括其自己的员工和客户，如苹果和Meta。"
+            "美国政府最近强迫Anthropic撤回其两个最新的人工智能模型，Fable 5和Mythos 5，原因是国家安全问题。这一决定是在亚马逊研究人员声称找到了绕过Fable 5安全措施的方法之后做出的。尽管网络安全研究人员签署了一封反对禁令的公开信，Anthropic也指出其他模型中存在类似的漏洞，但此举引发了关于这是否是一个真正的安全问题，还是Anthropic与特朗普政府紧张关系的一个反映的辩论。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
@@ -171,165 +171,165 @@
       }
     },
     {
-      "title": "Microplastics in over 75% of pet food, study finds",
-      "subtitle": "Researchers say certain brands and kinds of cat and dog food have more microplastics than others.",
-      "source": "BBC Science",
-      "author": "BBC Science",
-      "category": "science",
-      "summary": "Researchers say certain brands and kinds of cat and dog food have more microplastics than others.",
-      "urlString": "https://www.bbc.com/news/articles/c39yx1kr2z0o?at_medium=RSS&at_campaign=rss",
-      "imageURLString": "https://simpledavid.github.io/OneRead/images/f9f9c43fc32a69f03145ffdb.jpg",
-      "publishedAt": "2026-06-19T05:10:53Z",
+      "title": "NASA selects Eric Schmidt’s rocket company for a 2028 mission to Mars",
+      "subtitle": "Relativity Space, the rocket company led by former Google executive Eric Schmidt, was picked to launch NASA's Aeolus payload to Mars in 2028, as reported earlier by TechCrunch. Under a new public-private partnership, Relativity Space will p",
+      "source": "The Verge Tech",
+      "author": "Stevie Bonifield",
+      "category": "technology",
+      "summary": "Relativity Space, the rocket company led by former Google executive Eric Schmidt, was picked to launch NASA's Aeolus payload to Mars in 2028, as reported earlier by TechCrunch. Under a new public-private partnership, Relativity Space will provide the \"spacecraft, rocket, and cruise operations\" to fly Aeolus to Mars, where the payload will \"provide the first […]",
+      "urlString": "https://www.theverge.com/science/952988/nasa-relativity-space-eric-schmidt-mars",
+      "imageURLString": "https://simpledavid.github.io/OneRead/images/e1579b10df51950e036e0563.webp",
+      "publishedAt": "2026-06-19T18:41:48Z",
       "sourceCount": 1,
       "corroboratingSources": [
-        "BBC Science"
+        "The Verge Tech"
       ],
       "body": [
-        "Microplastics are in more than three-quarters of pet food products, a new study has found.",
-        "The research by the universities of Sussex and Exeter found microplastics in 16 out of the 19 brands that were tested, including \"very well-known ones\".",
-        "Cheaper \"value range\" products given to dogs, cats and wild animals contained more than the expensive ones, it found.",
-        "Microplastics are tiny plastic particles, typically smaller than 5mm.",
-        "Several studies have suggested that microplastics can harm animals and humans in many ways, though working out their exact impact is tricky.",
-        "Researchers in Sussex and Exeter said that the presence of plastic pollution in pet food may also have potential implications for health, but this was not the focus of their study.",
-        "The study found that, despite higher concentrations in dry food, wet food leads to higher daily microplastic intake because pets need to eat more of it to meet their energy requirements.",
-        "Researchers are urging government to put in new regulations to insist processed food manufacturers test for microplastic contamination - similar to the legislation that already exists to prevent chemical contamination.",
-        "\"Our results are a reminder that our pets are exposed to the same chemical pollutants as ourselves,\" University of Exeter Prof of Ecotoxicology Tamara Galloway said.",
-        "\"Pets may be inadvertently spreading plastic pollution through their food and faeces, affecting wildlife and the wider environment,\" Fiona Mathews, Prof of Environmental Biology at the University of Sussex, added.",
-        "Researchers said that the sources of contamination were unclear.",
-        "\"Further research is now needed to find out whether ingredient quality, packaging types, or processing methods, are the main contributors to the problem,\" they added."
+        "Posts from this topic will be added to your daily email digest and your homepage feed.",
+        "Posts from this topic will be added to your daily email digest and your homepage feed.",
+        "Posts from this topic will be added to your daily email digest and your homepage feed.",
+        "﻿Relativity Space will launch NASA’s Aeolus payload, which will gather data on the Martian atmosphere.",
+        "﻿Relativity Space will launch NASA’s Aeolus payload, which will gather data on the Martian atmosphere.",
+        "Posts from this author will be added to your daily email digest and your homepage feed.",
+        "Posts from this author will be added to your daily email digest and your homepage feed.",
+        "Relativity Space, the rocket company led by former Google executive Eric Schmidt, was picked to launch NASA’s Aeolus payload to Mars in 2028, as reported earlier by TechCrunch . Under a new public-private partnership, Relativity Space will provide the “spacecraft, rocket, and cruise operations” to fly Aeolus to Mars, where the payload will “provide the first integrated, daily, global view of Martian winds, temperatures, dust, and clouds.”",
+        "The Aeolus payload will have four instruments on board for studying the Martian atmosphere, which NASA says will “directly inform entry, descent, and landing systems and support safer, more predictable mission planning for astronauts.”",
+        "Schmidt, who served as CEO of Google from 2001 to 2011, became Relativity Space’s CEO in 2025, a couple of years after it launched the “world’s first 3D-printed rocket,” Terran 1, which failed shortly after launch. Relativity Space’s larger Terran R rocket isn’t scheduled to have its first launch until later this year.",
+        "Posts from this author will be added to your daily email digest and your homepage feed.",
+        "Posts from this topic will be added to your daily email digest and your homepage feed."
       ],
       "readingMinutes": 2,
       "publishNote": "Editorial candidate",
       "keyPoints": [
-        "Microplastics are in more than three-quarters of pet food products, a new study has found.",
-        "The research by the universities of Sussex and Exeter found microplastics in 16 out of the 19 brands that were tested, including \"very well-known ones\".",
-        "Cheaper \"value range\" products given to dogs, cats and wild animals contained more than the expensive ones, it found."
+        "Posts from this topic will be added to your daily email digest and your homepage feed.",
+        "Posts from this topic will be added to your daily email digest and your homepage feed.",
+        "Posts from this topic will be added to your daily email digest and your homepage feed."
       ],
       "paragraphTranslations": [
-        "一项新研究发现，超过四分之三的宠物食品中都含有微塑料。",
-        "苏塞克斯大学和埃克塞特大学的研究在测试的19个品牌中发现了16个含有微塑料，包括“非常知名”的品牌。",
-        "研究发现，给狗、猫和野生动物的更便宜的“价值范围”产品含有的微塑料比昂贵的产品多。",
-        "微塑料是通常小于5毫米的微小塑料颗粒。",
-        "一些研究表明微塑料可能以多种方式危害动物和人类，尽管确定它们的确切影响是困难的。",
-        "苏塞克斯和埃克塞特的研究人员表示，宠物食品中塑料污染的存在可能对健康有潜在影响，但这不是他们研究的重点。",
-        "研究发现，尽管干粮中浓度更高，但湿粮导致每天摄入更多的微塑料，因为宠物需要吃更多的湿粮来满足它们的能量需求。",
-        "研究人员敦促政府制定新法规，要求加工食品制造商检测微塑料污染——类似于已经存在的防止化学污染的法规。",
-        "埃克塞特大学生态毒理学教授塔玛拉·加洛韦说：“我们的结果提醒我们，我们的宠物和我们自己一样暴露在相同的化学污染物中。”",
-        "苏塞克斯大学环境生物学教授菲奥娜·马修斯补充说：“宠物可能通过它们的食物和粪便无意中传播塑料污染，影响野生动物和更广泛的环境。”",
-        "研究人员表示，污染的来源尚不清楚。",
-        "他们补充说：“现在需要进一步的研究来找出原料质量、包装类型或加工方法是否是问题的主要贡献者。”"
+        "来自该主题的帖子将被添加到您的每日电子邮件摘要和您的主页推送中。",
+        "来自该主题的帖子将被添加到您的每日电子邮件摘要和您的主页推送中。",
+        "来自该主题的帖子将被添加到您的每日电子邮件摘要和您的主页推送中。",
+        "﻿相对论空间公司将发射美国宇航局的Aeolus载荷，该载荷将收集有关火星大气的数据。",
+        "﻿相对论空间公司将发射美国宇航局的Aeolus载荷，该载荷将收集有关火星大气的数据。",
+        "来自该作者的帖子将被添加到您的每日电子邮件摘要和您的主页推送中。",
+        "来自该作者的帖子将被添加到您的每日电子邮件摘要和您的主页推送中。",
+        "相对论空间公司，这家由前谷歌高管埃里克·施密特领导的火箭公司，被选中在2028年发射美国宇航局的Aeolus载荷到火星，正如TechCrunch之前报道的那样。在一项新的公私合作伙伴关系下，相对论空间公司将提供“航天器、火箭和巡航操作”以将Aeolus送至火星，在那里该载荷将“提供火星风、温度、尘埃和云层的第一个综合、每日、全球视角”。",
+        "Aeolus载荷将搭载四个仪器，用于研究火星大气，美国宇航局表示，这将“直接通知进入、下降和着陆系统，并支持宇航员的安全、更可预测的任务规划”。",
+        "施密特曾在2001年至2011年担任谷歌的首席执行官，于2025年成为相对论空间公司的首席执行官，这是在公司发射了“世界上第一个3D打印火箭”Terran 1几年后的事情，Terran 1在发射后不久就失败了。相对论空间公司更大的Terran R火箭计划在今年晚些时候进行首次发射。",
+        "来自该作者的帖子将被添加到您的每日电子邮件摘要和您的主页推送中。",
+        "来自该主题的帖子将被添加到您的每日电子邮件摘要和您的主页推送中。"
       ],
       "vocabulary": [
         {
-          "word": "microplastics",
-          "meaningZh": "微塑料",
-          "phonetic": "/maɪkrəʊ'plæstɪks/",
-          "example": "Microplastics are a major environmental concern.",
-          "exampleZh": "微塑料是一个主要的环境问题。"
+          "word": "launch",
+          "meaningZh": "发射",
+          "phonetic": "/lɔːntʃ/",
+          "example": "The rocket will launch at 3 pm.",
+          "exampleZh": "火箭将在下午3点发射。"
         },
         {
-          "word": "concentrations",
-          "meaningZh": "浓度",
-          "phonetic": "/ˌkɒnsnˈtreɪʃnz/",
-          "example": "High concentrations of chemicals can be harmful.",
-          "exampleZh": "高浓度的化学物质可能是有害的。"
+          "word": "payload",
+          "meaningZh": "载荷",
+          "phonetic": "/ˈpeɪ.loʊd/",
+          "example": "The satellite can carry a payload of 500 kilograms.",
+          "exampleZh": "这颗卫星可以携带500公斤的载荷。"
         },
         {
-          "word": "pollution",
-          "meaningZh": "污染",
-          "phonetic": "/pəˈluːʃn/",
-          "example": "Air pollution is a serious problem in big cities.",
-          "exampleZh": "空气污染是大城市的一个严重问题。"
+          "word": "Martian",
+          "meaningZh": "火星的",
+          "phonetic": "/ˈmɑːr.ʃən/",
+          "example": "The robot is designed to explore the Martian surface.",
+          "exampleZh": "这个机器人被设计用来探索火星表面。"
         },
         {
-          "word": "regulations",
-          "meaningZh": "法规",
-          "phonetic": "/ˌreɡjʊˈleɪʃnz/",
-          "example": "New regulations have been introduced to reduce noise pollution.",
-          "exampleZh": "已引入新法规以减少噪音污染。"
+          "word": "atmosphere",
+          "meaningZh": "大气层",
+          "phonetic": "/ˈæt.mɒs.fiər/",
+          "example": "The planet has a thin atmosphere.",
+          "exampleZh": "这个星球有一层薄的大气层。"
         },
         {
-          "word": "contamination",
-          "meaningZh": "污染",
-          "phonetic": "/kənˌtæmɪˈneɪʃn/",
-          "example": "The water supply was affected by oil contamination.",
-          "exampleZh": "供水受到石油污染的影响。"
+          "word": "instrument",
+          "meaningZh": "仪器",
+          "phonetic": "/ˈɪn.strʊ.mənt/",
+          "example": "The scientist used various instruments for the experiment.",
+          "exampleZh": "科学家使用各种仪器进行实验。"
         },
         {
-          "word": "faeces",
-          "meaningZh": "粪便",
-          "phonetic": "/ˈfiːsiːz/",
-          "example": "Bacteria in faeces can contaminate food.",
-          "exampleZh": "粪便中的细菌可以污染食物。"
+          "word": "3D-printed",
+          "meaningZh": "3D打印的",
+          "phonetic": "/ˌθriːˈdiː ˈprɪntɪd/",
+          "example": "The model is made of 3D-printed plastic.",
+          "exampleZh": "这个模型是用3D打印塑料制成的。"
         }
       ],
-      "id": "f9f9c43fc32a69f03145ffdb",
+      "id": "e1579b10df51950e036e0563",
       "editionDate": "2026-06-19",
       "editionSlot": "afternoon",
       "curationStatus": "approved",
       "learningContent": {
         "standard": {
           "paragraphs": [
-            "A recent study by the universities of Sussex and Exeter discovered that over 75% of pet food contains microplastics. Out of 19 pet food brands tested, 16 were found to have these tiny plastic particles, which are usually smaller than 5mm. The research showed that cheaper pet food had higher concentrations of microplastics than more expensive brands. The study indicated that pets might be spreading plastic pollution through their food and waste, affecting wildlife and the environment. The researchers called for new regulations to test for microplastic contamination in pet food, similar to those for chemical contamination."
+            "NASA has chosen Relativity Space, a rocket company led by former Google CEO Eric Schmidt, to launch its Aeolus payload to Mars in 2028. The mission aims to collect data on Martian winds, temperatures, dust, and clouds, providing a daily global view of the Martian atmosphere. This information will help plan safer and more predictable astronaut missions. Aeolus will carry four instruments for studying the atmosphere. Relativity Space, known for launching the world's first 3D-printed rocket, Terran 1, will provide the spacecraft, rocket, and operations for the mission."
           ],
           "paragraphTranslations": [
-            "最近，苏塞克斯大学和埃克塞特大学的一项研究发现，超过75%的宠物食品含有微塑料。在测试的19个宠物食品品牌中，有16个被发现含有这些通常小于5毫米的微小塑料颗粒。研究表明，较便宜的宠物食品中的微塑料浓度比更昂贵的品牌更高。研究指出，宠物可能通过食物和粪便传播塑料污染，影响野生动植物和环境。研究人员呼吁制定新法规，对宠物食品进行微塑料污染测试，类似于针对化学污染的法规。"
+            "美国宇航局选择了由前谷歌首席执行官埃里克·施密特领导的火箭公司相对论空间，于2028年发射其Aeolus载荷到火星。该任务旨在收集有关火星风、温度、尘埃和云的数据，提供火星大气的每日全球视图。这些信息将有助于规划更安全、更可预测的宇航员任务。Aeolus将携带四个研究大气的仪器。相对论空间以发射世界上第一个3D打印火箭Terran 1而闻名，将为该任务提供航天器、火箭和运营服务。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
         },
         "vocabulary": [
           {
-            "word": "microplastics",
-            "meaningZh": "微塑料",
-            "phonetic": "/maɪkrəʊ'plæstɪks/",
-            "example": "Microplastics are a major environmental concern.",
-            "exampleZh": "微塑料是一个主要的环境问题。"
+            "word": "launch",
+            "meaningZh": "发射",
+            "phonetic": "/lɔːntʃ/",
+            "example": "The rocket will launch at 3 pm.",
+            "exampleZh": "火箭将在下午3点发射。"
           },
           {
-            "word": "concentrations",
-            "meaningZh": "浓度",
-            "phonetic": "/ˌkɒnsnˈtreɪʃnz/",
-            "example": "High concentrations of chemicals can be harmful.",
-            "exampleZh": "高浓度的化学物质可能是有害的。"
+            "word": "payload",
+            "meaningZh": "载荷",
+            "phonetic": "/ˈpeɪ.loʊd/",
+            "example": "The satellite can carry a payload of 500 kilograms.",
+            "exampleZh": "这颗卫星可以携带500公斤的载荷。"
           },
           {
-            "word": "pollution",
-            "meaningZh": "污染",
-            "phonetic": "/pəˈluːʃn/",
-            "example": "Air pollution is a serious problem in big cities.",
-            "exampleZh": "空气污染是大城市的一个严重问题。"
+            "word": "Martian",
+            "meaningZh": "火星的",
+            "phonetic": "/ˈmɑːr.ʃən/",
+            "example": "The robot is designed to explore the Martian surface.",
+            "exampleZh": "这个机器人被设计用来探索火星表面。"
           },
           {
-            "word": "regulations",
-            "meaningZh": "法规",
-            "phonetic": "/ˌreɡjʊˈleɪʃnz/",
-            "example": "New regulations have been introduced to reduce noise pollution.",
-            "exampleZh": "已引入新法规以减少噪音污染。"
+            "word": "atmosphere",
+            "meaningZh": "大气层",
+            "phonetic": "/ˈæt.mɒs.fiər/",
+            "example": "The planet has a thin atmosphere.",
+            "exampleZh": "这个星球有一层薄的大气层。"
           },
           {
-            "word": "contamination",
-            "meaningZh": "污染",
-            "phonetic": "/kənˌtæmɪˈneɪʃn/",
-            "example": "The water supply was affected by oil contamination.",
-            "exampleZh": "供水受到石油污染的影响。"
+            "word": "instrument",
+            "meaningZh": "仪器",
+            "phonetic": "/ˈɪn.strʊ.mənt/",
+            "example": "The scientist used various instruments for the experiment.",
+            "exampleZh": "科学家使用各种仪器进行实验。"
           },
           {
-            "word": "faeces",
-            "meaningZh": "粪便",
-            "phonetic": "/ˈfiːsiːz/",
-            "example": "Bacteria in faeces can contaminate food.",
-            "exampleZh": "粪便中的细菌可以污染食物。"
+            "word": "3D-printed",
+            "meaningZh": "3D打印的",
+            "phonetic": "/ˌθriːˈdiː ˈprɪntɪd/",
+            "example": "The model is made of 3D-printed plastic.",
+            "exampleZh": "这个模型是用3D打印塑料制成的。"
           }
         ],
-        "sourceFingerprint": "140830fd133983fac11432f5c019067aa23d3637f9004649bf9edded577e058d",
-        "generatedAt": "2026-06-19T08:54:02Z",
+        "sourceFingerprint": "03362c245a5586356cc40df22fdc908faecc2a41827e4e96b669bfd927499d32",
+        "generatedAt": "2026-06-19T23:13:27Z",
         "easy": {
           "paragraphs": [
-            "A recent study by the universities of Sussex and Exeter discovered that over 75% of pet food contains microplastics. Out of 19 pet food brands tested, 16 were found to have these tiny plastic particles, which are usually smaller than 5mm. The research showed that cheaper pet food had higher concentrations of microplastics than more expensive brands. The study indicated that pets might be spreading plastic pollution through their food and waste, affecting wildlife and the environment. The researchers called for new regulations to test for microplastic contamination in pet food, similar to those for chemical contamination."
+            "NASA has chosen Relativity Space, a rocket company led by former Google CEO Eric Schmidt, to launch its Aeolus payload to Mars in 2028. The mission aims to collect data on Martian winds, temperatures, dust, and clouds, providing a daily global view of the Martian atmosphere. This information will help plan safer and more predictable astronaut missions. Aeolus will carry four instruments for studying the atmosphere. Relativity Space, known for launching the world's first 3D-printed rocket, Terran 1, will provide the spacecraft, rocket, and operations for the mission."
           ],
           "paragraphTranslations": [
-            "最近，苏塞克斯大学和埃克塞特大学的一项研究发现，超过75%的宠物食品含有微塑料。在测试的19个宠物食品品牌中，有16个被发现含有这些通常小于5毫米的微小塑料颗粒。研究表明，较便宜的宠物食品中的微塑料浓度比更昂贵的品牌更高。研究指出，宠物可能通过食物和粪便传播塑料污染，影响野生动植物和环境。研究人员呼吁制定新法规，对宠物食品进行微塑料污染测试，类似于针对化学污染的法规。"
+            "美国宇航局选择了由前谷歌首席执行官埃里克·施密特领导的火箭公司相对论空间，于2028年发射其Aeolus载荷到火星。该任务旨在收集有关火星风、温度、尘埃和云的数据，提供火星大气的每日全球视图。这些信息将有助于规划更安全、更可预测的宇航员任务。Aeolus将携带四个研究大气的仪器。相对论空间以发射世界上第一个3D打印火箭Terran 1而闻名，将为该任务提供航天器、火箭和运营服务。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
