@@ -653,6 +653,8 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
         try:
             result = llm_json(system, user)
             result["generatedAt"] = iso_now()
+            # Do not rely on the model to echo deterministic metadata.
+            result["sourceFingerprint"] = schema["sourceFingerprint"]
             # Only standard is generated; mirror it into easy for schema/back-compat.
             result["easy"] = result["standard"]
             validate_learning_content(result)

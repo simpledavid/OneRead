@@ -79,7 +79,9 @@ struct ArticleLearningContent: Hashable, Codable, Sendable {
     let standard: ArticleLearningVersion
     let vocabulary: [ArticleVocabulary]
     let generatedAt: Date?
-    let sourceFingerprint: String
+    // Older or model-generated editions may omit this editorial metadata.
+    // It is not required to render the learning content.
+    let sourceFingerprint: String?
 }
 
 struct DailyEdition: Hashable, Codable, Sendable {
