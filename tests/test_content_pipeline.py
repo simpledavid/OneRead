@@ -136,17 +136,17 @@ class EditorialScoringTests(unittest.TestCase):
         self.assertEqual(ranked, candidates)
         self.assertEqual(ranked[0]["finalScore"], 68.0)
 
-    def test_validate_article_rejects_original_under_150_words(self):
-        article = self.valid_article_with_body_words(149)
+    def test_validate_article_rejects_original_under_120_words(self):
+        article = self.valid_article_with_body_words(119)
 
         with self.assertRaisesRegex(
             ValueError,
-            "original article body must contain at least 150 words",
+            "original article body must contain at least 120 words",
         ):
             content_pipeline.validate_article(article)
 
-    def test_validate_article_accepts_original_at_150_words(self):
-        content_pipeline.validate_article(self.valid_article_with_body_words(150))
+    def test_validate_article_accepts_original_at_120_words(self):
+        content_pipeline.validate_article(self.valid_article_with_body_words(120))
 
     @staticmethod
     def valid_article_with_body_words(count):

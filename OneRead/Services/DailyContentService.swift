@@ -137,7 +137,7 @@ enum DailyContentService {
             return article.editionDate == edition.date
                 && (article.curationStatus == .approved || article.curationStatus == .published)
                 && !article.urlString.isEmpty
-                && originalWordCount(article.body) >= 150
+                && originalWordCount(article.body) >= 120
                 && !learning.easy.paragraphs.isEmpty
                 && !learning.standard.paragraphs.isEmpty
                 && (5...8).contains(learning.vocabulary.count)

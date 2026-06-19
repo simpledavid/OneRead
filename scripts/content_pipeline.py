@@ -31,7 +31,7 @@ MAX_FETCH_WORKERS = 8
 
 # Skip candidates whose extracted body is too thin to make a real reading (e.g.
 # one-sentence changelog entries) so every daily pick has substance to rewrite.
-MIN_BODY_WORDS = 150
+MIN_BODY_WORDS = 120
 
 
 USER_AGENT = "OneRead-Editorial/1.0 (+https://github.com/)"
