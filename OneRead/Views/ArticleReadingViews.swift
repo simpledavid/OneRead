@@ -939,6 +939,8 @@ struct WordLookupSheet: View {
     @EnvironmentObject private var subscription: SubscriptionService
     let lookup: WordLookup
     var onBookmarkChange: ((Bool) -> Void)? = nil
+    @State private var enrichedMeaning: String?
+    @State private var isEnriching = false
     @State private var isPaywallPresented = false
 
     var body: some View {
@@ -983,11 +985,15 @@ struct WordLookupSheet: View {
                         }
                     }
 
+                    definitionContent
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 10)
                 .padding(.bottom, 34)
             }
+        }
+        .task(id: lookup.id) {
+            await enrichIfNeeded()
         }
         .sheet(isPresented: $isPaywallPresented) {
             NavigationStack {
@@ -995,6 +1001,57 @@ struct WordLookupSheet: View {
             }
             .environmentObject(subscription)
         }
+    }
+
+    @ViewBuilder
+    private var definitionContent: some View {
+        if !currentMeaning.isEmpty {
+            Text(currentMeaning)
+                .font(.system(size: 18, weight: .medium, design: .rounded))
+                .lineSpacing(6)
+                .foregroundStyle(Palette.ink)
+                .fixedSize(horizontal: false, vertical: true)
+        } else if isEnriching {
+            HStack(spacing: 10) {
+                ProgressView()
+                    .controlSize(.small)
+                    .tint(Palette.accent)
+                Text("正在离线生成释义…")
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+            }
+        } else {
+            Text("暂无释义，可点击发音按钮朗读。")
+                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                .foregroundStyle(Palette.muted)
+        }
+    }
+
+    private func enrichIfNeeded() async {
+        guard lookup.needsAI, ArticleLevelService.isOnDeviceAvailable else {
+            return
+        }
+
+        if let cached = await WordEnrichmentService.shared.cachedMeaning(for: displayWord) {
+            if !cached.isEmpty {
+                enrichedMeaning = cached
+            }
+            return
+        }
+
+        isEnriching = true
+        let result = await WordEnrichmentService.shared.meaning(for: displayWord, context: lookup.context)
+        isEnriching = false
+        if let result, !result.isEmpty {
+            enrichedMeaning = result
+        }
+    }
+
+    private var currentMeaning: String {
+        if let enrichedMeaning, !enrichedMeaning.isEmpty {
+            return enrichedMeaning
+        }
+        return lookup.meaningZh
     }
 
     private func wordToolButton(

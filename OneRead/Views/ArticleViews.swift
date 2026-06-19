@@ -481,6 +481,7 @@ struct SavedWordsView: View {
     @EnvironmentObject private var store: ArticleStore
     @EnvironmentObject private var speech: SpeechService
     @State private var selectedShelf: SavedWordShelf = .learning
+    @State private var selectedLookup: WordLookup?
     private let listAnchor = "saved-words-list"
 
     var body: some View {
@@ -504,6 +505,13 @@ struct SavedWordsView: View {
             }
             .background(LensBackground())
             .toolbar(.hidden, for: .navigationBar)
+            .sheet(item: $selectedLookup) { lookup in
+                WordLookupSheet(lookup: lookup)
+                    .presentationDetents([.height(270), .large])
+                    .presentationDragIndicator(.hidden)
+                    .presentationCornerRadius(28)
+                    .presentationBackground(Palette.surface)
+            }
         }
     }
 
@@ -676,13 +684,18 @@ struct SavedWordsView: View {
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(Palette.ink)
 
-                Text(lookup.meaningZh.isEmpty ? "No definition yet" : lookup.meaningZh)
-                    .font(.system(size: 15, weight: .medium, design: .rounded))
-                    .lineLimit(2)
-                    .foregroundStyle(Palette.muted)
+                if !lookup.phonetic.isEmpty {
+                    Text(lookup.phonetic)
+                        .font(.system(size: 15, weight: .medium, design: .rounded))
+                        .foregroundStyle(Palette.muted)
+                }
             }
-
-            Spacer(minLength: 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                store.triggerImpact()
+                selectedLookup = lookup
+            }
 
             Button {
                 store.setKnownState(for: display, isKnown: selectedShelf == .learning)
