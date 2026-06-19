@@ -328,7 +328,7 @@ private struct ReadingActivityHeatmap: View {
                     VStack(spacing: cellSpacing) {
                         ForEach(column, id: \.self) { day in
                             RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                .fill(color(for: store.readingActivityValue(on: day)))
+                                .fill(color(for: store.activityLevel(on: day)))
                                 .frame(width: cellSize, height: cellSize)
                         }
                     }
@@ -368,16 +368,19 @@ private struct ReadingActivityHeatmap: View {
         return labels
     }
 
-    private func color(for value: Int) -> Color {
-        switch value {
+    // GitHub-style green scale: opened the app = light green, completing
+    // readings deepens toward the darkest green.
+    private func color(for level: Int) -> Color {
+        let base = Color(red: 0.18, green: 0.78, blue: 0.35)
+        switch level {
         case 4...:
-            return Palette.accent.opacity(0.78)
+            return base
         case 3:
-            return Palette.accent.opacity(0.56)
+            return base.opacity(0.72)
         case 2:
-            return Palette.amber.opacity(0.48)
+            return base.opacity(0.5)
         case 1:
-            return Palette.amber.opacity(0.28)
+            return base.opacity(0.3)
         default:
             return Palette.surfaceRaised
         }

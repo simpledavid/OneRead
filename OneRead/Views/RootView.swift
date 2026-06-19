@@ -34,6 +34,7 @@ struct RootView: View {
                 return
             }
 
+            articleStore.recordAppOpen()
             Task {
                 RetentionAnalytics.record("app_session")
                 await articleStore.refreshScheduledDailyArticlesIfNeeded()

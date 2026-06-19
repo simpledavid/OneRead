@@ -107,6 +107,7 @@ final class ArticleStore: ObservableObject {
 
         resetStaleDailyEditionIfNeeded()
         refreshDailyEditionIfNeeded()
+        progress.recordOpen()
     }
 
     // MARK: - Article collections
@@ -420,6 +421,25 @@ final class ArticleStore: ObservableObject {
 
     func readingActivityValue(on date: Date) -> Int {
         progress.readActivityByDay[dailySchedule.dayKey(for: date)] ?? 0
+    }
+
+    func recordAppOpen() {
+        progress.recordOpen()
+    }
+
+    /// GitHub-style heatmap intensity for a day:
+    /// 0 = nothing, 1 = opened the app (light green), 3 = completed one reading,
+    /// 4 = completed both (darkest green).
+    func activityLevel(on date: Date) -> Int {
+        let key = dailySchedule.dayKey(for: date)
+        let completions = progress.completedArticleIDsByDay[key]?.count ?? 0
+        if completions >= 2 {
+            return 4
+        }
+        if completions == 1 {
+            return 3
+        }
+        return progress.openedDays.contains(key) ? 1 : 0
     }
 
     func homeReleaseDateText(for rank: Int) -> String {

@@ -7,12 +7,14 @@ final class ReadingProgressService: ObservableObject {
     @Published private(set) var readArticleIDs: Set<String>
     @Published private(set) var completedArticleIDsByDay: [String: [String]]
     @Published private(set) var readActivityByDay: [String: Int]
+    @Published private(set) var openedDays: Set<String>
 
     private let defaults: UserDefaults
     private let savedKey = "savedArticleIDs"
     private let readKey = "readArticleIDs"
     private let completedKey = "completedArticleIDsByDay"
     private let activityKey = "readActivityByDay"
+    private let openedKey = "openedDays"
 
     init(defaults: UserDefaults) {
         self.defaults = defaults
@@ -20,6 +22,15 @@ final class ReadingProgressService: ObservableObject {
         self.readArticleIDs = Set(defaults.stringArray(forKey: readKey) ?? [])
         self.completedArticleIDsByDay = Self.decode([String: [String]].self, from: defaults.data(forKey: completedKey)) ?? [:]
         self.readActivityByDay = Self.decode([String: Int].self, from: defaults.data(forKey: activityKey)) ?? [:]
+        self.openedDays = Set(defaults.stringArray(forKey: openedKey) ?? [])
+    }
+
+    /// Mark today as "app opened" (GitHub-style: light green even with no reading).
+    func recordOpen() {
+        let key = Self.dayKey(for: Date())
+        guard !openedDays.contains(key) else { return }
+        openedDays.insert(key)
+        persist()
     }
 
     var readCount: Int { readArticleIDs.count }
@@ -91,6 +102,7 @@ final class ReadingProgressService: ObservableObject {
         defaults.set(Array(readArticleIDs), forKey: readKey)
         defaults.set(try? JSONEncoder().encode(completedArticleIDsByDay), forKey: completedKey)
         defaults.set(try? JSONEncoder().encode(readActivityByDay), forKey: activityKey)
+        defaults.set(Array(openedDays), forKey: openedKey)
     }
 
     private static func decode<T: Decodable>(_ type: T.Type, from data: Data?) -> T? {
