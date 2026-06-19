@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "date": "2026-06-19",
-  "generatedAt": "2026-06-19T06:12:33Z",
+  "generatedAt": "2026-06-19T06:16:56Z",
   "status": "approved",
   "articles": [
     {
@@ -40,18 +40,18 @@
         "This saga proved to me that we’re now officially in the Wild West era of American AI regulation. While there are few laws on the books governing frontier AI development, that doesn’t mean companies won’t end up in trouble with Trump’s White House when they cross unspoken lines."
       ],
       "paragraphTranslations": [
-        "自特朗普政府向人类公司发出出口控制指令以来，已经过去了近一周，迫使这个世界领先的人工智能实验室之一将其最先进的模型下线。在人类公司和白宫之间经过几天的谈判后，双方仍然对如何恢复克劳德·米索斯和寓言5持不同意见。为什么呢？这取决于你问谁。",
-        "在整个这场闹剧中，人类公司不认为自己违反了特朗普政府制定的任何具体程序或规则，据一位接近公司的人士称。但白宫坚称人类公司的行为鲁莽，表明它不能被信任安全推出前沿技术。",
-        "这段经历让我确信，我们现在正式进入了美国人工智能监管的狂野西部时代。尽管几乎没有法律书籍规定了对前沿人工智能开发的限制，但这并不意味着公司在越过未言明的界限时不会遇到特朗普白宫的麻烦。",
-        "“这里的问题是，白宫一直采取这种极端的反监管姿态，现在他们面临着人们多年来一直在预测的真正的人工智能能力，”一位要求匿名以避免危及其职业关系的前白宫技术官员说。“应该有准备和政策来系统地应对这一点，管理利益和风险，但相反，这只是这种临时拼凑的方法，让人工智能行业陷入真正的困境。”",
-        "特朗普政府一再阻止对人工智能行业施加监管的努力，经常争辩说这些规则可能会阻碍美国的创新，导致国家落后于像中国这样的竞争对手。自从他回到白宫以来，特朗普总统签署了行政命令，扭转了拜登时代创建国家人工智能框架的努力，并创建了一个联邦特别工作组，挑战可能被视为繁琐的国家法律。",
-        "尽管WIRED和其他出版物在过去一周公开了人类公司和白宫之间的谈判细节，但这场争议仍然以其不透明性为特征。美国政府从未明确指出人类公司做错了什么——我们拥有的最好的是白宫技术顾问大卫·萨克斯在X上发表的一篇概述一般情况的帖子。",
-        "具有讽刺意味的是，白宫的行动可能阻碍了它想要保护的那种创新。特朗普政府要求人类公司禁止所有外国公民访问米索斯和寓言5，阻止了许多人工智能实验室自己的员工访问其最先进的模型，该公司表示，这些模型在近几个月加快了其研究和开发。人类公司的所有客户也被锁定在外，包括苹果、Meta和财富500强的大部分。",
-        "白宫可能有合理的理由对人类公司的模型感到担忧。正如我和我的同事们在周三报道的那样，美国官员在本月早些时候得知人类公司与韩国电信巨头SK电信共享米索斯时感到担忧，他们声称SK电信与中国有联系。另外，亚马逊首席执行官安迪·贾西向美国财政部长斯科特·贝森特提出了担忧，即克劳德寓言5的一些监管措施，这是米索斯的一个受保护版本，可能会被绕过。",
-        "即使这些担忧是合理的，那并不意味着白宫处理得当。在第一种情况下，人类公司表示，它与美国政府协调推出了米索斯，这表明官员们可能有机会提前对SK电信提出警报。人类公司也与韩国公司合作多年，这种安排似乎从未导致它遇到国家安全问题。当白宫向人类公司提出对SK电信的担忧时，它立即撤销了对模型的访问，我们报道了这一点。",
-        "在第二种情况下，WIRED和其他媒体已经详细报道了每个大型语言模型都可以在不同程度上被越狱。人类公司和独立的网络安全研究人员认为，解决越狱问题不是一件容易或孤立的事情。因为人工智能模型是概率性的，而不是确定性的，科技公司不能保证它们会对给定的提示产生什么确切的反应。如果白宫不让人类公司发布克劳德寓言5，直到越狱问题得到解决，我不会屏住呼吸。",
-        "但最终，这里的问题是，不是美国政府试图确保先进的人工智能模型有适当的保障措施，或者不让美国的敌人掌握。而是特朗普政府现在处于一个必须实时做出这些监管决定的位置。",
-        "我可以向你保证，其他人工智能实验室如OpenAI、谷歌和Meta一直在屏息关注人类公司的不幸。我一直在问人工智能高管们同样的问题：你如何避免与人类公司类似的命运？"
+        "自从特朗普政府向Anthropic发出出口控制指令以来，已经将近一周了，迫使这个世界领先的人工智能实验室之一将其最先进的模型下线。经过几天Anthropic与白宫之间的谈判，双方在如何恢复Claude Mythos和Fable 5上线的问题上仍然存在分歧。为什么呢？这取决于你问的是谁。",
+        "在整个这场混乱中，根据一位接近公司的人士透露，Anthropic并不认为自己违反了特朗普政府制定的任何具体程序或规则。但白宫坚称Anthropic的行为鲁莽，表明它不能被信任安全推出前沿技术。",
+        "这段经历让我确信，我们现在正式进入了美国人工智能监管的荒野时代。尽管法律书籍上很少有关于前沿人工智能开发的法律，但这并不意味着公司在越过未明言的界限时不会与特朗普的白宫陷入麻烦。",
+        "一位要求匿名以免危及其职业关系的前白宫技术官员说：“问题在于白宫一直采取这种极端的反监管姿态，现在他们面临着人们多年来一直在预测的真正的人工智能能力。本应有准备和政策来系统地应对这一问题，管理利益和风险，但相反，这只是这种临时拼凑的方法，让人工智能行业陷入真正的困境。”",
+        "特朗普政府一再阻止对人工智能行业施加监管的努力，经常争辩说这些规则可能会阻碍美国的创新，导致国家落后于像中国这样的竞争对手。自从他回到白宫以来，特朗普总统签署了行政命令，撤销了拜登时代创建国家人工智能框架的努力，并创建了一个联邦特别工作组，挑战可能被视为繁重的国家法律。",
+        "尽管WIRED和其他出版物在过去一周公开了Anthropic与白宫之间的谈判细节，但这场争议仍然以其不透明性为特点。美国政府从未明确指出Anthropic做错了什么——我们所拥有的最好的东西是白宫技术顾问David Sacks在X上发表的一篇概述一般情况的帖子。",
+        "具有讽刺意味的是，白宫的行动可能阻碍了它想要保护的那种创新。特朗普政府要求Anthropic禁止所有外国公民访问Mythos和Fable 5，阻止了许多人工智能实验室自己的员工访问其最先进的模型，公司表示这些模型加快了其近几个月的研究和开发。所有的Anthropic客户都被锁定在外，包括苹果、Meta和财富500强的大部分。",
+        "白宫可能有合理的理由对Anthropic的模型感到担忧。正如我和我的同事们在周三报道的那样，美国官员在本月早些时候得知Anthropic与SK Telecom共享Mythos时变得担忧，SK Telecom是一家他们声称与中国有联系的韩国电信巨头。另外，亚马逊首席执行官Andy Jassy向美国财政部长Scott Bessent提出了对Claude Fable 5的一些监管措施可能被绕过的担忧，Claude Fable 5是Mythos的一个受保护版本。",
+        "即使这些担忧是合理的，那并不意味着白宫处理得当。在第一个案例中，Anthropic表示它与美国政府协调推出了Mythos，这表明官员们可能有机会提前对SK Telecom提出警报。Anthropic也与韩国公司合作多年，这种安排似乎从未导致它遇到国家安全问题。当白宫向Anthropic提出对SK Telecom的担忧时，它立即撤销了对模型的访问权限，我们报道了这一点。",
+        "在第二个案例中，WIRED和其他媒体已经详细报道了每个大型语言模型都可以在不同程度上被越狱。Anthropic和独立的网络安全研究人员认为，解决越狱问题不是一个容易或孤立的问题。因为人工智能模型是概率性的，不是确定性的，科技公司不能保证它们对给定提示的确切反应。如果白宫不会让Anthropic发布Claude Fable 5，直到越狱问题得到解决，我不会屏住呼吸。",
+        "但归根结底，这里的问题是，美国政府并不是试图确保先进的人工智能模型有适当的安全措施，或者不让它们落入美国的敌人之手。而是特朗普政府现在处于一个必须实时做出这些监管决定的位置。",
+        "我可以向你保证，其他像OpenAI、谷歌和Meta这样的人工智能实验室一直在屏息关注Anthropic的不幸。整个星期，我一直在向人工智能高管提出同样的问题：你们如何避免与Anthropic类似的命运？"
       ],
       "vocabulary": [
         {
@@ -64,37 +64,37 @@
         {
           "word": "advanced",
           "meaningZh": "高级的，先进的",
-          "phonetic": "/ədˈvænst/",
-          "example": "She studied advanced physics at university.",
-          "exampleZh": "她在大学学习高级物理。"
+          "phonetic": "/ədˈvɑːnst/",
+          "example": "This course is designed for advanced learners.",
+          "exampleZh": "这门课程是为高级学习者设计的。"
         },
         {
           "word": "recklessly",
           "meaningZh": "鲁莽地",
           "phonetic": "/ˈrekləsli/",
-          "example": "He drove recklessly through the busy streets.",
-          "exampleZh": "他鲁莽地驾车穿过繁忙的街道。"
+          "example": "He drove recklessly through the narrow streets.",
+          "exampleZh": "他鲁莽地驶过狭窄的街道。"
         },
         {
           "word": "guardrails",
-          "meaningZh": "防护栏，安全措施",
+          "meaningZh": "防护栏，限制措施",
           "phonetic": "/ˈɡɑːrdreɪlz/",
-          "example": "The guardrails along the highway help prevent accidents.",
-          "exampleZh": "公路沿线的防护栏有助于预防事故。"
+          "example": "The government is considering new guardrails for the financial industry.",
+          "exampleZh": "政府正在考虑为金融业设置新的限制措施。"
         },
         {
-          "word": "quandary",
-          "meaningZh": "困境",
-          "phonetic": "/ˈkwɒndəri/",
-          "example": "The manager was in a quandary about which candidate to hire.",
-          "exampleZh": "经理在为雇用哪位候选人而陷入困境。"
+          "word": "innovation",
+          "meaningZh": "创新",
+          "phonetic": "/ˌɪnəˈveɪʃn/",
+          "example": "The company is at the forefront of technological innovation.",
+          "exampleZh": "该公司处于技术创新的前沿。"
         },
         {
-          "word": "unintentionally",
-          "meaningZh": "无意地，非故意地",
-          "phonetic": "/ˌʌnɪnˈtɛnʃənəli/",
-          "example": "He unintentionally offended his friend with a thoughtless comment.",
-          "exampleZh": "他无意中用一句不经心的评论冒犯了他的朋友。"
+          "word": "cutting-edge",
+          "meaningZh": "尖端的，最新的",
+          "phonetic": "/ˈkʌtɪŋ ɛdʒ/",
+          "example": "The hospital uses cutting-edge technology to treat patients.",
+          "exampleZh": "这家医院使用最新技术治疗病人。"
         }
       ],
       "id": "e5b23f303b9737e9da74126a",
@@ -104,24 +104,24 @@
       "learningContent": {
         "easy": {
           "paragraphs": [
-            "The Trump administration sent an export control directive to Anthropic, a leading AI lab. This forced Anthropic to take its most advanced AI models offline. Anthropic and the White House are still disagreeing about how to bring the models back. Anthropic believes it didn't break any rules, but the White House thinks it acted recklessly."
+            "The Trump administration sent an export control directive to Anthropic, one of the world's leading AI labs. This forced them to pull their most advanced models offline. Anthropic and the White House are still at odds about how to bring Claude Mythos and Fable 5 back. Anthropic doesn't believe it violated any rules laid out by the Trump administration. But the White House contends that Anthropic behaved recklessly."
           ],
           "paragraphTranslations": [
-            "特朗普政府向领先的人工智能实验室Anthropic发送了一项出口控制指令。这迫使Anthropic将其最先进的人工智能模型下线。Anthropic和白宫仍在就如何恢复这些模型进行争论。Anthropic认为它没有违反任何规则，但白宫认为它的行为鲁莽。"
+            "特朗普政府向世界领先的人工智能实验室之一Anthropic发送了一项出口控制指令。这迫使他们将最先进的模型下线。Anthropic和白宫仍在争论如何恢复Claude Mythos和Fable 5。Anthropic不认为自己违反了特朗普政府制定的任何规则。但白宫认为Anthropic的行为鲁莽。"
           ],
-          "targetWords": 100,
+          "targetWords": 90,
           "cefr": "A2-B1"
         },
         "standard": {
           "paragraphs": [
-            "The Trump administration recently sent an export control directive to Anthropic, one of the world's leading AI labs, forcing them to pull their most advanced models offline. After days of negotiations, Anthropic and the White House are still at odds over how to reintroduce Claude Mythos and Fable 5. Anthropic argues they didn't violate any rules set by the Trump administration, but the White House contends that Anthropic's reckless behavior shows they can't be trusted with frontier technology.",
-            "The situation highlights the lack of clear AI regulation in the US. The Trump administration has blocked efforts to impose guardrails on the AI industry, arguing it could hinder US innovation. This has left companies in a quandary when they cross unspoken lines, as seen with Anthropic. The White House's actions may have unintentionally hampered the innovation they aim to protect, as they demanded Anthropic prohibit all foreign nationals from accessing their models, affecting both employees and customers."
+            "The Trump administration sent an export control directive to Anthropic, one of the world's leading AI labs. This forced them to pull their most advanced models offline. Anthropic and the White House are still at odds about how to bring Claude Mythos and Fable 5 back. Anthropic doesn't believe it violated any rules laid out by the Trump administration. But the White House contends that Anthropic behaved recklessly, demonstrating that it can't be trusted to safely roll out frontier technology.",
+            "The Trump administration has repeatedly blocked efforts to impose guardrails on the AI industry. They argue that rules could hamper US innovation and lead the country to fall behind rivals like China. The White House demanded that Anthropic prohibit all foreign nationals from accessing Mythos and Fable 5. This prevented many of the AI lab's own employees from accessing its most cutting-edge models."
           ],
           "paragraphTranslations": [
-            "特朗普政府最近向世界领先的人工智能实验室Anthropic发送了一项出口控制指令，迫使他们将最先进的模型下线。经过几天的谈判，Anthropic和白宫仍然就如何重新引入Claude Mythos和Fable 5存在分歧。Anthropic辩称他们没有违反特朗普政府设定的任何规则，但白宫认为Anthropic的鲁莽行为表明他们不能被信任使用前沿技术。",
-            "这种情况突显了美国缺乏明确的人工智能法规。特朗普政府阻止了对人工智能行业施加限制的努力，认为这可能会阻碍美国的创新。这使得公司在跨越不成文的界限时陷入困境，正如Anthropic所看到的那样。白宫的行动可能无意中阻碍了他们旨在保护的创新，因为他们要求Anthropic禁止所有外国公民访问他们的模型，影响了员工和客户。"
+            "特朗普政府向世界领先的人工智能实验室之一Anthropic发送了一项出口控制指令。这迫使他们将最先进的模型下线。Anthropic和白宫仍在争论如何恢复Claude Mythos和Fable 5。Anthropic不认为自己违反了特朗普政府制定的任何规则。但白宫认为Anthropic的行为鲁莽，表明它不能被信任安全推出前沿技术。",
+            "特朗普政府多次阻止了对人工智能行业施加限制的努力。他们认为规则可能会阻碍美国的创新，导致国家落后于像中国这样的竞争对手。白宫要求Anthropic禁止所有外国人访问Mythos和Fable 5。这阻止了许多人工智能实验室自己的员工访问其最先进的模型。"
           ],
-          "targetWords": 150,
+          "targetWords": 160,
           "cefr": "B1-B2"
         },
         "vocabulary": [
@@ -135,41 +135,41 @@
           {
             "word": "advanced",
             "meaningZh": "高级的，先进的",
-            "phonetic": "/ədˈvænst/",
-            "example": "She studied advanced physics at university.",
-            "exampleZh": "她在大学学习高级物理。"
+            "phonetic": "/ədˈvɑːnst/",
+            "example": "This course is designed for advanced learners.",
+            "exampleZh": "这门课程是为高级学习者设计的。"
           },
           {
             "word": "recklessly",
             "meaningZh": "鲁莽地",
             "phonetic": "/ˈrekləsli/",
-            "example": "He drove recklessly through the busy streets.",
-            "exampleZh": "他鲁莽地驾车穿过繁忙的街道。"
+            "example": "He drove recklessly through the narrow streets.",
+            "exampleZh": "他鲁莽地驶过狭窄的街道。"
           },
           {
             "word": "guardrails",
-            "meaningZh": "防护栏，安全措施",
+            "meaningZh": "防护栏，限制措施",
             "phonetic": "/ˈɡɑːrdreɪlz/",
-            "example": "The guardrails along the highway help prevent accidents.",
-            "exampleZh": "公路沿线的防护栏有助于预防事故。"
+            "example": "The government is considering new guardrails for the financial industry.",
+            "exampleZh": "政府正在考虑为金融业设置新的限制措施。"
           },
           {
-            "word": "quandary",
-            "meaningZh": "困境",
-            "phonetic": "/ˈkwɒndəri/",
-            "example": "The manager was in a quandary about which candidate to hire.",
-            "exampleZh": "经理在为雇用哪位候选人而陷入困境。"
+            "word": "innovation",
+            "meaningZh": "创新",
+            "phonetic": "/ˌɪnəˈveɪʃn/",
+            "example": "The company is at the forefront of technological innovation.",
+            "exampleZh": "该公司处于技术创新的前沿。"
           },
           {
-            "word": "unintentionally",
-            "meaningZh": "无意地，非故意地",
-            "phonetic": "/ˌʌnɪnˈtɛnʃənəli/",
-            "example": "He unintentionally offended his friend with a thoughtless comment.",
-            "exampleZh": "他无意中用一句不经心的评论冒犯了他的朋友。"
+            "word": "cutting-edge",
+            "meaningZh": "尖端的，最新的",
+            "phonetic": "/ˈkʌtɪŋ ɛdʒ/",
+            "example": "The hospital uses cutting-edge technology to treat patients.",
+            "exampleZh": "这家医院使用最新技术治疗病人。"
           }
         ],
         "sourceFingerprint": "c7d9a144f13e2e964f783fc1cc9d8495ef0177850364668a2af1f47ed1f1a748",
-        "generatedAt": "2026-06-19T06:12:03Z"
+        "generatedAt": "2026-06-19T06:16:27Z"
       }
     },
     {
@@ -195,43 +195,50 @@
         "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence."
       ],
       "paragraphTranslations": [
-        "OpenAI为ChatGPT企业版引入了新的支出控制和使用分析功能，帮助组织管理成本并自信地扩展AI。"
+        "OpenAI为ChatGPT企业版引入了新的支出控制和使用分析功能，帮助组织管理成本并自信地扩展人工智能。"
       ],
       "vocabulary": [
         {
-          "word": "introduced",
+          "word": "introduce",
           "meaningZh": "引入",
-          "phonetic": "/ˌɪntrəˈdjuːst/",
-          "example": "The company introduced a new product last month.",
-          "exampleZh": "该公司上个月推出了一个新产品。"
+          "phonetic": "/ˌɪntrəˈdjuːs/",
+          "example": "The company introduced a new product line.",
+          "exampleZh": "公司推出了一条新产品线。"
         },
         {
           "word": "spend controls",
-          "meaningZh": "支出控制",
+          "meaningZh": "花费控制",
           "phonetic": "/spend kənˈtroʊlz/",
-          "example": "Spend controls are important for managing a budget.",
-          "exampleZh": "支出控制在管理预算中很重要。"
+          "example": "We need to implement spend controls to reduce costs.",
+          "exampleZh": "我们需要实施花费控制以降低成本。"
         },
         {
           "word": "usage analytics",
           "meaningZh": "使用分析",
           "phonetic": "/ˈjuːsɪdʒ ˌænəˈlɪtɪks/",
-          "example": "Usage analytics can help improve app performance.",
-          "exampleZh": "使用分析可以帮助提高应用程序性能。"
+          "example": "Usage analytics helps us understand user behavior.",
+          "exampleZh": "使用分析帮助我们理解用户行为。"
         },
         {
-          "word": "organizations",
-          "meaningZh": "组织",
-          "phonetic": "/ˌɔːrɡənəˈzeɪʃənz/",
-          "example": "Many organizations work together on this project.",
-          "exampleZh": "许多组织在这个项目上合作。"
+          "word": "manage",
+          "meaningZh": "管理",
+          "phonetic": "/ˈmænɪdʒ/",
+          "example": "She manages a team of five people.",
+          "exampleZh": "她管理着一个五人团队。"
         },
         {
           "word": "confidence",
           "meaningZh": "信心",
-          "phonetic": "/ˈkɒnfɪdəns/",
-          "example": "He speaks with great confidence.",
-          "exampleZh": "他说话充满信心。"
+          "phonetic": "/ˈkɑːnfɪdəns/",
+          "example": "He spoke with great confidence.",
+          "exampleZh": "他说话时充满信心。"
+        },
+        {
+          "word": "flexibility",
+          "meaningZh": "灵活性",
+          "phonetic": "/ˌfleksəˈbɪlɪti/",
+          "example": "The plan allows for some flexibility.",
+          "exampleZh": "这个计划允许有一定的灵活性。"
         }
       ],
       "id": "450d5ccfb1602dc277cdfc70",
@@ -241,63 +248,70 @@
       "learningContent": {
         "easy": {
           "paragraphs": [
-            "OpenAI has introduced new spend controls and usage analytics for ChatGPT Enterprise. This helps organizations manage costs and use AI confidently."
+            "OpenAI has introduced new spend controls and usage analytics for ChatGPT Enterprise. This will help organizations manage costs and use AI confidently."
           ],
           "paragraphTranslations": [
-            "OpenAI 引入了新的支出控制和使用分析功能，用于 ChatGPT Enterprise。这有助于组织管理成本并自信地使用人工智能。"
+            "OpenAI推出了ChatGPT企业版的新花费控制和使用分析工具。这将帮助组织管理成本并自信地使用人工智能。"
           ],
-          "targetWords": 56,
+          "targetWords": 58,
           "cefr": "A2-B1"
         },
         "standard": {
           "paragraphs": [
-            "OpenAI has introduced new spend controls and usage analytics for ChatGPT Enterprise. These features help organizations manage costs and scale AI with confidence. The spend controls allow businesses to set limits on their spending, while usage analytics provide insights into how AI is being used within the organization."
+            "OpenAI has introduced new spend controls and usage analytics for ChatGPT Enterprise. This feature allows organizations to manage costs and scale AI with confidence. The new controls provide more flexibility and better visibility into spending, enabling businesses to make informed decisions about their AI investments."
           ],
           "paragraphTranslations": [
-            "OpenAI 为 ChatGPT Enterprise 引入了新的支出控制和使用分析功能。这些功能帮助组织管理成本并自信地扩展人工智能。支出控制允许企业设置支出限额，而使用分析则提供了组织内人工智能使用情况的洞察。"
+            "OpenAI为ChatGPT企业版引入了新的花费控制和使用分析功能。这个特性允许组织管理成本并自信地扩展人工智能。新的控制提供了更多的灵活性和更好的花费透明度，使企业能够就他们的人工智能投资做出明智的决策。"
           ],
-          "targetWords": 120,
+          "targetWords": 117,
           "cefr": "B1-B2"
         },
         "vocabulary": [
           {
-            "word": "introduced",
+            "word": "introduce",
             "meaningZh": "引入",
-            "phonetic": "/ˌɪntrəˈdjuːst/",
-            "example": "The company introduced a new product last month.",
-            "exampleZh": "该公司上个月推出了一个新产品。"
+            "phonetic": "/ˌɪntrəˈdjuːs/",
+            "example": "The company introduced a new product line.",
+            "exampleZh": "公司推出了一条新产品线。"
           },
           {
             "word": "spend controls",
-            "meaningZh": "支出控制",
+            "meaningZh": "花费控制",
             "phonetic": "/spend kənˈtroʊlz/",
-            "example": "Spend controls are important for managing a budget.",
-            "exampleZh": "支出控制在管理预算中很重要。"
+            "example": "We need to implement spend controls to reduce costs.",
+            "exampleZh": "我们需要实施花费控制以降低成本。"
           },
           {
             "word": "usage analytics",
             "meaningZh": "使用分析",
             "phonetic": "/ˈjuːsɪdʒ ˌænəˈlɪtɪks/",
-            "example": "Usage analytics can help improve app performance.",
-            "exampleZh": "使用分析可以帮助提高应用程序性能。"
+            "example": "Usage analytics helps us understand user behavior.",
+            "exampleZh": "使用分析帮助我们理解用户行为。"
           },
           {
-            "word": "organizations",
-            "meaningZh": "组织",
-            "phonetic": "/ˌɔːrɡənəˈzeɪʃənz/",
-            "example": "Many organizations work together on this project.",
-            "exampleZh": "许多组织在这个项目上合作。"
+            "word": "manage",
+            "meaningZh": "管理",
+            "phonetic": "/ˈmænɪdʒ/",
+            "example": "She manages a team of five people.",
+            "exampleZh": "她管理着一个五人团队。"
           },
           {
             "word": "confidence",
             "meaningZh": "信心",
-            "phonetic": "/ˈkɒnfɪdəns/",
-            "example": "He speaks with great confidence.",
-            "exampleZh": "他说话充满信心。"
+            "phonetic": "/ˈkɑːnfɪdəns/",
+            "example": "He spoke with great confidence.",
+            "exampleZh": "他说话时充满信心。"
+          },
+          {
+            "word": "flexibility",
+            "meaningZh": "灵活性",
+            "phonetic": "/ˌfleksəˈbɪlɪti/",
+            "example": "The plan allows for some flexibility.",
+            "exampleZh": "这个计划允许有一定的灵活性。"
           }
         ],
         "sourceFingerprint": "3fd169ffb8f6d210bc1a0b17d70fd91951f8e36ad7edfa6a19169fe504d52b0f",
-        "generatedAt": "2026-06-19T06:12:31Z"
+        "generatedAt": "2026-06-19T06:16:54Z"
       }
     }
   ]
