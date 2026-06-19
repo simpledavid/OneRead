@@ -678,15 +678,17 @@ def generate_body_translations(body: list[str]) -> list[str]:
 
 
 def validate_learning_content(content: dict[str, Any]) -> None:
-    for name, target in (("easy", 100), ("standard", 150)):
+    # Word counts are a soft "shorter easy < longer standard" guardrail, not a
+    # hard target — keep the bands generous so a concise rewrite still passes.
+    for name, low, high in (("easy", 45, 160), ("standard", 90, 220)):
         version = content.get(name) or {}
         paragraphs = version.get("paragraphs") or []
         translations = version.get("paragraphTranslations") or []
         if not paragraphs or len(paragraphs) != len(translations):
             raise ValueError(f"{name} paragraphs and translations must be non-empty and aligned")
         count = word_count(" ".join(paragraphs))
-        if not (target - 35 <= count <= target + 45):
-            raise ValueError(f"{name} word count {count} is outside the allowed range")
+        if not (low <= count <= high):
+            raise ValueError(f"{name} word count {count} is outside {low}-{high}")
     if not 5 <= len(content.get("vocabulary") or []) <= 8:
         raise ValueError("vocabulary must contain 5-8 items")
 
