@@ -7,10 +7,14 @@ enum ReadingLevel: Int, CaseIterable, Identifiable {
     case level2 = 2
     case level3 = 3
 
+    /// Only Standard + Original are offered. `level1` (Easy) is retained for
+    /// backward compatibility with persisted values but is never shown.
+    static var allCases: [ReadingLevel] { [.level2, .level3] }
+
     var id: Int { rawValue }
 
-    /// Easy/Standard are editorial learning versions; Original keeps the
-    /// cleaned source article.
+    /// Standard is the editorial learning version; Original keeps the cleaned
+    /// source article.
     var title: String {
         switch self {
         case .level1: return "Easy"
@@ -19,12 +23,12 @@ enum ReadingLevel: Int, CaseIterable, Identifiable {
         }
     }
 
-    /// Approximate length, in words, for the AI-condensed versions.
+    /// Approximate length, in words, for the AI-condensed version.
     /// `nil` means the original article is shown unchanged (no AI needed).
     var wordTarget: Int? {
         switch self {
         case .level1: return 100
-        case .level2: return 150
+        case .level2: return 100
         case .level3: return nil
         }
     }
@@ -47,7 +51,7 @@ struct ArticleTodayView: View {
                                     article: first,
                                     rank: 1,
                                     pageCount: min(visibleArticles.count, 2),
-                                    initialLevel: .level1
+                                    initialLevel: .level2
                                 )
                             } label: {
                                 ArticleHomeCard(
@@ -57,6 +61,7 @@ struct ArticleTodayView: View {
                             }
                             .id("home-feature-\(first.id)")
                             .buttonStyle(.plain)
+                            .simultaneousGesture(TapGesture().onEnded { store.triggerImpact() })
                         }
 
                         if visibleArticles.count > 1 {
@@ -66,7 +71,7 @@ struct ArticleTodayView: View {
                                         article: article,
                                         rank: index + 2,
                                         pageCount: min(visibleArticles.count, 2),
-                                        initialLevel: .level1
+                                        initialLevel: .level2
                                     )
                                 } label: {
                                     ArticleHomeCard(
@@ -75,6 +80,7 @@ struct ArticleTodayView: View {
                                     )
                                 }
                                 .buttonStyle(.plain)
+                                .simultaneousGesture(TapGesture().onEnded { store.triggerImpact() })
                             }
                         } else if visibleArticles.isEmpty {
                             emptyState

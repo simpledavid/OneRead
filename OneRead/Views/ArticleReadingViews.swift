@@ -488,6 +488,7 @@ private struct ReadingTitleView: View {
                     isHighlighted: isHighlightedToken(token, savedCandidates: savedCandidates),
                     font: .system(size: titleFontSize, weight: .bold, design: .rounded)
                 ) {
+                    store.triggerImpact()
                     selectedTokenID = token.id
                     selectedLookup = WordLookupResolver.lookup(
                         rawWord: token.lookup,
@@ -560,6 +561,7 @@ struct LearningParagraphView: View {
                         token: token,
                         isHighlighted: isHighlightedToken(token, savedCandidates: savedCandidates)
                     ) {
+                        store.triggerImpact()
                         selectedTokenID = token.id
                         selectedLookup = lookup(token.lookup)
                     }

@@ -619,32 +619,21 @@ def rerank_with_llm(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
     source = "\n\n".join(article["body"])[:12000]
-    source_words = word_count(source)
 
-    # Scale the rewrite length to the source so a long article gets a substantial
-    # easy/standard version (a fixed ~100 words would gut an 800-word story). Never
-    # ask for more words than the source has — that would force invention.
-    def clamp(value: int, low: int, high: int) -> int:
-        return max(low, min(high, value))
-
-    easy_target = min(source_words, clamp(round(source_words * 0.40), 90, 200))
-    standard_target = min(source_words, clamp(round(source_words * 0.60), 140, 300))
-    standard_target = max(standard_target, easy_target)
-
+    # Single "standard" reading level (B1-B2), held to 80-120 words regardless of
+    # the source length. (Easy was dropped; the app shows Standard + Original.)
     schema = {
-        "easy": {"paragraphs": ["..."], "paragraphTranslations": ["..."], "targetWords": easy_target, "cefr": "A2-B1"},
-        "standard": {"paragraphs": ["..."], "paragraphTranslations": ["..."], "targetWords": standard_target, "cefr": "B1-B2"},
+        "standard": {"paragraphs": ["..."], "paragraphTranslations": ["..."], "targetWords": 100, "cefr": "B1-B2"},
         "vocabulary": [{"word": "...", "meaningZh": "...", "phonetic": "...", "example": "...", "exampleZh": "..."}],
         "sourceFingerprint": hashlib.sha256(source.encode("utf-8")).hexdigest(),
     }
     system = (
         "You create factual English-learning material for Chinese CET-4 learners. Preserve every "
         "name, number, causal relationship, qualification, and uncertainty. Never invent facts. "
-        f"Easy must be A2-B1 and about {easy_target} English words (do not write a tiny summary; "
-        f"cover the main facts at length). Standard must be B1-B2 and about {standard_target} "
-        "words, longer and richer than easy. Reaching these lengths is mandatory. Create 5-8 useful "
-        "vocabulary items for tap-to-translate lookup. Chinese translations must be natural. "
-        "Return JSON only."
+        "Rewrite the article as ONE simplified 'standard' version at CEFR B1-B2, between 80 and 120 "
+        "English words (aim for ~100) — a faithful condensed retelling, not a copy. Staying within "
+        "80-120 words is mandatory. Create 5-8 useful vocabulary items for tap-to-translate lookup. "
+        "Chinese translations must be natural. Return JSON only."
     )
     user = (
         "Use this exact shape:\n"
@@ -653,35 +642,30 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
         + "\nSource article:\n" + source
     )
 
-    def length_ok(result: dict[str, Any]) -> bool:
-        ec = word_count(" ".join(result["easy"]["paragraphs"]))
-        sc = word_count(" ".join(result["standard"]["paragraphs"]))
-        return ec >= easy_target * 0.75 and sc >= standard_target * 0.75
-
-    # Retry on both structural failures and under-length output; keep the longest
-    # attempt as a fallback so a stubborn source still publishes.
+    # Retry until the standard version lands in 80-120 words; otherwise keep the
+    # attempt closest to ~100 so a stubborn source still publishes.
     last_error: Exception | None = None
     best: dict[str, Any] | None = None
-    best_words = -1
+    best_distance = 10**9
     for _ in range(5):
         try:
             result = llm_json(system, user)
             result["generatedAt"] = iso_now()
+            # Only standard is generated; mirror it into easy for schema/back-compat.
+            result["easy"] = result["standard"]
             validate_learning_content(result)
         except ValueError as error:
             last_error = error
             continue
-        if length_ok(result):
+        count = word_count(" ".join(result["standard"]["paragraphs"]))
+        if 80 <= count <= 120:
             return result
-        total = word_count(" ".join(result["easy"]["paragraphs"])) + word_count(
-            " ".join(result["standard"]["paragraphs"])
-        )
-        if total > best_words:
-            best, best_words = result, total
+        distance = abs(count - 100)
+        if distance < best_distance:
+            best, best_distance = result, distance
     if best is not None:
         print(
-            f"warning: learning content under target ({easy_target}/{standard_target} words) "
-            "after retries; using the longest attempt",
+            "warning: standard word count outside 80-120 after retries; using closest attempt",
             file=sys.stderr,
         )
         return best
