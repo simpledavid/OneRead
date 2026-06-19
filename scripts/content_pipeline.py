@@ -630,10 +630,12 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
     system = (
         "You create factual English-learning material for Chinese CET-4 learners. Preserve every "
         "name, number, causal relationship, qualification, and uncertainty. Never invent facts. "
-        "Rewrite the article as ONE simplified 'standard' version at CEFR B1-B2, between 80 and 120 "
-        "English words (aim for ~100) — a faithful condensed retelling, not a copy. Staying within "
-        "80-120 words is mandatory. Create 5-8 useful vocabulary items for tap-to-translate lookup. "
-        "Chinese translations must be natural. Return JSON only."
+        "Rewrite the article as ONE simplified 'standard' version at CEFR B1-B2 — a faithful "
+        "condensed retelling, not a copy. It MUST be between 80 and 120 words: never fewer than 80, "
+        "never more than 120; aim for about 100. If your draft is under 80 words, add more "
+        "supporting facts from the source until it reaches at least 80. Count the words before "
+        "answering. Create 5-8 useful vocabulary items for tap-to-translate lookup. Chinese "
+        "translations must be natural. Return JSON only."
     )
     user = (
         "Use this exact shape:\n"
@@ -647,7 +649,7 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
     last_error: Exception | None = None
     best: dict[str, Any] | None = None
     best_distance = 10**9
-    for _ in range(5):
+    for _ in range(7):
         try:
             result = llm_json(system, user)
             result["generatedAt"] = iso_now()
