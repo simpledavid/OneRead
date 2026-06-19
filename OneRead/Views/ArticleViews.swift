@@ -482,6 +482,7 @@ struct SavedWordsView: View {
     @EnvironmentObject private var speech: SpeechService
     @State private var selectedShelf: SavedWordShelf = .learning
     @State private var selectedLookup: WordLookup?
+    @State private var isReviewing = false
     private let listAnchor = "saved-words-list"
 
     var body: some View {
@@ -491,8 +492,13 @@ struct SavedWordsView: View {
                     VStack(alignment: .leading, spacing: 22) {
                         wordsHeader
                         reviewWordsHero {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                proxy.scrollTo(listAnchor, anchor: .top)
+                            if store.learningWords.isEmpty {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    proxy.scrollTo(listAnchor, anchor: .top)
+                                }
+                            } else {
+                                store.triggerImpact()
+                                isReviewing = true
                             }
                         }
                         shelfControls
@@ -511,6 +517,9 @@ struct SavedWordsView: View {
                     .presentationDragIndicator(.hidden)
                     .presentationCornerRadius(28)
                     .presentationBackground(Palette.surface)
+            }
+            .fullScreenCover(isPresented: $isReviewing) {
+                WordReviewView(words: store.learningWords)
             }
         }
     }
@@ -731,5 +740,317 @@ struct SavedWordsView: View {
     private func displayWord(for lookup: WordLookup, fallback: String) -> String {
         let cleaned = lookup.word.cleanedDisplayWord
         return cleaned.isEmpty ? fallback : cleaned
+    }
+}
+
+private struct WordReviewQuestion: Identifiable {
+    let id = UUID()
+    let word: String
+    let phonetic: String
+    let example: String
+    let options: [String]
+    let correctIndex: Int
+}
+
+// Multiple-choice review: show a saved word (with an example sentence when
+// available) and pick its Chinese meaning from three options.
+struct WordReviewView: View {
+    @EnvironmentObject private var store: ArticleStore
+    @EnvironmentObject private var speech: SpeechService
+    @Environment(\.dismiss) private var dismiss
+
+    let words: [String]
+
+    @State private var questions: [WordReviewQuestion] = []
+    @State private var index = 0
+    @State private var selected: Int?
+    @State private var correctCount = 0
+    @State private var finished = false
+
+    private static let fallbackGlosses = [
+        "城市的街道或道路。", "人造或自然的卫星。", "一种常见的水果。",
+        "海洋中的大型动物。", "测量温度的工具。", "一年中的某个季节。",
+        "用于书写的工具。", "金属制成的容器。", "表示同意的回答。", "一种交通工具。",
+    ]
+
+    var body: some View {
+        ZStack {
+            Palette.background.ignoresSafeArea()
+            if questions.isEmpty {
+                emptyState
+            } else if finished {
+                summary
+            } else {
+                quiz(questions[index])
+            }
+        }
+        .onAppear {
+            if questions.isEmpty {
+                questions = buildQuestions()
+            }
+        }
+    }
+
+    private func quiz(_ question: WordReviewQuestion) -> some View {
+        VStack(spacing: 0) {
+            topBar
+
+            Spacer(minLength: 12)
+
+            Text(question.word)
+                .font(.system(size: 44, weight: .heavy, design: .rounded))
+                .foregroundStyle(Palette.accent)
+
+            if !question.example.isEmpty {
+                Text(question.example)
+                    .font(.system(size: 19, weight: .medium, design: .rounded))
+                    .foregroundStyle(Palette.ink)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 28)
+                    .padding(.top, 22)
+            }
+
+            Spacer(minLength: 12)
+
+            VStack(spacing: 14) {
+                ForEach(Array(question.options.enumerated()), id: \.offset) { i, option in
+                    optionButton(option, index: i, question: question)
+                }
+            }
+            .padding(.horizontal, 20)
+
+            bottomBar(question)
+        }
+        .padding(.top, 8)
+        .padding(.bottom, 16)
+    }
+
+    private var topBar: some View {
+        HStack(spacing: 16) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(Palette.muted)
+                    .frame(width: 36, height: 36)
+            }
+            .buttonStyle(.plain)
+
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Palette.surface)
+                    Capsule()
+                        .fill(Palette.accent)
+                        .frame(width: geo.size.width * progress)
+                }
+            }
+            .frame(height: 14)
+
+            Text("\(index + 1)/\(questions.count)")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .foregroundStyle(Palette.muted)
+        }
+        .padding(.horizontal, 20)
+    }
+
+    private func optionButton(_ option: String, index i: Int, question: WordReviewQuestion) -> some View {
+        let isCorrect = i == question.correctIndex
+        let answered = selected != nil
+        let isSelected = selected == i
+
+        let background: Color
+        let border: Color
+        if answered, isCorrect {
+            background = Color.green.opacity(0.18)
+            border = .green
+        } else if answered, isSelected {
+            background = Color.red.opacity(0.16)
+            border = .red
+        } else {
+            background = Palette.surface
+            border = Palette.border
+        }
+
+        return Button {
+            guard selected == nil else { return }
+            selected = i
+            store.triggerImpact()
+            if isCorrect { correctCount += 1 }
+            scheduleAdvance()
+        } label: {
+            HStack {
+                Text(option)
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.ink)
+                    .multilineTextAlignment(.leading)
+                Spacer(minLength: 8)
+                if answered, isCorrect {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.green)
+                }
+            }
+            .padding(.horizontal, 18)
+            .padding(.vertical, 18)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(border, lineWidth: 1.5)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func bottomBar(_ question: WordReviewQuestion) -> some View {
+        HStack {
+            Spacer()
+            Button {
+                store.setKnownState(for: question.word, isKnown: true)
+                store.triggerImpact()
+                advance()
+            } label: {
+                Text("I know this word")
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+            }
+            .buttonStyle(.plain)
+            Spacer()
+        }
+        .overlay(alignment: .trailing) {
+            Button {
+                speech.speak(question.word)
+            } label: {
+                Image(systemName: "speaker.wave.2.fill")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundStyle(Palette.ink)
+                    .frame(width: 44, height: 44)
+            }
+            .buttonStyle(.plain)
+            .padding(.trailing, 16)
+        }
+        .padding(.top, 18)
+    }
+
+    private var summary: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 44, weight: .bold))
+                .foregroundStyle(Palette.accent)
+            Text("Review complete")
+                .font(.system(size: 24, weight: .heavy, design: .rounded))
+                .foregroundStyle(Palette.ink)
+            Text("\(correctCount) / \(questions.count) correct")
+                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                .foregroundStyle(Palette.muted)
+
+            Button {
+                dismiss()
+            } label: {
+                Text("Done")
+                    .font(.system(size: 18, weight: .heavy, design: .rounded))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(Palette.accent))
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 8)
+            .padding(.horizontal, 40)
+        }
+        .padding(28)
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 16) {
+            Text("No words to review yet")
+                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .foregroundStyle(Palette.ink)
+            Button("Close") { dismiss() }
+                .buttonStyle(.plain)
+                .foregroundStyle(Palette.accent)
+        }
+    }
+
+    private var progress: CGFloat {
+        guard !questions.isEmpty else { return 0 }
+        return CGFloat(index + 1) / CGFloat(questions.count)
+    }
+
+    private func scheduleAdvance() {
+        let current = index
+        Task {
+            try? await Task.sleep(nanoseconds: 1_100_000_000)
+            await MainActor.run {
+                if current == index, selected != nil {
+                    advance()
+                }
+            }
+        }
+    }
+
+    private func advance() {
+        selected = nil
+        if index + 1 >= questions.count {
+            finished = true
+        } else {
+            index += 1
+        }
+    }
+
+    private func buildQuestions() -> [WordReviewQuestion] {
+        let chosen = Array(words.shuffled().prefix(10))
+        let resolved = chosen.map { (word: $0, lookup: lookup(for: $0)) }
+        let glossPool = resolved.map { conciseGloss($0.lookup.meaningZh) }.filter { !$0.isEmpty }
+
+        var result: [WordReviewQuestion] = []
+        for item in resolved {
+            let correct = conciseGloss(item.lookup.meaningZh)
+            guard !correct.isEmpty else { continue }
+
+            var distractors = Array(Set(glossPool).subtracting([correct])).shuffled()
+            if distractors.count < 2 {
+                distractors += Self.fallbackGlosses.shuffled().filter { $0 != correct }
+            }
+            let two = Array(distractors.prefix(2))
+            let options = (two + [correct]).shuffled()
+            guard let correctIndex = options.firstIndex(of: correct) else { continue }
+
+            let display = item.lookup.word.cleanedDisplayWord.isEmpty ? item.word : item.lookup.word.cleanedDisplayWord
+            result.append(
+                WordReviewQuestion(
+                    word: display,
+                    phonetic: item.lookup.phonetic,
+                    example: item.lookup.example,
+                    options: options,
+                    correctIndex: correctIndex
+                )
+            )
+        }
+        return result
+    }
+
+    private func lookup(for word: String) -> WordLookup {
+        WordLookupResolver.lookup(
+            rawWord: word,
+            vocabulary: store.articles.flatMap(\.vocabulary),
+            context: ""
+        )
+    }
+
+    // Trim an ECDICT translation to one concise sense for a quiz option.
+    private func conciseGloss(_ raw: String) -> String {
+        var text = raw
+        if let newline = text.firstIndex(where: { $0 == "\n" || $0 == "\r" }) {
+            text = String(text[..<newline])
+        }
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let posRange = text.range(of: "^[a-zA-Z]{1,5}\\.\\s*", options: .regularExpression) {
+            text = String(text[posRange.upperBound...])
+        }
+        return text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
