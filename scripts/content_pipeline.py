@@ -678,17 +678,20 @@ def generate_body_translations(body: list[str]) -> list[str]:
 
 
 def validate_learning_content(content: dict[str, Any]) -> None:
-    # Word counts are a soft "shorter easy < longer standard" guardrail, not a
-    # hard target — keep the bands generous so a concise rewrite still passes.
-    for name, low, high in (("easy", 45, 160), ("standard", 90, 220)):
+    for name, target in (("easy", 100), ("standard", 150)):
         version = content.get(name) or {}
         paragraphs = version.get("paragraphs") or []
         translations = version.get("paragraphTranslations") or []
         if not paragraphs or len(paragraphs) != len(translations):
             raise ValueError(f"{name} paragraphs and translations must be non-empty and aligned")
+        # Word count is a soft target: a thin source legitimately yields a short
+        # rewrite. Warn, but never block publishing on it.
         count = word_count(" ".join(paragraphs))
-        if not (low <= count <= high):
-            raise ValueError(f"{name} word count {count} is outside {low}-{high}")
+        if not (target - 55 <= count <= target + 60):
+            print(
+                f"warning: {name} word count {count} is far from target {target}",
+                file=sys.stderr,
+            )
     if not 5 <= len(content.get("vocabulary") or []) <= 8:
         raise ValueError("vocabulary must contain 5-8 items")
 
