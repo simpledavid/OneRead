@@ -27,6 +27,7 @@ from typing import Any
 
 
 MAX_FETCH_WORKERS = 8
+DEFAULT_PUBLIC_BASE_URL = "https://simpledavid.github.io/OneRead"
 
 
 # Skip candidates whose extracted body is too thin to make a real reading (e.g.
@@ -107,6 +108,68 @@ def fetch_bytes(url: str, timeout: int = 25) -> bytes:
     )
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return response.read()
+
+
+def mirror_article_image(article: dict[str, Any], output_dir: Path) -> None:
+    """Copy the selected source image to OneRead's own static host.
+
+    Some publisher CDNs are slow or unreachable for readers even though the
+    article JSON is available. Mirroring only the two published hero images
+    keeps the edition reliable without changing article attribution or links.
+    """
+    source_url = (article.get("imageURLString") or "").strip()
+    if not source_url:
+        return
+
+    # BBC RSS commonly exposes a tiny 240px rendition. Request a useful hero
+    # size before mirroring it.
+    if "ichef.bbci.co.uk" in source_url:
+        source_url = source_url.replace("/standard/240/", "/standard/976/")
+
+    request = urllib.request.Request(
+        source_url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+        },
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            content_type = (response.headers.get_content_type() or "").lower()
+            if not content_type.startswith("image/"):
+                raise ValueError(f"unexpected content type {content_type}")
+            data = response.read(15 * 1024 * 1024 + 1)
+    except (OSError, urllib.error.URLError, ValueError) as error:
+        print(
+            f"warning: could not mirror image for {article.get('title', '')[:60]}: {error}",
+            file=sys.stderr,
+        )
+        return
+
+    if not data or len(data) > 15 * 1024 * 1024:
+        print(
+            f"warning: invalid image size for {article.get('title', '')[:60]}",
+            file=sys.stderr,
+        )
+        return
+
+    extensions = {
+        "image/jpeg": ".jpg",
+        "image/png": ".png",
+        "image/webp": ".webp",
+        "image/avif": ".avif",
+    }
+    extension = extensions.get(content_type, Path(urllib.parse.urlparse(source_url).path).suffix.lower())
+    if extension not in {".jpg", ".jpeg", ".png", ".webp", ".avif"}:
+        extension = ".jpg"
+
+    filename = f"{article['id']}{extension}"
+    image_path = output_dir / "images" / filename
+    image_path.parent.mkdir(parents=True, exist_ok=True)
+    image_path.write_bytes(data)
+
+    public_base_url = os.environ.get("ONE_READ_PUBLIC_BASE_URL", DEFAULT_PUBLIC_BASE_URL).rstrip("/")
+    article["imageURLString"] = f"{public_base_url}/images/{filename}"
 
 
 def clean_html(value: str) -> str:
@@ -965,6 +1028,8 @@ def auto(args: argparse.Namespace) -> None:
         build_edition_article(item, args.date, slot)
         for slot, item in zip(("morning", "afternoon"), selected)
     ]
+    for article in articles:
+        mirror_article_image(article, output_dir)
     edition = assemble_edition(args.date, articles)
     write_json(output_dir / f"{args.date}.json", edition)
     write_json(output_dir / "latest.json", edition)
@@ -997,8 +1062,10 @@ def publish(args: argparse.Namespace) -> None:
         build_edition_article(candidate, review["date"], slot)
         for slot, candidate in zip(("morning", "afternoon"), selected_candidates)
     ]
-    edition = assemble_edition(review["date"], articles)
     output_dir: Path = args.output_dir
+    for article in articles:
+        mirror_article_image(article, output_dir)
+    edition = assemble_edition(review["date"], articles)
     write_json(output_dir / f"{review['date']}.json", edition)
     write_json(output_dir / "latest.json", edition)
     print(f"published {review['date']} to {output_dir}")

@@ -36,6 +36,8 @@ How it selects:
   [ai-daily-digest](https://github.com/vigorX777/ai-daily-digest).
 - Original source text must contain at least **120 words**. Thin RSS snippets
   are rejected during candidate preparation and checked again before publish.
+- The two selected hero images are mirrored to OneRead's GitHub Pages host so
+  publisher CDN outages do not leave readers with a broken image.
 - Morning is the top-ranked story; afternoon is the top-ranked story on a
   different topic (`diversity_key`). After the afternoon edition is released,
   the app displays that newer story above the morning story.

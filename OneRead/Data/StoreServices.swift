@@ -412,8 +412,7 @@ struct DailyEditionSchedule {
         case nil:
             hour = fallbackRank <= 1 ? morningReleaseHour : afternoonReleaseHour
         }
-        let suffix = hour < 12 ? "AM" : "PM"
-        let displayHour = hour > 12 ? hour - 12 : hour
-        return cycleKey == currentCycleKey ? "Today, \(displayHour):00 \(suffix)" : "\(displayHour):00 \(suffix)"
+        let time = String(format: "%02d:00", hour)
+        return cycleKey == currentCycleKey ? "Today, \(time)" : time
     }
 }
