@@ -453,9 +453,10 @@ def llm_json(system: str, user: str) -> Any:
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ],
-        # kimi-k2.6 only accepts temperature 1; other OpenAI-compatible models
-        # tolerate it too, so keep a single value.
-        "temperature": 1,
+        # Low temperature keeps rewrites/translations faithful and consistent.
+        # (moonshot-v1 series accepts this; reasoning models like kimi-k2.x force
+        # temperature 1 and are a poor fit for translation.)
+        "temperature": 0.3,
         "stream": False,
         # Generous output budget: Moonshot's default max_tokens is small and would
         # truncate the learning-content/translation JSON into an unparseable blob.
