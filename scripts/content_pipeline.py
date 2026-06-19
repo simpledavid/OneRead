@@ -455,6 +455,9 @@ def llm_json(system: str, user: str) -> Any:
         ],
         "temperature": 0.1,
         "stream": False,
+        # Force strict JSON output (OpenAI-compatible providers incl. Moonshot/Kimi
+        # honor this). Prompts already say "JSON", which json_object mode requires.
+        "response_format": {"type": "json_object"},
     }).encode("utf-8")
     request = urllib.request.Request(
         f"{base}/chat/completions",
@@ -469,10 +472,13 @@ def llm_json(system: str, user: str) -> Any:
     with urllib.request.urlopen(request, timeout=90) as response:
         result = json.loads(response.read().decode("utf-8"))
     content = result["choices"][0]["message"]["content"]
-    match = re.search(r"\{.*\}", content, flags=re.S)
-    if not match:
-        raise RuntimeError("LLM did not return a JSON object")
-    return json.loads(match.group(0))
+    try:
+        return json.loads(content)
+    except json.JSONDecodeError:
+        match = re.search(r"\{.*\}", content, flags=re.S)
+        if not match:
+            raise RuntimeError("LLM did not return a JSON object")
+        return json.loads(match.group(0))
 
 
 def clamp_editorial_dimension(value: Any, fallback: float) -> float:
