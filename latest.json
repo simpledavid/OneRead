@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "date": "2026-06-19",
-  "generatedAt": "2026-06-19T06:53:38Z",
+  "generatedAt": "2026-06-19T06:57:52Z",
   "status": "approved",
   "articles": [
     {
@@ -40,61 +40,54 @@
         "The move is the latest in a series of shufflings between the top AI labs, including Google, OpenAI, Anthropic, and Meta. Shazeer is credited for being one of the foundational minds behind modern generative AI. He co-authored the seminal 2017 paper “Attention Is All You Need,” which introduced the Transformer architecture."
       ],
       "paragraphTranslations": [
-        "OpenAI在其公开亮相前，引入了一些重量级人物加入团队：谷歌DeepMind人工智能传奇人物诺姆·沙泽尔和前特朗普白宫人工智能政策官员迪恩·鲍尔。",
-        "沙泽尔是Gemini的联合负责人，也是人工智能角色扮演初创公司Character AI的创始人，他在周三宣布离开谷歌。自2000年以来，他一直在谷歌工作，只在离开共同创立Character AI的三年期间短暂离开。两年前，谷歌以27亿美元的交易重新雇佣了沙泽尔，让这家科技巨头得以使用该初创公司的技术。",
-        "这一举动是包括谷歌、OpenAI、Anthropic和Meta在内的顶级人工智能实验室之间一系列人员变动中的最新一次。沙泽尔被认为是现代生成性人工智能背后的基础思想之一。他共同撰写了2017年的开创性论文《注意力就是全部》，引入了Transformer架构。",
-        "据报道，在离开谷歌之前，沙泽尔在政治问题上也一直在搅动局面。据《信息报》报道，沙泽尔在内部消息板上发表了关于跨性别身份和以色列在加沙的战争的意见，导致管理层删除了他的帖子。",
-        "这些争议是否会跟随他到新雇主那里还有待观察。与此同时，OpenAI也通过引入鲍尔来加强其政策资质。鲍尔去年在白宫短暂任职，他帮助发布了美国的人工智能行动计划，然后辞职重新加入技术自由主义智库美国创新基金会，担任高级研究员。",
-        "“我很高兴也很荣幸地宣布，7月6日我将加入OpenAI，领导一个名为战略未来的新团队，”鲍尔在周四在X上写道。“我们的任务将是帮助公司领导层塑造前沿人工智能政策。”",
-        "鲍尔将直接向首席战略官杰森·权报告。这个“小而高效”的团队将专注于“涉及灾难性风险、递归自我改进、劳动力市场影响以及前沿实验室、政府（特别是美国联邦政府）和社会之间的关系的事务”，鲍尔在博客文章中写道。",
-        "他补充说，战略未来团队将涵盖面向公众的政策和内部治理。后者很重要——鲍尔指出，“几乎出于必然”，人工智能实验室将不得不在人工智能治理决策中发挥领导作用。",
-        "“换句话说，内部治理将比大多数人意识到的对人工智能的未来更为关键，”鲍尔写道。",
-        "鲍尔选择加入OpenAI——可以说是政府中的人工智能宠儿——正值Anthropic再次与美国政府较量。上周晚些时候，唐纳德·特朗普总统下令对Anthropic的最新模型Fable 5和Mythos 5实施出口控制禁令，导致这家人工智能公司被迫完全撤下这些模型以避免违规。对于任何在S-1风险因素宾果卡上有“政府干预”的人来说，当一家公司锁定其内部人士地位而竞争对手受到挤压时，鲍尔就是它看起来的样子。",
+        "OpenAI在其公开亮相前，引入了一些大名鼎鼎的人物加入团队：谷歌DeepMind人工智能传奇人物Noam Shazeer和前特朗普白宫人工智能政策官员Dean Ball。",
+        "Shazeer是Gemini的联合负责人，也是人工智能角色扮演初创公司Character AI的创始人，他在周三宣布离开谷歌。自2000年以来，他一直在该公司工作，只在离开共同创立Character AI的三年期间离开过。两年前，谷歌以27亿美元的交易重新雇佣了Shazeer，使这家科技巨头得以获得该初创公司的技术。",
+        "这一举动是包括谷歌、OpenAI、Anthropic和Meta在内的顶级人工智能实验室之间一系列洗牌中的最新动作。Shazeer被认为是现代生成性人工智能背后的基础思想之一。他共同撰写了2017年的开创性论文“Attention Is All You Need”，引入了Transformer架构。",
+        "据报道，在离开谷歌之前，Shazeer在政治问题上也一直在搅动局面。据The Information报道，Shazeer在内部留言板上就跨性别身份和以色列在加沙的战争发表了意见，导致管理层删除了他的帖子。",
+        "这些争议是否会跟随他到新雇主还有待观察。与此同时，OpenAI也通过引入Ball来加强其政策资质。Ball去年在白宫短暂任职，他帮助发布了美国的人工智能行动计划，然后辞职重新加入技术自由主义智库美国创新基金会，担任高级研究员。",
+        "“我很高兴并荣幸地宣布，7月6日我将加入OpenAI，领导一个名为战略未来（Strategic Futures）的新团队，”Ball在周四在X上写道。“我们的任务将是帮助公司领导层塑造前沿人工智能政策。”",
+        "Ball将直接向首席战略官Jason Kwon汇报。这个“小而高效”的团队将专注于“与灾难性风险、递归自我改进、劳动力市场影响以及前沿实验室、政府（特别是美国联邦政府）和社会之间的关系有关的事宜”，Ball在博客文章中写道。",
+        "他补充说，战略未来团队将涵盖面向公众的政策和内部治理。后者很重要——Ball指出，“几乎必然地”，人工智能实验室将不得不在人工智能治理决策中发挥领导作用。",
+        "“换句话说，内部治理将比大多数人意识到的对人工智能的未来更为重要，”Ball写道。",
+        "Ball决定加入OpenAI——可以说是政府中的人工智能宠儿——正值Anthropic再次与美国政府展开斗争。上周末，唐纳德·特朗普总统下令对Anthropic的最新模型Fable 5和Mythos 5实施出口控制禁令，导致这家人工智能公司被迫完全撤下这些模型以避免违规。对于任何在S-1风险因素宾果卡上有“政府干预”的人来说，当一家公司在对手受到挤压时锁定其内部人士地位时，Ball就是这样的例子。",
         "当您通过我们文章中的链接购买时，我们可能会赚取少量佣金。这不会影响我们的编辑独立性。",
-        "丽贝卡·贝兰是TechCrunch的高级记者，她报道塑造人工智能的业务、政策和新兴趋势。她的作品也出现在《福布斯》、《彭博社》、《大西洋月刊》、《每日野兽》等出版物上。"
+        "Rebecca Bellan是TechCrunch的高级记者，她报道了塑造人工智能的业务、政策和新兴趋势。她的作品也出现在福布斯、彭博社、大西洋月刊、每日野兽等出版物中。"
       ],
       "vocabulary": [
         {
-          "word": "artificial intelligence",
-          "meaningZh": "人工智能",
-          "phonetic": "/ˌɑːtɪfɪʃ(ə)l ɪnˈtɛlɪdʒəns/",
-          "example": "Artificial intelligence is changing the way we live.",
-          "exampleZh": "人工智能正在改变我们的生活方式。"
-        },
-        {
           "word": "IPO",
           "meaningZh": "首次公开募股",
-          "phonetic": "/ˌaɪpiˈəʊ/",
+          "phonetic": "/ˌaɪpəʊ'əʊ/",
           "example": "The company is planning an IPO next year.",
-          "exampleZh": "该公司计划明年进行首次公开募股。"
+          "exampleZh": "公司计划明年进行首次公开募股。"
         },
         {
           "word": "generative AI",
           "meaningZh": "生成性人工智能",
-          "phonetic": "/ˈdʒenərətɪv eɪˈaɪ/",
+          "phonetic": "/ˈdʒenərətɪv ˌeɪˈaɪ/",
           "example": "Generative AI can create new content.",
           "exampleZh": "生成性人工智能可以创造新内容。"
         },
         {
-          "word": "influential",
-          "meaningZh": "有影响力的",
-          "phonetic": "/ˌɪnfluˈɛnʃəl/",
-          "example": "The book was very influential in its field.",
-          "exampleZh": "这本书在其领域非常有影响力。"
+          "word": "controversial",
+          "meaningZh": "有争议的",
+          "phonetic": "/ˌkɒntrəˈvɜːrʃl/",
+          "example": "The new law was controversial.",
+          "exampleZh": "这项新法律是有争议的。"
         },
         {
-          "word": "policy",
-          "meaningZh": "政策",
-          "phonetic": "/ˈpɒləsi/",
-          "example": "The new policy will affect many people.",
-          "exampleZh": "新政策将影响许多人。"
+          "word": "catastrophic",
+          "meaningZh": "灾难性的",
+          "phonetic": "/ˌkæt.əˈstrɒf.ɪk/",
+          "example": "A catastrophic event can cause great damage.",
+          "exampleZh": "灾难性事件可以造成巨大损害。"
         },
         {
           "word": "governance",
           "meaningZh": "治理",
-          "phonetic": "/ˈɡʌvərnəns/",
-          "example": "Good governance is essential for a country.",
-          "exampleZh": "良好的治理对一个国家至关重要。"
+          "phonetic": "/ˈɡʌv.ərn.əns/",
+          "example": "Good governance is important for a country.",
+          "exampleZh": "良好的治理对一个国家很重要。"
         }
       ],
       "id": "f53aff1afeef2419060a8089",
@@ -104,66 +97,63 @@
       "learningContent": {
         "standard": {
           "paragraphs": [
-            "Artificial intelligence company OpenAI is strengthening its team before its Initial Public Offering (IPO). They have hired Noam Shazeer, a former Google DeepMind employee, and Dean Ball, a former White House AI policy official. Shazeer, known for his work on generative AI, co-authored the influential 2017 paper 'Attention Is All You Need'. Ball will lead a new team at OpenAI called Strategic Futures, focusing on AI policy and governance."
+            "OpenAI is hiring well-known figures before its IPO. Noam Shazeer, a Google DeepMind AI expert, and Dean Ball, a former White House AI policy official, have joined the team. Shazeer, who co-authored a key paper on generative AI, left Google after a $2.7 billion deal. Ball, who helped publish America’s AI Action Plan, will lead OpenAI's Strategic Futures team. This team will handle policy and governance issues, focusing on catastrophic risk, labor market impact, and government relations.",
+            "Shazeer's departure from Google was also due to his controversial political opinions. Meanwhile, Anthropic, another AI firm, faces export control issues with the U.S. government."
           ],
           "paragraphTranslations": [
-            "人工智能公司OpenAI在其首次公开募股（IPO）前加强了团队。他们雇佣了前谷歌DeepMind员工Noam Shazeer和前白宫人工智能政策官员Dean Ball。以他在生成性人工智能方面的工作而知名的Shazeer，共同撰写了有影响力的2017年论文《注意力就是你需要的一切》。Ball将在OpenAI领导一个名为战略未来的新团队，专注于人工智能政策和治理。"
+            "OpenAI在首次公开募股前招聘了一些知名人物。谷歌DeepMind人工智能专家Noam Shazeer和前白宫人工智能政策官员Dean Ball加入了团队。Shazeer是一篇关于生成性人工智能的关键论文的合著者，他在一项价值27亿美元的交易后离开了谷歌。Ball帮助发布了美国的人工智能行动计划，他将领导OpenAI的战略未来团队。这个团队将处理政策和治理问题，重点关注灾难性风险、劳动力市场影响和政府关系。",
+            "Shazeer离开谷歌的原因还包括他有争议的政治观点。与此同时，另一家人工智能公司Anthropic面临与美国政府的出口控制问题。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
         },
         "vocabulary": [
           {
-            "word": "artificial intelligence",
-            "meaningZh": "人工智能",
-            "phonetic": "/ˌɑːtɪfɪʃ(ə)l ɪnˈtɛlɪdʒəns/",
-            "example": "Artificial intelligence is changing the way we live.",
-            "exampleZh": "人工智能正在改变我们的生活方式。"
-          },
-          {
             "word": "IPO",
             "meaningZh": "首次公开募股",
-            "phonetic": "/ˌaɪpiˈəʊ/",
+            "phonetic": "/ˌaɪpəʊ'əʊ/",
             "example": "The company is planning an IPO next year.",
-            "exampleZh": "该公司计划明年进行首次公开募股。"
+            "exampleZh": "公司计划明年进行首次公开募股。"
           },
           {
             "word": "generative AI",
             "meaningZh": "生成性人工智能",
-            "phonetic": "/ˈdʒenərətɪv eɪˈaɪ/",
+            "phonetic": "/ˈdʒenərətɪv ˌeɪˈaɪ/",
             "example": "Generative AI can create new content.",
             "exampleZh": "生成性人工智能可以创造新内容。"
           },
           {
-            "word": "influential",
-            "meaningZh": "有影响力的",
-            "phonetic": "/ˌɪnfluˈɛnʃəl/",
-            "example": "The book was very influential in its field.",
-            "exampleZh": "这本书在其领域非常有影响力。"
+            "word": "controversial",
+            "meaningZh": "有争议的",
+            "phonetic": "/ˌkɒntrəˈvɜːrʃl/",
+            "example": "The new law was controversial.",
+            "exampleZh": "这项新法律是有争议的。"
           },
           {
-            "word": "policy",
-            "meaningZh": "政策",
-            "phonetic": "/ˈpɒləsi/",
-            "example": "The new policy will affect many people.",
-            "exampleZh": "新政策将影响许多人。"
+            "word": "catastrophic",
+            "meaningZh": "灾难性的",
+            "phonetic": "/ˌkæt.əˈstrɒf.ɪk/",
+            "example": "A catastrophic event can cause great damage.",
+            "exampleZh": "灾难性事件可以造成巨大损害。"
           },
           {
             "word": "governance",
             "meaningZh": "治理",
-            "phonetic": "/ˈɡʌvərnəns/",
-            "example": "Good governance is essential for a country.",
-            "exampleZh": "良好的治理对一个国家至关重要。"
+            "phonetic": "/ˈɡʌv.ərn.əns/",
+            "example": "Good governance is important for a country.",
+            "exampleZh": "良好的治理对一个国家很重要。"
           }
         ],
         "sourceFingerprint": "951d36ac0a5fb3bf8b046600541be7d93dbcfb2ca9525e1132b091fda6f3744a",
-        "generatedAt": "2026-06-19T06:52:45Z",
+        "generatedAt": "2026-06-19T06:57:15Z",
         "easy": {
           "paragraphs": [
-            "Artificial intelligence company OpenAI is strengthening its team before its Initial Public Offering (IPO). They have hired Noam Shazeer, a former Google DeepMind employee, and Dean Ball, a former White House AI policy official. Shazeer, known for his work on generative AI, co-authored the influential 2017 paper 'Attention Is All You Need'. Ball will lead a new team at OpenAI called Strategic Futures, focusing on AI policy and governance."
+            "OpenAI is hiring well-known figures before its IPO. Noam Shazeer, a Google DeepMind AI expert, and Dean Ball, a former White House AI policy official, have joined the team. Shazeer, who co-authored a key paper on generative AI, left Google after a $2.7 billion deal. Ball, who helped publish America’s AI Action Plan, will lead OpenAI's Strategic Futures team. This team will handle policy and governance issues, focusing on catastrophic risk, labor market impact, and government relations.",
+            "Shazeer's departure from Google was also due to his controversial political opinions. Meanwhile, Anthropic, another AI firm, faces export control issues with the U.S. government."
           ],
           "paragraphTranslations": [
-            "人工智能公司OpenAI在其首次公开募股（IPO）前加强了团队。他们雇佣了前谷歌DeepMind员工Noam Shazeer和前白宫人工智能政策官员Dean Ball。以他在生成性人工智能方面的工作而知名的Shazeer，共同撰写了有影响力的2017年论文《注意力就是你需要的一切》。Ball将在OpenAI领导一个名为战略未来的新团队，专注于人工智能政策和治理。"
+            "OpenAI在首次公开募股前招聘了一些知名人物。谷歌DeepMind人工智能专家Noam Shazeer和前白宫人工智能政策官员Dean Ball加入了团队。Shazeer是一篇关于生成性人工智能的关键论文的合著者，他在一项价值27亿美元的交易后离开了谷歌。Ball帮助发布了美国的人工智能行动计划，他将领导OpenAI的战略未来团队。这个团队将处理政策和治理问题，重点关注灾难性风险、劳动力市场影响和政府关系。",
+            "Shazeer离开谷歌的原因还包括他有争议的政治观点。与此同时，另一家人工智能公司Anthropic面临与美国政府的出口控制问题。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
@@ -206,61 +196,54 @@
         "This saga proved to me that we’re now officially in the Wild West era of American AI regulation. While there are few laws on the books governing frontier AI development, that doesn’t mean companies won’t end up in trouble with Trump’s White House when they cross unspoken lines."
       ],
       "paragraphTranslations": [
-        "自从特朗普政府向Anthropic发出出口控制指令以来，已经将近一周了，这迫使这个世界领先的人工智能实验室之一将其最先进的模型下线。经过几天的谈判，Anthropic和白宫之间仍然对如何恢复克劳德·米索斯和法布尔5号存在分歧。为什么呢？这取决于你问的是谁。",
-        "在整个这场混乱中，根据一位接近公司的人的说法，Anthropic不认为自己违反了特朗普政府制定的任何具体程序或规则。但白宫坚称Anthropic的行为鲁莽，表明它不能被信任安全推出前沿技术。",
-        "这段经历让我确信，我们现在正式进入了美国人工智能监管的狂野西部时代。虽然很少有法律条文规范前沿人工智能开发，但这并不意味着公司在越过未言明的界限时不会遇到特朗普白宫的麻烦。",
-        "一位要求匿名以免危及其职业关系的前白宫技术官员说：“这里的问题是，白宫一直采取这种极端的反监管姿态，现在他们面临着人们多年来一直在预测的真正的人工智能能力。应该有准备和政策来系统地应对这一点，管理利益和风险，但相反，这只是这种临时拼凑的方法，让人工智能行业陷入真正的困境。”",
-        "特朗普政府一再阻止对人工智能行业施加监管的努力，经常争辩说这些规则可能会阻碍美国的创新，导致国家落后于中国等竞争对手。自从他回到白宫以来，特朗普总统签署了行政命令，撤销了拜登时代创建国家人工智能框架的努力，并创建了一个联邦特别工作组，挑战可能被视为繁琐的国家法律。",
-        "尽管WIRED和其他出版物在过去一周公开了Anthropic和白宫之间的谈判细节，但这场争议仍然以其不透明性为特征。美国政府从未明确指出Anthropic做错了什么——我们所拥有的最好的东西是白宫技术顾问大卫·萨克斯在X上发表的一篇概述一般情况的帖子。",
-        "具有讽刺意味的是，白宫的行动可能阻碍了它想要保护的那种创新。特朗普政府要求Anthropic禁止所有外国公民访问Mythos和Fable 5，阻止了人工智能实验室自己的许多员工访问其最先进的模型，该公司表示，这些模型加快了其近几个月的研究和开发。所有Anthropic的客户都被锁定在外，包括苹果、Meta和财富500强的大部分。",
-        "白宫可能有合理的理由对Anthropic的模型感到担忧。正如我和我的同事们在周三报道的那样，美国官员在本月早些时候得知Anthropic与韩国电信巨头SK Telecom分享了Mythos时变得担忧，他们声称SK Telecom与中国有联系。另外，亚马逊首席执行官安迪·贾西向美国财政部长斯科特·贝森特提出了一些关于克劳德·法布尔5号的监管措施可能被绕过的问题，克劳德·法布尔5号是Mythos的一个受保护版本。",
-        "即使这些担忧是合理的，那也不意味着白宫处理得当。在第一种情况下，Anthropic表示它与美国政府协调推出了Mythos，这表明官员们可能有机会提前对SK Telecom提出警告。Anthropic也与韩国公司合作多年，这种安排似乎从未导致它遇到国家安全问题。当白宫向Anthropic提出对SK Telecom的担忧时，它立即撤销了对模型的访问权限，我们报道了这一点。",
-        "在第二种情况下，WIRED和其他媒体已经详细讨论了每个大型语言模型都可以在不同程度上被越狱。Anthropic和独立的网络安全研究人员认为，解决越狱问题不是一个容易或孤立的问题。因为人工智能模型是概率性的，而不是确定性的，科技公司不能保证它们会对给定的提示产生什么确切的反应。如果白宫不让Anthropic发布克劳德·法布尔5号，直到越狱问题得到解决，我不会屏住呼吸。",
-        "但归根结底，问题不在于美国政府试图确保先进的人工智能模型有适当的安全措施，或者不让它们落入美国的敌人手中。而在于特朗普政府现在处于一个必须实时做出这些监管决定的位置。",
-        "我可以向你保证，其他人工智能实验室如OpenAI、谷歌和Meta一直在屏息关注Anthropic的不幸。我整个星期都在向人工智能高管提出同样的问题：你如何避免与Anthropic类似的命运？"
+        "距离特朗普政府向人类补全公司发送出口控制指令已经快一周了，这迫使这家世界领先的人工智能实验室之一将其最先进的模型下线。在人类补全公司和白宫之间经过数天的谈判后，双方仍然在如何恢复克劳德·米索斯和法布尔5的问题上存在分歧。为什么呢？这取决于你问的是谁。",
+        "在整个这场混乱中，人类补全公司不认为自己违反了特朗普政府制定的任何具体程序或规则，据一位接近公司的人士称。但白宫坚称人类补全公司的行为鲁莽，表明它不能被信任安全推出前沿技术。",
+        "这段经历让我确信，我们现在正式进入了美国人工智能监管的荒野时代。虽然几乎没有法律条文规范前沿人工智能的发展，但这并不意味着公司在越过未言明的界限时不会与特朗普的白宫陷入麻烦。",
+        "“这里的问题是，白宫一直采取这种极端的反监管姿态，现在他们面临着人们多年来一直在预测的真正的人工智能能力，”一位要求匿名以免影响其职业关系的前白宫技术官员说。“应该有准备和政策来系统地处理这个问题，管理利益和风险，但相反，这只是这种临时拼凑的方法，让人工智能行业陷入真正的困境。”",
+        "特朗普政府一再阻止对人工智能行业施加监管的努力，经常争辩说这些规则可能会阻碍美国的创新，导致国家落后于像中国这样的竞争对手。自从他回到白宫以来，特朗普总统签署了行政命令，撤销了拜登时代创建国家人工智能框架的努力，并创建了一个联邦特别工作组，挑战可能被视为繁琐的国家法律。",
+        "虽然《连线》杂志和其他出版物在过去一周公开了人类补全公司和白宫之间的谈判细节，但这场争议仍然以其不透明性为特点。美国政府从未明确指出人类补全公司做错了什么——我们所拥有的最好的东西是白宫技术顾问大卫·萨克斯在X上发表的一篇概述一般情况的帖子。",
+        "具有讽刺意味的是，白宫的行动可能阻碍了它想要保护的那种创新。特朗普政府要求人类补全公司禁止所有外国公民访问米索斯和法布尔5，阻止了人工智能实验室自己的许多员工访问其最先进的模型，公司表示这些模型加快了其近几个月的研究和开发。人类补全公司的所有客户也被锁定在外，包括苹果、Meta和财富500强的大部分。",
+        "白宫可能有合理的理由对人类补全公司的模型感到担忧。正如我和我的同事们在周三报道的那样，美国官员在本月早些时候得知人类补全公司与SK电讯共享米索斯时，他们感到担忧，SK电讯是他们声称与中国有联系的韩国电信巨头。另外，亚马逊首席执行官安迪·贾西向美国财政部长斯科特·贝森特提出了担忧，即克劳德·法布尔5的一些监管措施可能被绕过，克劳德·法布尔5是米索斯的一个受保护版本。",
+        "即使这些担忧是合理的，那并不意味着白宫处理得当。在第一个案例中，人类补全公司表示，它与美国政府协调推出了米索斯，这表明官员们可能有机会提前对SK电讯提出警报。人类补全公司也与韩国公司合作多年，这种安排似乎从未导致它遇到国家安全问题。当白宫向人类补全公司提出对SK电讯的担忧时，它立即撤销了对模型的访问权限，我们报道了这一点。",
+        "在第二个案例中，《连线》和其他媒体已经详细报道了每个大型语言模型都可以在不同程度上被越狱。人类补全公司和独立的网络安全研究人员认为，解决越狱问题不是一个容易或孤立的问题。因为人工智能模型是概率性的，不是确定性的，科技公司不能保证它们对给定提示的确切反应。如果白宫不让人类补全公司发布克劳德·法布尔5，直到越狱问题得到解决，我不会屏息以待。",
+        "但最终，这里的问题是，不是美国政府试图确保先进的人工智能模型有适当的安全措施，或者不让它们落入美国的敌人手中。而是特朗普政府现在处于一个必须实时做出这些监管决定的位置。",
+        "我可以向你保证，其他人工智能实验室如OpenAI、谷歌和Meta一直在屏息关注人类补全公司的不幸。我一直在问人工智能高管同样的问题：你如何避免与人类补全公司类似的命运？"
       ],
       "vocabulary": [
         {
           "word": "administration",
           "meaningZh": "政府",
           "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
-          "example": "The Trump administration made many changes.",
-          "exampleZh": "特朗普政府做了许多改变。"
+          "example": "The administration is considering new policies.",
+          "exampleZh": "政府正在考虑新政策。"
         },
         {
-          "word": "export control",
-          "meaningZh": "出口控制",
-          "phonetic": "/ˈekspɔːt kənˈtroʊl/",
-          "example": "Export control is important for national security.",
-          "exampleZh": "出口控制对国家安全很重要。"
+          "word": "negotiations",
+          "meaningZh": "谈判",
+          "phonetic": "/nɪˌɡoʊʃiˈeɪʃnz/",
+          "example": "The negotiations are ongoing.",
+          "exampleZh": "谈判正在进行中。"
         },
         {
-          "word": "recklessly",
-          "meaningZh": "鲁莽地",
-          "phonetic": "/ˈrekləsli/",
-          "example": "He drove recklessly through the streets.",
-          "exampleZh": "他在街上鲁莽地开车。"
+          "word": "concrete",
+          "meaningZh": "具体的",
+          "phonetic": "/ˈkɒŋkriːt/",
+          "example": "We need concrete evidence.",
+          "exampleZh": "我们需要具体证据。"
         },
         {
-          "word": "dispute",
-          "meaningZh": "争议",
-          "phonetic": "/dɪˈspjuːt/",
-          "example": "There is a dispute between the two companies.",
-          "exampleZh": "这两家公司之间有争议。"
+          "word": "regulation",
+          "meaningZh": "法规",
+          "phonetic": "/ˌreɡjuˈleɪʃn/",
+          "example": "The new regulation will come into effect next month.",
+          "exampleZh": "新法规将在下个月生效。"
         },
         {
-          "word": "innovation",
-          "meaningZh": "创新",
-          "phonetic": "/ˌɪnəˈveɪʃn/",
-          "example": "Innovation is key to business success.",
-          "exampleZh": "创新是商业成功的关键。"
-        },
-        {
-          "word": "national security",
-          "meaningZh": "国家安全",
-          "phonetic": "/ˈnæʃnəl ˈsekyərəti/",
-          "example": "National security is a top priority.",
-          "exampleZh": "国家安全是头等大事。"
+          "word": "transparent",
+          "meaningZh": "透明的",
+          "phonetic": "/trænsˈpærənt/",
+          "example": "The process should be transparent.",
+          "exampleZh": "流程应该是透明的。"
         }
       ],
       "id": "e5b23f303b9737e9da74126a",
@@ -270,10 +253,10 @@
       "learningContent": {
         "standard": {
           "paragraphs": [
-            "The Trump administration forced Anthropic, a leading AI lab, to remove its advanced AI models offline due to export control issues. Anthropic claims it followed rules, but the White House argues it acted recklessly. This situation shows the lack of clear AI regulation in the US, with the White House often blocking efforts to impose rules, fearing they might hinder US innovation. The dispute between Anthropic and the White House is unclear, with no clear statement from the US government on what Anthropic did wrong. The White House's actions may have harmed innovation, as it demanded Anthropic prohibit foreign nationals from accessing its models, affecting its own employees and customers."
+            "The Trump administration recently ordered Anthropic, a leading AI lab, to take down its advanced AI models, Claude Mythos and Fable 5, due to export control concerns. Despite negotiations, disagreements persist over the rules Anthropic allegedly violated. Anthropic claims no concrete rules were broken, while the White House accuses Anthropic of reckless behavior. This incident highlights the lack of clear AI regulation in the US, with the Trump administration opposing regulations that might hinder innovation. The dispute's lack of transparency and the government's demand to restrict foreign access to these models have affected Anthropic's operations and its customers, including major companies like Apple and Meta."
           ],
           "paragraphTranslations": [
-            "特朗普政府因出口控制问题迫使领先的人工智能实验室Anthropic下线其先进的人工智能模型。Anthropic声称它遵循了规则，但白宫认为它行为鲁莽。这种情况显示了美国缺乏明确的人工智能法规，白宫经常阻止施加规则的努力，担心它们可能会阻碍美国的创新。Anthropic和白宫之间的争议不明确，美国政府没有明确声明Anthropic做错了什么。白宫的行动可能损害了创新，因为它要求Anthropic禁止外国公民访问其模型，影响了其自己的员工和客户。"
+            "特朗普政府最近命令领先的人工智能实验室Anthropic撤下其先进的人工智能模型Claude Mythos和Fable 5，原因是出口控制问题。尽管进行了谈判，但关于Anthropic据称违反的规则仍存在分歧。Anthropic声称没有违反任何具体规则，而白宫则指责Anthropic行为鲁莽。这一事件突显了美国缺乏明确的人工智能法规，特朗普政府反对可能阻碍创新的法规。这场争议缺乏透明度，以及政府要求限制外国人访问这些模型，已经影响了Anthropic的运营及其客户，包括苹果和Meta等大公司。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
@@ -283,53 +266,46 @@
             "word": "administration",
             "meaningZh": "政府",
             "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
-            "example": "The Trump administration made many changes.",
-            "exampleZh": "特朗普政府做了许多改变。"
+            "example": "The administration is considering new policies.",
+            "exampleZh": "政府正在考虑新政策。"
           },
           {
-            "word": "export control",
-            "meaningZh": "出口控制",
-            "phonetic": "/ˈekspɔːt kənˈtroʊl/",
-            "example": "Export control is important for national security.",
-            "exampleZh": "出口控制对国家安全很重要。"
+            "word": "negotiations",
+            "meaningZh": "谈判",
+            "phonetic": "/nɪˌɡoʊʃiˈeɪʃnz/",
+            "example": "The negotiations are ongoing.",
+            "exampleZh": "谈判正在进行中。"
           },
           {
-            "word": "recklessly",
-            "meaningZh": "鲁莽地",
-            "phonetic": "/ˈrekləsli/",
-            "example": "He drove recklessly through the streets.",
-            "exampleZh": "他在街上鲁莽地开车。"
+            "word": "concrete",
+            "meaningZh": "具体的",
+            "phonetic": "/ˈkɒŋkriːt/",
+            "example": "We need concrete evidence.",
+            "exampleZh": "我们需要具体证据。"
           },
           {
-            "word": "dispute",
-            "meaningZh": "争议",
-            "phonetic": "/dɪˈspjuːt/",
-            "example": "There is a dispute between the two companies.",
-            "exampleZh": "这两家公司之间有争议。"
+            "word": "regulation",
+            "meaningZh": "法规",
+            "phonetic": "/ˌreɡjuˈleɪʃn/",
+            "example": "The new regulation will come into effect next month.",
+            "exampleZh": "新法规将在下个月生效。"
           },
           {
-            "word": "innovation",
-            "meaningZh": "创新",
-            "phonetic": "/ˌɪnəˈveɪʃn/",
-            "example": "Innovation is key to business success.",
-            "exampleZh": "创新是商业成功的关键。"
-          },
-          {
-            "word": "national security",
-            "meaningZh": "国家安全",
-            "phonetic": "/ˈnæʃnəl ˈsekyərəti/",
-            "example": "National security is a top priority.",
-            "exampleZh": "国家安全是头等大事。"
+            "word": "transparent",
+            "meaningZh": "透明的",
+            "phonetic": "/trænsˈpærənt/",
+            "example": "The process should be transparent.",
+            "exampleZh": "流程应该是透明的。"
           }
         ],
         "sourceFingerprint": "c7d9a144f13e2e964f783fc1cc9d8495ef0177850364668a2af1f47ed1f1a748",
-        "generatedAt": "2026-06-19T06:53:23Z",
+        "generatedAt": "2026-06-19T06:57:38Z",
         "easy": {
           "paragraphs": [
-            "The Trump administration forced Anthropic, a leading AI lab, to remove its advanced AI models offline due to export control issues. Anthropic claims it followed rules, but the White House argues it acted recklessly. This situation shows the lack of clear AI regulation in the US, with the White House often blocking efforts to impose rules, fearing they might hinder US innovation. The dispute between Anthropic and the White House is unclear, with no clear statement from the US government on what Anthropic did wrong. The White House's actions may have harmed innovation, as it demanded Anthropic prohibit foreign nationals from accessing its models, affecting its own employees and customers."
+            "The Trump administration recently ordered Anthropic, a leading AI lab, to take down its advanced AI models, Claude Mythos and Fable 5, due to export control concerns. Despite negotiations, disagreements persist over the rules Anthropic allegedly violated. Anthropic claims no concrete rules were broken, while the White House accuses Anthropic of reckless behavior. This incident highlights the lack of clear AI regulation in the US, with the Trump administration opposing regulations that might hinder innovation. The dispute's lack of transparency and the government's demand to restrict foreign access to these models have affected Anthropic's operations and its customers, including major companies like Apple and Meta."
           ],
           "paragraphTranslations": [
-            "特朗普政府因出口控制问题迫使领先的人工智能实验室Anthropic下线其先进的人工智能模型。Anthropic声称它遵循了规则，但白宫认为它行为鲁莽。这种情况显示了美国缺乏明确的人工智能法规，白宫经常阻止施加规则的努力，担心它们可能会阻碍美国的创新。Anthropic和白宫之间的争议不明确，美国政府没有明确声明Anthropic做错了什么。白宫的行动可能损害了创新，因为它要求Anthropic禁止外国公民访问其模型，影响了其自己的员工和客户。"
+            "特朗普政府最近命令领先的人工智能实验室Anthropic撤下其先进的人工智能模型Claude Mythos和Fable 5，原因是出口控制问题。尽管进行了谈判，但关于Anthropic据称违反的规则仍存在分歧。Anthropic声称没有违反任何具体规则，而白宫则指责Anthropic行为鲁莽。这一事件突显了美国缺乏明确的人工智能法规，特朗普政府反对可能阻碍创新的法规。这场争议缺乏透明度，以及政府要求限制外国人访问这些模型，已经影响了Anthropic的运营及其客户，包括苹果和Meta等大公司。"
           ],
           "targetWords": 100,
           "cefr": "B1-B2"
