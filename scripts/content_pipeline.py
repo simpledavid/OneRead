@@ -620,20 +620,30 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
         "vocabulary": [{"word": "...", "meaningZh": "...", "phonetic": "...", "example": "...", "exampleZh": "..."}],
         "sourceFingerprint": hashlib.sha256(source.encode("utf-8")).hexdigest(),
     }
-    result = llm_json(
+    system = (
         "You create factual English-learning material for Chinese CET-4 learners. Preserve every "
         "name, number, causal relationship, qualification, and uncertainty. Never invent facts. "
-        "Easy must be A2-B1 and about 100 English words. Standard must be B1-B2 and about 150 words. "
-        "Create 5-8 useful vocabulary items for tap-to-translate lookup. Chinese translations must "
-        "be natural. Return JSON only.",
+        "Easy must be A2-B1 and 90-120 English words. Standard must be B1-B2 and 135-170 words. "
+        "Hitting these word counts is mandatory. Create 5-8 useful vocabulary items for "
+        "tap-to-translate lookup. Chinese translations must be natural. Return JSON only."
+    )
+    user = (
         "Use this exact shape:\n"
         + json.dumps(schema, ensure_ascii=False)
         + "\n\nTitle: " + article["title"]
-        + "\nSource article:\n" + source,
+        + "\nSource article:\n" + source
     )
-    result["generatedAt"] = iso_now()
-    validate_learning_content(result)
-    return result
+    # LLM length compliance varies run to run; retry a few times before failing.
+    last_error: Exception | None = None
+    for _ in range(4):
+        try:
+            result = llm_json(system, user)
+            result["generatedAt"] = iso_now()
+            validate_learning_content(result)
+            return result
+        except ValueError as error:
+            last_error = error
+    raise last_error  # type: ignore[misc]
 
 
 def generate_body_translations(body: list[str]) -> list[str]:
@@ -643,23 +653,28 @@ def generate_body_translations(body: list[str]) -> list[str]:
     if not paragraphs:
         return []
     schema = {"translations": ["..."]}
-    result = llm_json(
+    system = (
         "You translate news for Chinese CET-4 English learners. Translate each English "
         "paragraph into natural, accurate Simplified Chinese. Preserve every name, number, "
         "fact, causal relationship, and uncertainty. Do not merge, split, summarize, reorder, "
-        "or add paragraphs. Return JSON only.",
+        "or add paragraphs. Return JSON only."
+    )
+    user = (
         f"Translate every paragraph below into Simplified Chinese. Return this exact shape with "
         f"EXACTLY {len(paragraphs)} items, in the same order:\n"
         + json.dumps(schema, ensure_ascii=False)
         + "\n\nParagraphs:\n"
-        + json.dumps(paragraphs, ensure_ascii=False),
+        + json.dumps(paragraphs, ensure_ascii=False)
     )
-    translations = result.get("translations") or []
-    if len(translations) != len(paragraphs):
-        raise ValueError(
+    last_error: Exception | None = None
+    for _ in range(4):
+        translations = (llm_json(system, user).get("translations")) or []
+        if len(translations) == len(paragraphs):
+            return translations
+        last_error = ValueError(
             f"body translation count {len(translations)} != paragraph count {len(paragraphs)}"
         )
-    return translations
+    raise last_error  # type: ignore[misc]
 
 
 def validate_learning_content(content: dict[str, Any]) -> None:
