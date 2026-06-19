@@ -61,16 +61,30 @@ enum DailyContentService {
             return nil
         }
 
-        let candidates = [
+        let candidateURLs = [
             baseURL.appendingPathComponent("\(dateKey).json"),
             baseURL.appendingPathComponent("latest.json")
         ]
 
-        for url in candidates {
+        for candidateURL in candidateURLs {
+            guard var components = URLComponents(url: candidateURL, resolvingAgainstBaseURL: false) else {
+                continue
+            }
+            components.queryItems = [
+                URLQueryItem(
+                    name: "refresh",
+                    value: String(Int(Date().timeIntervalSince1970))
+                )
+            ]
+            guard let url = components.url else {
+                continue
+            }
+
             var request = URLRequest(url: url)
             request.timeoutInterval = 20
-            request.cachePolicy = .reloadRevalidatingCacheData
+            request.cachePolicy = .reloadIgnoringLocalCacheData
             request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
 
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)

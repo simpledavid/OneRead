@@ -39,6 +39,7 @@ final class ArticleStore: ObservableObject {
     private let dailySchedule: DailyEditionSchedule
     private let feedConfiguration: FeedConfiguration
     private var cancellables = Set<AnyCancellable>()
+    private var didRefreshEditionThisSession = false
 
     private let contentSourceLabelKey = "dailyContentSourceLabel"
     private let articleCacheKey = "cachedRSSArticles"
@@ -391,12 +392,13 @@ final class ArticleStore: ObservableObject {
     }
 
     func refreshScheduledDailyArticlesIfNeeded() async {
-        let currentCycle = dailySchedule.cycleKey(for: Date())
-        let lastRefreshCycle = defaults.string(forKey: lastRSSRefreshCycleKey)
-        guard lastRefreshCycle != currentCycle else {
+        // The editorial pipeline can republish the same date during the day.
+        // Check once per app launch instead of treating a date as immutable.
+        guard !didRefreshEditionThisSession else {
             return
         }
 
+        didRefreshEditionThisSession = true
         await refreshPreGeneratedEdition()
     }
 

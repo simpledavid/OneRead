@@ -366,8 +366,14 @@ struct DailyEditionSchedule {
     }
 
     func isTodayComplete(dailyIDs: [String], completedIDs: Set<String>) -> Bool {
-        let available = Set(dailyIDs.prefix(dailyGoal))
-        return !available.isEmpty && available.isSubset(of: completedIDs)
+        let available = Set(dailyIDs)
+        guard !available.isEmpty else {
+            return false
+        }
+
+        // Either released story can satisfy the daily goal. Each article still
+        // keeps its own completion state, so users may finish both.
+        return available.intersection(completedIDs).count >= dailyGoal
     }
 
     func currentStreak(isComplete: (String) -> Bool) -> Int {
