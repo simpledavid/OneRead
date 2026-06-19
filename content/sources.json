@@ -64,11 +64,19 @@
     "excludeKeywords": ["deal", "deals", "discount", "coupon", "sponsored", "giveaway", "best ", "how to"]
   },
   {
-    "name": "BBC Technology",
-    "url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
-    "category": "technology",
+    "name": "BBC Science",
+    "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
+    "category": "science",
     "authority": 0.85,
-    "filterKeywords": ["ai", "chip", "robot", "space", "quantum", "cybersecurity"],
+    "filterKeywords": ["ai", "space", "climate", "physics", "biology", "health", "quantum", "robot", "energy", "research", "brain", "gene", "nasa"],
+    "excludeKeywords": ["deal", "deals", "discount", "coupon", "sponsored", "giveaway", "best ", "how to"]
+  },
+  {
+    "name": "BBC World",
+    "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "category": "culture",
+    "authority": 0.85,
+    "filterKeywords": ["ai", "technology", "chip", "cyber", "space", "climate", "science", "robot", "energy"],
     "excludeKeywords": ["deal", "deals", "discount", "coupon", "sponsored", "giveaway", "best ", "how to"]
   }
 ]
