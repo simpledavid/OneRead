@@ -75,6 +75,7 @@ struct ArticleProfileView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .simultaneousGesture(TapGesture().onEnded { store.triggerImpact() })
             }
             .cardBackground()
         }
@@ -132,6 +133,7 @@ struct ArticleProfileView: View {
                     systemImage: "arrow.clockwise",
                     title: store.isRefreshing ? "Refreshing today's articles" : "Refresh today's articles"
                 ) {
+                    store.triggerImpact()
                     Task {
                         await store.refreshTodayManually()
                     }
@@ -181,6 +183,7 @@ struct ArticleProfileView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .simultaneousGesture(TapGesture().onEnded { store.triggerImpact() })
             }
             .cardBackground()
 
@@ -197,6 +200,7 @@ struct ArticleProfileView: View {
 
             VStack(spacing: 0) {
                 Button {
+                    store.triggerImpact()
                     activeSheet = .rate
                 } label: {
                     ProfileValueRow(systemImage: "star.fill", title: "Rate us", value: nil)
@@ -226,6 +230,7 @@ struct ArticleProfileView: View {
                     .padding(.leading, 56)
 
                 Button {
+                    store.triggerImpact()
                     UIPasteboard.general.string = "simplezdwbtc"
                     activeSheet = .wechat
                 } label: {
@@ -243,6 +248,7 @@ struct ArticleProfileView: View {
 
             VStack(spacing: 0) {
                 Button {
+                    store.triggerImpact()
                     activeSheet = .about
                 } label: {
                     ProfileValueRow(systemImage: "info.circle.fill", title: "About", value: nil)
@@ -254,6 +260,7 @@ struct ArticleProfileView: View {
                     .padding(.leading, 56)
 
                 Button {
+                    store.triggerImpact()
                     activeSheet = .privacy
                 } label: {
                     ProfileValueRow(systemImage: "hand.raised.fill", title: "Privacy policy", value: nil)

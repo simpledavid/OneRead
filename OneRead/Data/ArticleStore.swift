@@ -245,6 +245,8 @@ final class ArticleStore: ObservableObject {
     func setHapticsEnabled(_ enabled: Bool) {
         hapticsEnabled = enabled
         persist()
+        // Confirm with a tap when turning it on (the guard suppresses it when off).
+        triggerImpact()
     }
 
     // MARK: - AI rewrite forwarding

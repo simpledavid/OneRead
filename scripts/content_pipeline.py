@@ -29,6 +29,11 @@ from typing import Any
 MAX_FETCH_WORKERS = 8
 
 
+# Skip candidates whose extracted body is too thin to make a real reading (e.g.
+# one-sentence changelog entries) so every daily pick has substance to rewrite.
+MIN_BODY_WORDS = 120
+
+
 USER_AGENT = "OneRead-Editorial/1.0 (+https://github.com/)"
 IMPACT_TERMS = (
     "launch", "release", "introduce", "unveil", "new model", "research",
@@ -796,9 +801,13 @@ def prepare(args: argparse.Namespace) -> None:
         clustered,
         key=lambda item: local_score(item, now),
         reverse=True,
-    )[:12]
+    )[:16]
     candidates = []
     for index, article in enumerate(enrich_in_parallel(ranked)):
+        body_words = word_count(" ".join(article.get("body") or []))
+        if body_words < MIN_BODY_WORDS:
+            print(f"skip thin candidate ({body_words}w): {article.get('title', '')[:60]}", file=sys.stderr)
+            continue
         score = local_score(article, now)
         candidates.append({
             "candidateID": f"C{index + 1:02d}",
@@ -906,9 +915,13 @@ def auto(args: argparse.Namespace) -> None:
         clustered,
         key=lambda item: local_score(item, now, trending),
         reverse=True,
-    )[:12]
+    )[:16]
     candidates = []
     for index, article in enumerate(enrich_in_parallel(ranked)):
+        body_words = word_count(" ".join(article.get("body") or []))
+        if body_words < MIN_BODY_WORDS:
+            print(f"skip thin candidate ({body_words}w): {article.get('title', '')[:60]}", file=sys.stderr)
+            continue
         score = local_score(article, now, trending)
         candidates.append({
             "candidateID": f"C{index + 1:02d}",
