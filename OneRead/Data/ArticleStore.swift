@@ -27,6 +27,7 @@ final class ArticleStore: ObservableObject {
     @Published var highlightVocabularyEnabled: Bool
     @Published var showArticleTranslationsEnabled: Bool
     @Published var hapticsEnabled: Bool
+    @Published private(set) var appearanceMode: AppearanceMode
     @Published private(set) var dailyEditionArticleIDs: [String]
     @Published private(set) var dailyEditionDate: String?
 
@@ -50,6 +51,7 @@ final class ArticleStore: ObservableObject {
     private let highlightVocabularyKey = "highlightVocabularyEnabled"
     private let showArticleTranslationsKey = "showArticleTranslationsEnabled"
     private let hapticsEnabledKey = "articleHapticsEnabled"
+    private let appearanceModeKey = "appearanceMode"
     private let currentDailyEditionVersion = 13
     private let dailyLimit = 2
     private let dailyGoal = 1
@@ -90,6 +92,7 @@ final class ArticleStore: ObservableObject {
         self.highlightVocabularyEnabled = defaults.object(forKey: highlightVocabularyKey) as? Bool ?? true
         self.showArticleTranslationsEnabled = defaults.object(forKey: showArticleTranslationsKey) as? Bool ?? false
         self.hapticsEnabled = defaults.object(forKey: hapticsEnabledKey) as? Bool ?? true
+        self.appearanceMode = AppearanceMode(rawValue: defaults.string(forKey: appearanceModeKey) ?? "") ?? .dark
         self.dailyEditionArticleIDs = defaults.stringArray(forKey: dailyIDsKey) ?? []
         self.dailyEditionDate = defaults.string(forKey: dailyDateKey)
         self.articles = mergedArticles(self.articles + SampleArticles.all)
@@ -247,6 +250,12 @@ final class ArticleStore: ObservableObject {
         hapticsEnabled = enabled
         persist()
         // Confirm with a tap when turning it on (the guard suppresses it when off).
+        triggerImpact()
+    }
+
+    func setAppearanceMode(_ mode: AppearanceMode) {
+        appearanceMode = mode
+        persist()
         triggerImpact()
     }
 
@@ -617,6 +626,7 @@ final class ArticleStore: ObservableObject {
         defaults.set(highlightVocabularyEnabled, forKey: highlightVocabularyKey)
         defaults.set(showArticleTranslationsEnabled, forKey: showArticleTranslationsKey)
         defaults.set(hapticsEnabled, forKey: hapticsEnabledKey)
+        defaults.set(appearanceMode.rawValue, forKey: appearanceModeKey)
         persistArticles()
     }
 

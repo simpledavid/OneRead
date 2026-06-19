@@ -22,7 +22,7 @@ struct RootView: View {
                 }
         }
         .tint(Palette.accent)
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(articleStore.appearanceMode.colorScheme)
         .task {
             NotificationService.clearPreviouslyScheduledReminders()
             RetentionAnalytics.record("app_session")

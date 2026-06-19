@@ -7,6 +7,7 @@ struct ArticleProfileView: View {
     @EnvironmentObject private var store: ArticleStore
     @EnvironmentObject private var subscription: SubscriptionService
     @State private var activeSheet: ProfileInfoSheetKind?
+    @State private var isAppearanceSheetPresented = false
 
     var body: some View {
         NavigationStack {
@@ -37,6 +38,11 @@ struct ArticleProfileView: View {
             .sheet(item: $activeSheet) { sheet in
                 ProfileInfoSheet(kind: sheet)
                     .presentationDetents([.height(260)])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $isAppearanceSheetPresented) {
+                AppearancePickerSheet()
+                    .presentationDetents([.height(320)])
                     .presentationDragIndicator(.visible)
             }
         }
@@ -148,7 +154,17 @@ struct ArticleProfileView: View {
             profileSectionTitle("APP")
 
             VStack(spacing: 0) {
-                ProfileValueRow(systemImage: "moon.fill", title: "Appearance", value: "Dark", showsChevron: false)
+                Button {
+                    store.triggerImpact()
+                    isAppearanceSheetPresented = true
+                } label: {
+                    ProfileValueRow(
+                        systemImage: "moon.fill",
+                        title: "Appearance",
+                        value: store.appearanceMode.title
+                    )
+                }
+                .buttonStyle(.plain)
 
                 Divider()
                     .overlay(Palette.border)
@@ -776,6 +792,61 @@ struct OneReadProView: View {
             .foregroundStyle(Palette.muted)
             .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(.leading)
+    }
+}
+
+private struct AppearancePickerSheet: View {
+    @EnvironmentObject private var store: ArticleStore
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("APPEARANCE")
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .foregroundStyle(Palette.muted)
+                .padding(.horizontal, 6)
+
+            VStack(spacing: 0) {
+                ForEach(Array(AppearanceMode.allCases.enumerated()), id: \.element.id) { index, mode in
+                    Button {
+                        store.setAppearanceMode(mode)
+                        dismiss()
+                    } label: {
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(mode.title)
+                                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                                    .foregroundStyle(Palette.ink)
+                                Text(mode.subtitle)
+                                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                                    .foregroundStyle(Palette.muted)
+                            }
+
+                            Spacer(minLength: 10)
+
+                            if store.appearanceMode == mode {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 17, weight: .bold))
+                                    .foregroundStyle(Palette.accent)
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 16)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+
+                    if index < AppearanceMode.allCases.count - 1 {
+                        Divider().overlay(Palette.border)
+                    }
+                }
+            }
+            .cardBackground()
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background(Palette.background)
     }
 }
 
