@@ -1,0 +1,68 @@
+{
+  "identifier" : "A1B2C3D4-1000-4000-8000-00000000PRO1",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "zh_CN",
+    "_storefront" : "CHN",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "20899901",
+      "localizations" : [],
+      "name" : "OneRead Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "10.00",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "20899902",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Full translations, unlimited saved words.",
+              "displayName" : "OneRead Pro Monthly",
+              "locale" : "zh_CN"
+            }
+          ],
+          "productID" : "com.zdw.oneread.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "OneRead Pro Monthly",
+          "subscriptionGroupID" : "20899901",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : []
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "98.00",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "20899903",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Full translations, unlimited saved words.",
+              "displayName" : "OneRead Pro Yearly",
+              "locale" : "zh_CN"
+            }
+          ],
+          "productID" : "com.zdw.oneread.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "OneRead Pro Yearly",
+          "subscriptionGroupID" : "20899901",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : []
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
