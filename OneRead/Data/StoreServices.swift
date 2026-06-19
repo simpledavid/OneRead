@@ -392,8 +392,20 @@ struct DailyEditionSchedule {
         }
     }
 
-    func homeReleaseDateText(for rank: Int, cycleKey: String?) -> String {
-        let hour = rank <= 1 ? morningReleaseHour : afternoonReleaseHour
+    func homeReleaseDateText(
+        for slot: ArticleEditionSlot?,
+        fallbackRank: Int,
+        cycleKey: String?
+    ) -> String {
+        let hour: Int
+        switch slot {
+        case .morning:
+            hour = morningReleaseHour
+        case .afternoon:
+            hour = afternoonReleaseHour
+        case nil:
+            hour = fallbackRank <= 1 ? morningReleaseHour : afternoonReleaseHour
+        }
         let suffix = hour < 12 ? "AM" : "PM"
         let displayHour = hour > 12 ? hour - 12 : hour
         return cycleKey == currentCycleKey ? "Today, \(displayHour):00 \(suffix)" : "\(displayHour):00 \(suffix)"

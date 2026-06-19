@@ -34,8 +34,11 @@ How it selects:
   the model call or response format fails, local ranking remains usable.
   The rubric is a OneRead-specific adaptation of the public design used by
   [ai-daily-digest](https://github.com/vigorX777/ai-daily-digest).
+- Original source text must contain at least **150 words**. Thin RSS snippets
+  are rejected during candidate preparation and checked again before publish.
 - Morning is the top-ranked story; afternoon is the top-ranked story on a
-  different topic (`diversity_key`).
+  different topic (`diversity_key`). After the afternoon edition is released,
+  the app displays that newer story above the morning story.
 
 `--dry-run` clusters, selects, and prints a source-health report without writing
 an edition. Leave `ONE_READ_LLM_API_KEY` unset for a no-LLM smoke test. Every

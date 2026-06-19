@@ -232,7 +232,7 @@ struct ArticleHomeCard: View {
     }
 
     private var displayDate: String {
-        store.homeReleaseDateText(for: rank)
+        store.homeReleaseDateText(for: article, displayRank: rank)
     }
 
     private var cardSubtitle: String {

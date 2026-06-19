@@ -127,7 +127,11 @@ final class ArticleStore: ObservableObject {
         }
 
         let slate = Array((planned + fill).prefix(dailyLimit))
-        return Array(slate.prefix(dailySchedule.releasedArticleCount(for: now)))
+        let released = Array(slate.prefix(dailySchedule.releasedArticleCount(for: now)))
+
+        // Once the afternoon story is released, show the newest edition first.
+        // Before 16:00 the morning story remains the only visible article.
+        return released.count > 1 ? Array(released.reversed()) : released
     }
 
     var savedArticles: [Article] {
@@ -451,8 +455,12 @@ final class ArticleStore: ObservableObject {
         return progress.openedDays.contains(key) ? 1 : 0
     }
 
-    func homeReleaseDateText(for rank: Int) -> String {
-        dailySchedule.homeReleaseDateText(for: rank, cycleKey: dailyEditionDate)
+    func homeReleaseDateText(for article: Article, displayRank: Int) -> String {
+        dailySchedule.homeReleaseDateText(
+            for: article.editionSlot,
+            fallbackRank: displayRank,
+            cycleKey: dailyEditionDate
+        )
     }
 
     // MARK: - Private helpers

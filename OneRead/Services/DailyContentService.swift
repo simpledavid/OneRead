@@ -123,11 +123,18 @@ enum DailyContentService {
             return article.editionDate == edition.date
                 && (article.curationStatus == .approved || article.curationStatus == .published)
                 && !article.urlString.isEmpty
-                && !article.body.isEmpty
+                && originalWordCount(article.body) >= 150
                 && !learning.easy.paragraphs.isEmpty
                 && !learning.standard.paragraphs.isEmpty
                 && (5...8).contains(learning.vocabulary.count)
         }
+    }
+
+    private static func originalWordCount(_ paragraphs: [String]) -> Int {
+        paragraphs
+            .joined(separator: " ")
+            .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
+            .count
     }
 }
 

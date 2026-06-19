@@ -136,6 +136,54 @@ class EditorialScoringTests(unittest.TestCase):
         self.assertEqual(ranked, candidates)
         self.assertEqual(ranked[0]["finalScore"], 68.0)
 
+    def test_validate_article_rejects_original_under_150_words(self):
+        article = self.valid_article_with_body_words(149)
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "original article body must contain at least 150 words",
+        ):
+            content_pipeline.validate_article(article)
+
+    def test_validate_article_accepts_original_at_150_words(self):
+        content_pipeline.validate_article(self.valid_article_with_body_words(150))
+
+    @staticmethod
+    def valid_article_with_body_words(count):
+        body = [" ".join(f"word{index}" for index in range(count))]
+        learning_version = {
+            "paragraphs": ["A valid learning paragraph."],
+            "paragraphTranslations": ["有效的学习段落。"],
+            "targetWords": 100,
+            "cefr": "B1-B2",
+        }
+        vocabulary = [
+            {
+                "word": f"term{index}",
+                "meaningZh": "释义",
+                "phonetic": "",
+                "example": "Example.",
+                "exampleZh": "例句。",
+            }
+            for index in range(5)
+        ]
+        return {
+            "id": "article-id",
+            "title": "A sufficiently detailed article",
+            "source": "Source",
+            "body": body,
+            "urlString": "https://example.com/article",
+            "editionDate": "2026-06-19",
+            "editionSlot": "morning",
+            "curationStatus": "approved",
+            "paragraphTranslations": ["原文翻译。"],
+            "learningContent": {
+                "easy": learning_version,
+                "standard": learning_version,
+                "vocabulary": vocabulary,
+            },
+        }
+
 
 if __name__ == "__main__":
     unittest.main()

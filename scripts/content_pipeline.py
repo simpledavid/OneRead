@@ -31,7 +31,7 @@ MAX_FETCH_WORKERS = 8
 
 # Skip candidates whose extracted body is too thin to make a real reading (e.g.
 # one-sentence changelog entries) so every daily pick has substance to rewrite.
-MIN_BODY_WORDS = 120
+MIN_BODY_WORDS = 150
 
 
 USER_AGENT = "OneRead-Editorial/1.0 (+https://github.com/)"
@@ -836,6 +836,12 @@ def validate_article(article: dict[str, Any]) -> None:
     if article["editionSlot"] not in ("morning", "afternoon"):
         raise ValueError("invalid edition slot")
     body_paragraphs = [p for p in article["body"] if p and p.strip()]
+    body_words = word_count(" ".join(body_paragraphs))
+    if body_words < MIN_BODY_WORDS:
+        raise ValueError(
+            f"original article body must contain at least {MIN_BODY_WORDS} words "
+            f"(found {body_words})"
+        )
     translations = article.get("paragraphTranslations") or []
     if not translations:
         raise ValueError("article is missing original paragraphTranslations")
