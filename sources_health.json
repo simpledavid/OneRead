@@ -1,6 +1,6 @@
 {
   "date": "2026-06-19",
-  "generatedAt": "2026-06-19T08:28:16Z",
+  "generatedAt": "2026-06-19T08:52:43Z",
   "sources": [
     {
       "name": "OpenAI News",
@@ -74,9 +74,9 @@
     },
     {
       "name": "BBC Science",
-      "fetched": 12,
-      "kept": 12,
-      "aiRatio": 0.58,
+      "fetched": 11,
+      "kept": 11,
+      "aiRatio": 0.55,
       "error": null
     },
     {
