@@ -1,349 +1,365 @@
 {
   "schemaVersion": 1,
   "date": "2026-06-19",
-  "generatedAt": "2026-06-19T06:28:31Z",
+  "generatedAt": "2026-06-19T06:40:41Z",
   "status": "approved",
   "articles": [
     {
-      "title": "The White House Is Making Up Its Rules for AI in Real Time",
-      "subtitle": "Anthropic still can’t distribute Claude Mythos or Fable 5 after running afoul of the Trump administration. But no one can say exactly what the company did wrong.",
+      "title": "The White House Wants Anthropic to Block All Jailbreaks. That May Not Be Possible",
+      "subtitle": "Trump administration officials tell WIRED that if Anthropic wants to rerelease Fable 5, it will need to ensure the model's guardrails can't be circumvented. Security experts say that can't be done.",
       "source": "WIRED AI",
-      "author": "Maxwell Zeff",
+      "author": "Hugo Lowell",
       "category": "ai",
-      "summary": "Anthropic still can’t distribute Claude Mythos or Fable 5 after running afoul of the Trump administration. But no one can say exactly what the company did wrong.",
-      "urlString": "https://www.wired.com/story/anthropic-mythos-export-controls-ai-regulations/",
-      "imageURLString": "https://media.wired.com/photos/6a342bff039398b1addb3ba2/master/pass/Model-Behavior-SB.jpg",
-      "publishedAt": "2026-06-18T21:03:43Z",
+      "summary": "Trump administration officials tell WIRED that if Anthropic wants to rerelease Fable 5, it will need to ensure the model's guardrails can't be circumvented. Security experts say that can't be done.",
+      "urlString": "https://www.wired.com/story/the-white-house-wants-anthropic-to-block-all-jailbreaks-that-may-not-be-possible/",
+      "imageURLString": "https://media.wired.com/photos/6a31d49a95ac419546b42eb7/master/pass/politics_white_house_anthropic.jpg",
+      "publishedAt": "2026-06-17T17:00:00Z",
       "sourceCount": 1,
       "corroboratingSources": [
         "WIRED AI"
       ],
       "body": [
-        "It’s been nearly a week since the Trump administration sent an export control directive to Anthropic, forcing one of the world’s leading AI labs to pull its most advanced models offline. After days of negotiations between Anthropic and the White House, the two still remain at odds about how to bring Claude Mythos and Fable 5 back. Why? Well, it depends whom you ask.",
-        "Throughout this entire debacle, Anthropic doesn’t believe it violated any concrete procedures or rules laid out by the Trump administration, according to a person close to the company. But the White House contends that Anthropic behaved recklessly, demonstrating that it can’t be trusted to safely roll out frontier technology.",
-        "This saga proved to me that we’re now officially in the Wild West era of American AI regulation. While there are few laws on the books governing frontier AI development, that doesn’t mean companies won’t end up in trouble with Trump’s White House when they cross unspoken lines.",
-        "“The problem here is that the White House has been in this extreme anti-regulatory posture, and they’re now faced with the real AI capabilities that people have been predicting for many years,” says a former White House technology official, who asked to remain anonymous to avoid jeopardizing their professional relationships. “There should have been preparation and policies to systematically deal with this, managing the benefits and risks, but instead it's just this slap-dash approach that puts the AI industry in a real quandary.”",
-        "The Trump administration has repeatedly blocked efforts to impose guardrails on the AI industry, often arguing the rules could hamper US innovation and lead the country to fall behind rivals like China. Since he returned to the White House, President Trump has signed executive orders that reversed a Biden-era effort to create a national AI framework and created a federal task force to challenge state laws that could be deemed onerous .",
-        "While WIRED and other publications have made details of the negotiations between Anthropic and the White House public over the last week, the dispute is still defined by its opaqueness. At no point has the US government clearly stated what Anthropic did wrong—the best we have is a post on X outlining the general situation from White House technology adviser David Sacks.",
-        "Ironically, the White House’s actions have likely hampered the very kind of innovation it wants to protect. The Trump administration demanded that Anthropic prohibit all foreign nationals from accessing Mythos and Fable 5, preventing many of the AI lab’s own employees from accessing its most cutting-edge models, which the company says have sped up its research and development in recent months. All of Anthropic’s customers are locked out, too, including Apple, Meta, and much of the Fortune 500.",
-        "The White House may have had legitimate reasons to be concerned about Anthropic’s models. As my colleagues and I reported on Wednesday, US officials grew concerned when they learned earlier this month that Anthropic shared Mythos with SK Telecom , a South Korean telecom giant they allege has ties to China. Separately, Amazon CEO Andy Jassy raised concerns to US Treasury secretary Scott Bessent that some of the guardrails on Claude Fable 5, a safeguarded version of Mythos, could be circumvented.",
-        "Even if these worries are legitimate, that doesn’t mean the White House handled them adequately. In the first case, Anthropic says it coordinated with the US government on the rollout of Mythos, suggesting there may have been a chance for officials to raise alarm about SK Telecom ahead of time. Anthropic has also been working with the Korean company for years, and the arrangement seemingly never caused it to run into national security problems before. And when the White House raised concerns about SK Telecom to Anthropic, it revoked access to the model immediately, we reported.",
-        "In the second case, WIRED and other outlets have written at length about how every large language model can be jailbroken to varying extents. Anthropic and independent cybersecurity researchers argue that solving jailbreaks is not an easy or isolated issue. Because AI models are probabilistic, not deterministic, tech companies can’t guarantee what exactly they will generate in response to a given prompt. If the White House won’t let Anthropic release Claude Fable 5 until the jailbreaking problem is solved, I wouldn’t hold my breath.",
-        "But ultimately, the problem here is not that the US government is trying to ensure that advanced AI models have proper safeguards or stay out of the hands of America’s foes. It’s that the Trump administration is now in a position where it has to make these regulatory decisions in real time.",
-        "I can assure you that other AI labs like OpenAI, Google, and Meta have been watching Anthropic’s misfortune with bated breath. I’ve been asking AI executives the same question all week: How can you avoid a fate similar to Anthropic’s?"
+        "The Trump administration’s disagreement with Anthropic over its most advanced AI models appears to be fast coming to a head.",
+        "Trump officials tell Inner Loop that if Anthropic wants to rerelease Claude Fable 5, the AI model that they took offline with export controls last week over concerns about jailbreaking—a method of using prompts to get around a model’s safeguards—the company will need to take steps to actually address what the government alleges are vulnerabilities.",
+        "Anthropic has said for days that the administration’s concerns are overblown and that the effects of the jailbreaks are minimal. It reiterated this position to the Commerce Department and the Office of the National Cyber Director, Sean Cairncross, in a technical meeting on Monday.",
+        "But officials say they are past arguing whether the jailbreaks are significant, since the National Security Agency concluded that there are ways to disable guardrails on Fable 5, which are put in place to prevent users from accessing capabilities of the Mythos model related to cybersecurity, chemistry, and biology.",
+        "At this stage, the administration essentially views the situation as Anthropic’s problem to fix, according to three people familiar with discussions.",
+        "Neither the Commerce Department’s Center for AI Standards and Innovation nor the National Security Agency has the staff or the bandwidth to be drawn into chasing down every conceivable jailbreak on every model that reaches the market, the people said.",
+        "As a result, the administration believes that Anthropic should be more proactive about continually testing not just Fable 5 but all of its frontier AI models to find potential jailbreaks and flag them to the government themselves.",
+        "But on a more fundamental level, it remains unclear how Anthropic is supposed to prevent jailbreaking.",
+        "Independent cybersecurity experts have increasingly taken the view that guardrails on AI models are only a stopgap solution, since skilled users and future AI models will find ways to bypass constraints—meaning that what the White House appears to want cannot be done.",
+        "At the start of the week, Trump’s pick to serve as Acting Director of National Intelligence, Bill Pulte, was on track to never even start the job. Now, Trump has thrown him a lifeline—and it’s the permanent DNI nominee, Jay Clayton, who now faces the prospect of never serving in the role.",
+        "To recap: Trump initially named Pulte, his housing finance chief, to replace outgoing DNI Tulsi Gabbard.",
+        "Faced with bipartisan pushback because Pulte doesn’t have the national security experience required by law for the role and because he flagged allegedly questionable mortgage fraud accusations against Trump’s political enemies, Trump announced Clayton, the US attorney for the Southern District of New York, as his nominee for a permanent DNI."
       ],
-      "readingMinutes": 5,
+      "readingMinutes": 3,
       "publishNote": "Editorial candidate",
       "keyPoints": [
-        "It’s been nearly a week since the Trump administration sent an export control directive to Anthropic, forcing one of the world’s leading AI labs to pull its most advanced models offline. After days of negotiations between Anthropic and the White House, the two still remain at odds about how to bring Claude Mythos and Fable 5 back. Why? Well, it depends whom you ask.",
-        "Throughout this entire debacle, Anthropic doesn’t believe it violated any concrete procedures or rules laid out by the Trump administration, according to a person close to the company. But the White House contends that Anthropic behaved recklessly, demonstrating that it can’t be trusted to safely roll out frontier technology.",
-        "This saga proved to me that we’re now officially in the Wild West era of American AI regulation. While there are few laws on the books governing frontier AI development, that doesn’t mean companies won’t end up in trouble with Trump’s White House when they cross unspoken lines."
+        "The Trump administration’s disagreement with Anthropic over its most advanced AI models appears to be fast coming to a head.",
+        "Trump officials tell Inner Loop that if Anthropic wants to rerelease Claude Fable 5, the AI model that they took offline with export controls last week over concerns about jailbreaking—a method of using prompts to get around a model’s safeguards—the company will need to take steps to actually address what the government alleges are vulnerabilities.",
+        "Anthropic has said for days that the administration’s concerns are overblown and that the effects of the jailbreaks are minimal. It reiterated this position to the Commerce Department and the Office of the National Cyber Director, Sean Cairncross, in a technical meeting on Monday."
       ],
       "paragraphTranslations": [
-        "自从特朗普政府向Anthropic发出出口控制指令以来，已经将近一周了，迫使这个世界领先的人工智能实验室之一将其最先进的模型下线。在Anthropic和白宫之间经过数天的谈判后，双方仍然对如何恢复Claude Mythos和Fable 5上线存在分歧。为什么呢？这取决于你问谁。",
-        "在整个这场争论中，根据一位接近公司的人士透露，Anthropic不认为自己违反了特朗普政府制定的任何具体程序或规则。但白宫坚称Anthropic的行为鲁莽，表明它不能被信任以安全地推出前沿技术。",
-        "这段经历让我确信，我们现在正式进入了美国人工智能监管的狂野西部时代。虽然在法律书籍中很少有关于前沿人工智能开发的法律，但这并不意味着当公司越过未言明的界限时，它们不会与特朗普的白宫陷入麻烦。",
-        "“这里的问题是，白宫一直采取这种极端的反监管姿态，现在他们面临着人们多年来一直在预测的真正的人工智能能力，”一位不愿透露姓名的前白宫技术官员表示，以避免危及其职业关系。“应该有准备和政策来系统地处理这个问题，管理利益和风险，但相反，这只是这种临时拼凑的方法，让人工智能行业陷入真正的困境。”",
-        "特朗普政府一再阻止对人工智能行业施加监管的努力，经常争辩说这些规则可能会阻碍美国的创新，导致国家落后于像中国这样的竞争对手。自从他回到白宫以来，特朗普总统签署了行政命令，撤销了拜登时代创建国家人工智能框架的努力，并创建了一个联邦工作组，挑战可能被视为繁重的国家法律。",
-        "尽管WIRED和其他出版物在过去一周公开了Anthropic和白宫之间的谈判细节，但这场争议仍然以其不透明性为特点。美国政府从未明确声明Anthropic做错了什么——我们所能做的最好的事情是阅读X上的一篇帖子，概述了白宫技术顾问David Sacks的一般情况。",
-        "具有讽刺意味的是，白宫的行动可能阻碍了它想要保护的那种创新。特朗普政府要求Anthropic禁止所有外国公民访问Mythos和Fable 5，阻止了许多人工智能实验室自己的员工访问其最先进的模型，公司表示这些模型在近几个月加快了其研究和开发。所有Anthropic的客户也被锁定在外，包括苹果、Meta和财富500强的大部分。",
-        "白宫可能有合理的理由对Anthropic的模型感到担忧。正如我和我的同事们在周三报道的那样，美国官员在本月早些时候得知Anthropic与SK Telecom共享Mythos时感到担忧，SK Telecom是一家韩国电信巨头，他们声称与中国有联系。另外，亚马逊首席执行官Andy Jassy向美国财政部长Scott Bessent提出了担忧，即Claude Fable 5的一些监管措施可能被规避，这是Mythos的一个受保护版本。",
-        "即使这些担忧是合理的，那并不意味着白宫处理得当。在第一种情况下，Anthropic表示它与美国政府协调了Mythos的推出，暗示可能有机会让官员提前对SK Telecom提出警报。Anthropic也与韩国公司合作多年，这种安排似乎从未导致它遇到国家安全问题。当白宫向Anthropic提出对SK Telecom的担忧时，它立即撤销了对模型的访问权限，我们报道了这一点。",
-        "在第二种情况下，WIRED和其他媒体已经详细报道了每个大型语言模型都可以在不同程度上被越狱。Anthropic和独立的网络安全研究人员认为，解决越狱问题不是一个容易或孤立的问题。因为人工智能模型是概率性的，而不是确定性的，科技公司不能保证它们对给定提示的确切反应。如果白宫不允许Anthropic发布Claude Fable 5，直到越狱问题得到解决，我不会屏住呼吸。",
-        "但最终，这里的问题不在于美国政府试图确保先进的人工智能模型有适当的安全措施或不落入美国的敌人手中。问题在于特朗普政府现在处于一个必须实时做出这些监管决定的位置。",
-        "我可以向你保证，其他人工智能实验室如OpenAI、谷歌和Meta一直在屏息关注Anthropic的不幸。我一直在问人工智能高管同样的问题：你如何避免与Anthropic类似的命运？"
+        "特朗普政府与Anthropic就其最先进的人工智能模型的分歧似乎即将达到顶点。",
+        "特朗普官员告诉Inner Loop，如果Anthropic想要重新发布他们上周因担心越狱而用出口管制下线的人工智能模型克劳德·法布尔5，该公司将需要采取措施实际解决政府所声称的漏洞。",
+        "Anthropic几天来一直表示，政府的担忧被夸大了，越狱的影响微乎其微。它在周一的技术会议上向商务部和国家网络主任肖恩·凯恩克罗斯重申了这一立场。",
+        "但官员们表示，他们已经过了争论越狱是否重要的阶段，因为国家安全局得出结论，有方法可以禁用法布尔5上的护栏，这些护栏旨在防止用户访问与网络安全、化学和生物学相关的Mythos模型的能力。",
+        "在这个阶段，政府基本上将这种情况视为Anthropic需要解决的问题，据三位知情人士透露。",
+        "人们表示，商务部的人工智能标准和创新中心和国家安全局都没有人员或能力去追踪市场上每一个模型上可能出现的每一种越狱。",
+        "因此，政府认为Anthropic应该更积极地不断测试不仅仅是法布尔5，还有其所有前沿的人工智能模型，以发现潜在的越狱行为，并自行向政府报告。",
+        "但在更根本的层面上，目前尚不清楚Anthropic应该如何防止越狱。",
+        "独立的网络安全专家越来越认为，人工智能模型上的护栏只是权宜之计，因为熟练的用户和未来的人工智能模型将找到绕过限制的方法——这意味着白宫似乎想要的是无法实现的。",
+        "在本周初，特朗普选择的代理国家情报总监比尔·普尔特似乎永远不会开始这份工作。现在，特朗普给了他一根救命稻草——而永久的国家情报总监提名人杰伊·克莱顿，现在面临着永远无法担任这一角色的前景。",
+        "总结：特朗普最初任命普尔特，他的住房金融主管，来取代即将离任的国家情报总监图尔西·加巴德。",
+        "面对两党的反对，因为普尔特没有法律要求的角色所需的国家安全经验，并且他提出了针对特朗普政治敌人的可疑抵押贷款欺诈指控，特朗普宣布克莱顿，纽约南区的美国检察官，作为他永久的国家情报总监提名人。"
       ],
       "vocabulary": [
         {
-          "word": "directive",
-          "meaningZh": "指令",
-          "phonetic": "/dəˈrektɪv/",
-          "example": "The company issued a directive to all employees about the new safety procedures.",
-          "exampleZh": "公司就新的安全程序向所有员工发布了一项指令。"
+          "word": "administration",
+          "meaningZh": "政府",
+          "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
+          "example": "The Trump administration is working on a new policy.",
+          "exampleZh": "特朗普政府正在制定一项新政策。"
         },
         {
-          "word": "debacle",
-          "meaningZh": "混乱，大败",
-          "phonetic": "/ˈdesɑː.kəl/",
-          "example": "The launch of the product turned into a debacle due to poor planning.",
-          "exampleZh": "由于计划不周，产品发布变成了一场灾难。"
+          "word": "jailbreak",
+          "meaningZh": "越狱",
+          "phonetic": "/ˈdʒeɪlbreɪk/",
+          "example": "Jailbreaking a phone allows you to install unauthorized apps.",
+          "exampleZh": "手机越狱允许你安装未经授权的应用程序。"
         },
         {
-          "word": "reckless",
-          "meaningZh": "鲁莽的",
-          "phonetic": "/ˈrek.lɪs/",
-          "example": "Driving too fast can be very reckless and dangerous.",
-          "exampleZh": "开得太快可能非常鲁莽和危险。"
+          "word": "vulnerabilities",
+          "meaningZh": "漏洞",
+          "phonetic": "/ˌvʌlnərəˈbɪlɪtiz/",
+          "example": "The software has been updated to fix security vulnerabilities.",
+          "exampleZh": "软件已更新以修复安全漏洞。"
         },
         {
-          "word": "opaque",
-          "meaningZh": "不透明的，含糊的",
-          "phonetic": "/oʊˈpeɪk/",
-          "example": "The glass is opaque, so you can't see through it.",
-          "exampleZh": "玻璃是不透明的，所以你看不到里面。"
+          "word": "reiterated",
+          "meaningZh": "重申",
+          "phonetic": "/riˈɪtəreɪt/",
+          "example": "The company reiterated its commitment to customer service.",
+          "exampleZh": "该公司重申了其对客户服务的承诺。"
         },
         {
-          "word": "slap-dash",
-          "meaningZh": "草率的，匆忙的",
-          "phonetic": "/ˈslæpˌdæʃ/",
-          "example": "The report was a slap-dash job, full of errors and inaccuracies.",
-          "exampleZh": "这份报告做得非常草率，充满了错误和不准确之处。"
+          "word": "proactive",
+          "meaningZh": "主动的",
+          "phonetic": "/ˌprəʊˈæktɪv/",
+          "example": "The company has been proactive in addressing customer complaints.",
+          "exampleZh": "该公司在处理客户投诉方面一直很主动。"
         },
         {
-          "word": "hamper",
-          "meaningZh": "阻碍",
-          "phonetic": "/ˈhæm.pər/",
-          "example": "Heavy rain can hamper travel plans.",
-          "exampleZh": "大雨可能会阻碍旅行计划。"
+          "word": "stopgap",
+          "meaningZh": "权宜之计",
+          "phonetic": "/ˈstɒpɡæp/",
+          "example": "The new manager's appointment was only a stopgap measure.",
+          "exampleZh": "新经理的任命只是一个权宜之计。"
         }
       ],
-      "id": "e5b23f303b9737e9da74126a",
+      "id": "e0ef0992079449a7043eb82b",
       "editionDate": "2026-06-19",
       "editionSlot": "morning",
       "curationStatus": "approved",
       "learningContent": {
         "easy": {
           "paragraphs": [
-            "The Trump administration recently sent an export control directive to Anthropic, a leading AI lab, forcing it to take its advanced models offline. Anthropic disagrees with the White House about the rules and whether it broke them. This situation shows that the US is in a Wild West era of AI regulation, with few laws and unclear rules.",
-            "A former White House technology official says there should have been preparation and policies to deal with AI, but instead, there's a slap-dash approach that confuses the AI industry. The Trump administration has stopped efforts to create rules for AI, saying they could hurt US innovation.",
-            "The White House's actions might have stopped the innovation it wanted to protect. It told Anthropic to stop all foreign nationals from using its models, which stopped many of Anthropic's own employees and customers from using them. This could slow down research and development.",
-            "The White House might have been worried about Anthropic sharing its models with a South Korean company that has ties to China. But Anthropic says it worked with the US government on sharing its models and could have stopped sharing if the government had told it to."
+            "The Trump administration is disagreeing with Anthropic over its most advanced AI models. Trump officials say that if Anthropic wants to rerelease Claude Fable 5, the AI model they took offline last week, the company will need to solve the jailbreak problem. Jailbreaking is a method of using prompts to get around a model’s safeguards. Anthropic says that the administration’s concerns are not serious and that jailbreaks are not a big issue. However, the National Security Agency found ways to disable guardrails on Fable 5, which are there to prevent users from accessing certain capabilities."
           ],
           "paragraphTranslations": [
-            "特朗普政府最近向领先的人工智能实验室Anthropic发送了一项出口控制指令，迫使其将先进的模型下线。Anthropic与白宫就规则及其是否违反规则存在分歧。这种情况表明，美国正处于人工智能法规的“狂野西部”时代，法规寥寥无几，规则不明确。",
-            "一位前白宫技术官员表示，本应对人工智能制定准备和政策，但相反，却采取了一种临时拼凑的方法，这让人工智能行业感到困惑。特朗普政府阻止了为人工智能制定规则的努力，称这些规则可能会损害美国的创新。",
-            "白宫的行动可能阻碍了它想要保护的创新。它告诉Anthropic停止所有外国人使用其模型，这阻止了许多Anthropic自己的员工和客户使用它们。这可能会减慢研究和发展。",
-            "白宫可能担心Anthropic与一家与韩国公司分享其模型，该公司与中国有联系。但Anthropic表示，它与美国政府合作分享其模型，如果政府提前告知，它可以停止分享。"
+            "特朗普政府正在就其最先进的人工智能模型与Anthropic公司发生分歧。特朗普官员表示，如果Anthropic想要重新发布上周他们下线的人工智能模型克劳德·费布尔5号，该公司将需要解决越狱问题。越狱是一种使用提示绕过模型安全防护的方法。Anthropic表示，政府的担忧并不严重，越狱并不是一个大问题。然而，国家安全局发现了禁用费布尔5号上的防护栏的方法，这些防护栏是用来防止用户访问某些功能的。"
           ],
-          "targetWords": 200,
+          "targetWords": 182,
           "cefr": "A2-B1"
         },
         "standard": {
           "paragraphs": [
-            "The Trump administration recently sent an export control directive to Anthropic, one of the world's leading AI labs, forcing it to pull its most advanced models offline. The directive has sparked a week-long dispute between Anthropic and the White House, with both parties at odds over the rules governing AI and whether Anthropic violated them.",
-            "Throughout this debacle, Anthropic maintains that it did not violate any concrete procedures or rules laid out by the Trump administration, according to a person close to the company. However, the White House contends that Anthropic's behavior was reckless, suggesting that the company cannot be trusted with the rollout of frontier technology.",
-            "This situation has highlighted the lack of clear regulations in the American AI industry, often referred to as the Wild West era of AI regulation. While there are few laws on the books governing frontier AI development, companies can still face trouble with the Trump administration if they cross unspoken lines.",
-            "A former White House technology official, who wished to remain anonymous, criticized the lack of preparation and policies to deal with real AI capabilities. The Trump administration has repeatedly blocked efforts to impose guardrails on the AI industry, arguing that such rules could hamper US innovation and lead the country to fall behind rivals like China.",
-            "The dispute between Anthropic and the White House remains opaque, with the US government not clearly stating what Anthropic did wrong. The White House's actions have likely hampered the innovation it seeks to protect by demanding that Anthropic prohibit all foreign nationals from accessing its models, impacting not only the AI lab's employees but also its customers, including major companies like Apple and Meta.",
-            "The White House may have had legitimate concerns about Anthropic's models, particularly when it learned that Anthropic shared Mythos with SK Telecom, a South Korean company with alleged ties to China. Additionally, Amazon CEO Andy Jassy raised concerns about the potential circumvention of safeguards on Claude Fable 5, a version of Mythos.",
-            "Despite these concerns, the White House's handling of the situation has been criticized. Anthropic claims it coordinated with the US government on the rollout of Mythos, suggesting that there may have been an opportunity for officials to raise alarms about SK Telecom beforehand. The company has also been working with the Korean company for years without previous national security issues.",
-            "In the case of Claude Fable 5, it is argued that solving jailbreaks is not an easy or isolated issue due to the probabilistic nature of AI models. The Trump administration's real-time regulatory decisions have put the AI industry in a difficult position, with other AI labs like OpenAI, Google, and Meta closely watching the outcome of Anthropic's situation."
+            "The Trump administration is in disagreement with Anthropic over its most advanced AI models. Trump officials have told Inner Loop that if Anthropic wants to rerelease Claude Fable 5, the AI model they took offline last week over concerns about jailbreaking, the company will need to address the government's allegations of vulnerabilities. Anthropic has been saying for days that the administration's concerns are exaggerated and that the effects of jailbreaks are minimal. They reiterated this position to the Commerce Department and the Office of the National Cyber Director, Sean Cairncross, in a technical meeting on Monday. However, officials say they are past arguing whether the jailbreaks are significant, since the National Security Agency concluded that there are ways to disable guardrails on Fable 5, which are put in place to prevent users from accessing capabilities of the Mythos model related to cybersecurity, chemistry, and biology. The administration essentially views the situation as Anthropic’s problem to fix, according to three people familiar with discussions. Neither the Commerce Department’s Center for AI Standards and Innovation nor the National Security Agency has the staff or the bandwidth to chase down every conceivable jailbreak on every model that reaches the market, the people said. As a result, the administration believes that Anthropic should be more proactive about continually testing not just Fable 5 but all of its frontier AI models to find potential jailbreaks and flag them to the government themselves. However, it remains unclear how Anthropic is supposed to prevent jailbreaking. Independent cybersecurity experts have increasingly taken the view that guardrails on AI models are only a stopgap solution, since skilled users and future AI models will find ways to bypass constraints—meaning that what the White House appears to want cannot be done."
           ],
           "paragraphTranslations": [
-            "特朗普政府最近向世界领先的人工智能实验室Anthropic发送了一项出口控制指令，迫使其将最先进的模型下线。该指令引发了Anthropic与白宫之间长达一周的争议，双方就人工智能的规则及其是否违反这些规则存在分歧。",
-            "在整个这场混乱中，根据接近公司的人的说法，Anthropic坚称它没有违反特朗普政府制定的任何具体程序或规则。然而，白宫认为Anthropic的行为是鲁莽的，暗示该公司不能被信任进行前沿技术的推广。",
-            "这种情况突显了美国人工智能行业缺乏明确法规，通常被称为人工智能法规的“狂野西部”时代。尽管关于前沿人工智能发展的法律书籍很少，但如果公司越过了未言明的界限，它们仍可能面临特朗普政府的麻烦。",
-            "一位希望保持匿名的前白宫技术官员批评缺乏准备和政策来应对真正的人工智能能力。特朗普政府一再阻止对人工智能行业施加限制的努力，认为这样的规则可能会阻碍美国的创新，导致国家落后于像中国这样的竞争对手。",
-            "Anthropic与白宫之间的争议仍然不透明，美国政府没有明确指出Anthropic做错了什么。白宫的行动可能阻碍了它寻求保护的创新，要求Anthropic禁止所有外国人访问其模型，这不仅影响了人工智能实验室的员工，也影响了包括苹果和Meta在内的主要客户。",
-            "白宫可能对Anthropic的模型有合理的担忧，特别是当它得知Anthropic与被指控与中国有联系的韩国公司SK Telecom分享了Mythos时。此外，亚马逊首席执行官安迪·贾西对克劳德·法布尔5号的潜在规避保障措施表示担忧，这是Mythos的一个版本。",
-            "尽管存在这些担忧，但白宫对这种情况的处理受到了批评。Anthropic声称它与美国政府协调了Mythos的推广，暗示官员们可能有机会提前对SK Telecom提出警报。该公司多年来也一直在与韩国公司合作，之前没有出现过国家安全问题。",
-            "在克劳德·法布尔5号的案例中，由于人工智能模型的概率性质，解决越狱问题并不容易或孤立。特朗普政府的实时监管决策使人工智能行业处于困难的境地，其他人工智能实验室如OpenAI、谷歌和Meta正在密切关注Anthropic的情况。"
+            "特朗普政府与Anthropic公司就其最先进的人工智能模型存在分歧。特朗普官员告诉Inner Loop，如果Anthropic想要重新发布上周因担心越狱问题而下线的人工智能模型克劳德·费布尔5号，该公司将需要解决政府对其安全漏洞的指控。Anthropic公司几天来一直在说，政府的担忧被夸大了，越狱的影响微乎其微。他们在周一的技术会议上向商务部和国家网络主任肖恩·凯恩克罗斯重申了这一立场。然而，官员们表示，他们已经过了争论越狱是否重要的阶段，因为国家安全局得出结论，有办法禁用费布尔5号上的防护栏，这些防护栏的设置是为了防止用户访问与网络安全、化学和生物学相关的Mythos模型的能力。根据三位熟悉讨论的人说，政府基本上将这种情况视为Anthropic需要解决的问题。商务部的人工智能标准和创新中心和国家安全局都没有足够的人员或带宽去追踪每一个上市模型的每一种可能的越狱，这些人说。因此，政府认为Anthropic应该更加主动地不断测试不仅仅是费布尔5号，还有其所有前沿的人工智能模型，以发现潜在的越狱行为，并主动向政府报告。然而，目前还不清楚Anthropic应该如何防止越狱。独立的网络安全专家越来越认为，人工智能模型上的防护栏只是一个权宜之计，因为熟练的用户和未来的人工智能模型将找到绕过限制的方法——这意味着白宫似乎想要的是无法实现的。"
           ],
-          "targetWords": 300,
+          "targetWords": 274,
           "cefr": "B1-B2"
         },
         "vocabulary": [
           {
-            "word": "directive",
-            "meaningZh": "指令",
-            "phonetic": "/dəˈrektɪv/",
-            "example": "The company issued a directive to all employees about the new safety procedures.",
-            "exampleZh": "公司就新的安全程序向所有员工发布了一项指令。"
+            "word": "administration",
+            "meaningZh": "政府",
+            "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
+            "example": "The Trump administration is working on a new policy.",
+            "exampleZh": "特朗普政府正在制定一项新政策。"
           },
           {
-            "word": "debacle",
-            "meaningZh": "混乱，大败",
-            "phonetic": "/ˈdesɑː.kəl/",
-            "example": "The launch of the product turned into a debacle due to poor planning.",
-            "exampleZh": "由于计划不周，产品发布变成了一场灾难。"
+            "word": "jailbreak",
+            "meaningZh": "越狱",
+            "phonetic": "/ˈdʒeɪlbreɪk/",
+            "example": "Jailbreaking a phone allows you to install unauthorized apps.",
+            "exampleZh": "手机越狱允许你安装未经授权的应用程序。"
           },
           {
-            "word": "reckless",
-            "meaningZh": "鲁莽的",
-            "phonetic": "/ˈrek.lɪs/",
-            "example": "Driving too fast can be very reckless and dangerous.",
-            "exampleZh": "开得太快可能非常鲁莽和危险。"
+            "word": "vulnerabilities",
+            "meaningZh": "漏洞",
+            "phonetic": "/ˌvʌlnərəˈbɪlɪtiz/",
+            "example": "The software has been updated to fix security vulnerabilities.",
+            "exampleZh": "软件已更新以修复安全漏洞。"
           },
           {
-            "word": "opaque",
-            "meaningZh": "不透明的，含糊的",
-            "phonetic": "/oʊˈpeɪk/",
-            "example": "The glass is opaque, so you can't see through it.",
-            "exampleZh": "玻璃是不透明的，所以你看不到里面。"
+            "word": "reiterated",
+            "meaningZh": "重申",
+            "phonetic": "/riˈɪtəreɪt/",
+            "example": "The company reiterated its commitment to customer service.",
+            "exampleZh": "该公司重申了其对客户服务的承诺。"
           },
           {
-            "word": "slap-dash",
-            "meaningZh": "草率的，匆忙的",
-            "phonetic": "/ˈslæpˌdæʃ/",
-            "example": "The report was a slap-dash job, full of errors and inaccuracies.",
-            "exampleZh": "这份报告做得非常草率，充满了错误和不准确之处。"
+            "word": "proactive",
+            "meaningZh": "主动的",
+            "phonetic": "/ˌprəʊˈæktɪv/",
+            "example": "The company has been proactive in addressing customer complaints.",
+            "exampleZh": "该公司在处理客户投诉方面一直很主动。"
           },
           {
-            "word": "hamper",
-            "meaningZh": "阻碍",
-            "phonetic": "/ˈhæm.pər/",
-            "example": "Heavy rain can hamper travel plans.",
-            "exampleZh": "大雨可能会阻碍旅行计划。"
+            "word": "stopgap",
+            "meaningZh": "权宜之计",
+            "phonetic": "/ˈstɒpɡæp/",
+            "example": "The new manager's appointment was only a stopgap measure.",
+            "exampleZh": "新经理的任命只是一个权宜之计。"
           }
         ],
-        "sourceFingerprint": "c7d9a144f13e2e964f783fc1cc9d8495ef0177850364668a2af1f47ed1f1a748",
-        "generatedAt": "2026-06-19T06:28:02Z"
+        "sourceFingerprint": "3a239d989bdc5dde074a3f3b53fd5ed6b416853166389eace44f76c684c93686",
+        "generatedAt": "2026-06-19T06:39:05Z"
       }
     },
     {
-      "title": "New usage analytics and updated spend controls for enterprises",
-      "subtitle": "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence.",
-      "source": "OpenAI News",
-      "author": "OpenAI News",
-      "category": "ai",
-      "summary": "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence.",
-      "urlString": "https://openai.com/index/chatgpt-enterprise-spend-controls",
-      "imageURLString": "",
-      "publishedAt": "2026-06-18T17:00:00Z",
+      "title": "Microplastics in over 75% of pet food, study finds",
+      "subtitle": "Researchers say certain brands and kinds of cat and dog food have more microplastics than others.",
+      "source": "BBC Science",
+      "author": "BBC Science",
+      "category": "science",
+      "summary": "Researchers say certain brands and kinds of cat and dog food have more microplastics than others.",
+      "urlString": "https://www.bbc.com/news/articles/c39yx1kr2z0o?at_medium=RSS&at_campaign=rss",
+      "imageURLString": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/bc60/live/ccb6e3b0-6b11-11f1-ad9f-addb423b1b6c.jpg",
+      "publishedAt": "2026-06-19T05:10:53Z",
       "sourceCount": 1,
       "corroboratingSources": [
-        "OpenAI News"
+        "BBC Science"
       ],
       "body": [
-        "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence."
+        "Microplastics are in more than three-quarters of pet food products, a new study has found.",
+        "The research by the universities of Sussex and Exeter found microplastics in 16 out of the 19 brands that were tested, including \"very well-known ones\".",
+        "Cheaper \"value range\" products given to dogs, cats and wild animals contained more than the expensive ones, it found.",
+        "Microplastics are tiny plastic particles, typically smaller than 5mm.",
+        "Several studies have suggested that microplastics can harm animals and humans in many ways, though working out their exact impact is tricky.",
+        "Researchers in Sussex and Exeter said that the presence of plastic pollution in pet food may also have potential implications for health, but this was not the focus of their study.",
+        "The study found that, despite higher concentrations in dry food, wet food leads to higher daily microplastic intake because pets need to eat more of it to meet their energy requirements.",
+        "Researchers are urging government to put in new regulations to insist processed food manufacturers test for microplastic contamination - similar to the legislation that already exists to prevent chemical contamination.",
+        "\"Our results are a reminder that our pets are exposed to the same chemical pollutants as ourselves,\" University of Exeter Prof of Ecotoxicology Tamara Galloway said.",
+        "\"Pets may be inadvertently spreading plastic pollution through their food and faeces, affecting wildlife and the wider environment,\" Fiona Mathews, Prof of Environmental Biology at the University of Sussex, added.",
+        "Researchers said that the sources of contamination were unclear.",
+        "\"Further research is now needed to find out whether ingredient quality, packaging types, or processing methods, are the main contributors to the problem,\" they added."
       ],
       "readingMinutes": 2,
       "publishNote": "Editorial candidate",
       "keyPoints": [
-        "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence."
+        "Microplastics are in more than three-quarters of pet food products, a new study has found.",
+        "The research by the universities of Sussex and Exeter found microplastics in 16 out of the 19 brands that were tested, including \"very well-known ones\".",
+        "Cheaper \"value range\" products given to dogs, cats and wild animals contained more than the expensive ones, it found."
       ],
       "paragraphTranslations": [
-        "OpenAI为ChatGPT企业版引入了新的支出控制和使用分析功能，帮助组织管理成本并自信地扩展AI。"
+        "一项新研究发现，超过四分之三的宠物食品中都含有微塑料。",
+        "萨塞克斯大学和埃克塞特大学的研究在测试的19个品牌中有16个发现了微塑料，包括“非常知名”的品牌。",
+        "研究发现，给狗、猫和野生动物的更便宜的“价值范围”产品含有的微塑料比昂贵的产品多。",
+        "微塑料是通常小于5毫米的微小塑料颗粒。",
+        "一些研究表明，微塑料可能以多种方式危害动物和人类，尽管确定它们的确切影响是困难的。",
+        "萨塞克斯和埃克塞特的研究人员表示，宠物食品中塑料污染的存在可能也对健康有潜在影响，但这不是他们研究的重点。",
+        "研究发现，尽管干食品中浓度更高，但湿食品导致每天摄入更多的微塑料，因为宠物需要吃更多的湿食品以满足它们的能量需求。",
+        "研究人员敦促政府制定新法规，要求加工食品制造商检测微塑料污染——类似于已经存在的防止化学污染的立法。",
+        "我们的研究结果提醒我们，我们的宠物和我们一样暴露在相同的化学污染物中，”埃克塞特大学生态毒理学教授塔玛拉·加洛韦说。",
+        "萨塞克斯大学环境生物学教授菲奥娜·马修斯补充说：“宠物可能通过它们的食物和粪便无意中传播塑料污染，影响野生动物和更广泛的环境。”",
+        "研究人员表示，污染的来源尚不清楚。",
+        "他们补充说：“现在需要进一步的研究，以确定成分质量、包装类型或加工方法是否是问题的主要贡献者。”"
       ],
       "vocabulary": [
         {
-          "word": "features",
-          "meaningZh": "功能",
-          "phonetic": "/ˈfiː.tʃərz/",
-          "example": "The new phone has many advanced features.",
-          "exampleZh": "这部新手机有许多高级功能。"
+          "word": "microplastics",
+          "meaningZh": "微塑料",
+          "phonetic": "/ˌmaɪkrəʊˈplæstɪks/",
+          "example": "Microplastics are a big problem for the environment.",
+          "exampleZh": "微塑料对环境是个大问题。"
         },
         {
-          "word": "spend controls",
-          "meaningZh": "支出控制",
-          "phonetic": "/spend kənˈtroʊlz/",
-          "example": "The company implemented strict spend controls to reduce costs.",
-          "exampleZh": "公司实施了严格的支出控制以降低成本。"
+          "word": "particles",
+          "meaningZh": "颗粒",
+          "phonetic": "/ˈpɑːrtɪkəlz/",
+          "example": "The air is full of tiny particles.",
+          "exampleZh": "空气中充满了微小的颗粒。"
         },
         {
-          "word": "usage analytics",
-          "meaningZh": "使用分析",
-          "phonetic": "/ˈjuː.sɪdʒ ˌæn.əˈlɪt.ɪks/",
-          "example": "Usage analytics can help businesses understand customer behavior.",
-          "exampleZh": "使用分析可以帮助企业理解客户行为。"
+          "word": "pollution",
+          "meaningZh": "污染",
+          "phonetic": "/pəˈluːʃn/",
+          "example": "Water pollution is a serious problem.",
+          "exampleZh": "水污染是一个严重的问题。"
         },
         {
-          "word": "organizations",
-          "meaningZh": "组织",
-          "phonetic": "/ˌɔːr.ɡə.naɪˈzeɪ.ʃənz/",
-          "example": "Many organizations participated in the event.",
-          "exampleZh": "许多组织参加了这次活动。"
+          "word": "contamination",
+          "meaningZh": "污染",
+          "phonetic": "/kənˌtæmɪˈneɪʃn/",
+          "example": "The food was unsafe to eat because of contamination.",
+          "exampleZh": "由于污染，食物不安全食用。"
         },
         {
-          "word": "scale",
-          "meaningZh": "扩展",
-          "phonetic": "/skeɪl/",
-          "example": "The company plans to scale its operations in the new market.",
-          "exampleZh": "公司计划在新市场扩展其业务。"
+          "word": "regulations",
+          "meaningZh": "法规",
+          "phonetic": "/ˌreɡjuˈleɪʃnz/",
+          "example": "The company must follow strict safety regulations.",
+          "exampleZh": "公司必须遵守严格的安全法规。"
         },
         {
-          "word": "confidence",
-          "meaningZh": "信心",
-          "phonetic": "/ˈkɑːn.fɪ.dəns/",
-          "example": "The team played with confidence and won the game.",
-          "exampleZh": "团队充满信心地比赛并赢得了比赛。"
+          "word": "faeces",
+          "meaningZh": "粪便",
+          "phonetic": "/ˈfiːsiːz/",
+          "example": "Bacteria in human faeces can contaminate water.",
+          "exampleZh": "人类粪便中的细菌可以污染水。"
         }
       ],
-      "id": "450d5ccfb1602dc277cdfc70",
+      "id": "f9f9c43fc32a69f03145ffdb",
       "editionDate": "2026-06-19",
       "editionSlot": "afternoon",
       "curationStatus": "approved",
       "learningContent": {
         "easy": {
           "paragraphs": [
-            "OpenAI has introduced new features for ChatGPT Enterprise.",
-            "The new features are spend controls and usage analytics.",
-            "These features help organizations manage costs.",
-            "Organizations can now scale AI with confidence."
+            "A new study has found that microplastics are in over 75% of pet food products.",
+            "The research was done by the universities of Sussex and Exeter.",
+            "They tested 19 pet food brands and found microplastics in 16 of them.",
+            "Microplastics are very small plastic pieces, usually smaller than 5mm.",
+            "The study found that cheaper pet food has more microplastics than expensive pet food.",
+            "Researchers say that pet food may have health implications for pets, but they did not study this.",
+            "Wet pet food has more microplastics than dry food because pets eat more of it.",
+            "Researchers are asking for new rules to test pet food for microplastics."
           ],
           "paragraphTranslations": [
-            "OpenAI为ChatGPT企业版引入了新功能。",
-            "这些新功能包括支出控制和使用分析。",
-            "这些功能帮助组织管理成本。",
-            "现在，组织可以自信地扩展AI。"
+            "一项新的研究发现，超过75%的宠物食品中含有微塑料。",
+            "这项研究由苏塞克斯大学和埃克塞特大学进行。",
+            "他们测试了19个宠物食品品牌，发现其中16个含有微塑料。",
+            "微塑料是非常小的塑料碎片，通常小于5毫米。",
+            "研究发现，便宜的宠物食品比贵的宠物食品含有更多的微塑料。",
+            "研究人员表示，宠物食品可能对宠物健康有影响，但他们没有研究这一点。",
+            "湿宠物食品比干宠物食品含有更多的微塑料，因为宠物吃得更多。",
+            "研究人员要求制定新规则，测试宠物食品中的微塑料。"
           ],
-          "targetWords": 20,
+          "targetWords": 108,
           "cefr": "A2-B1"
         },
         "standard": {
           "paragraphs": [
-            "OpenAI has introduced new spend controls and usage analytics for ChatGPT Enterprise.",
-            "These features are designed to help organizations manage costs effectively.",
-            "Spend controls allow organizations to set limits on their AI usage.",
-            "Usage analytics provide insights into how AI is being used within the organization.",
-            "With these features, organizations can scale their AI efforts with confidence."
+            "Microplastics are in more than three-quarters of pet food products, a new study has found. The research by the universities of Sussex and Exeter found microplastics in 16 out of the 19 brands that were tested, including very well-known ones.",
+            "Microplastics are tiny plastic particles, typically smaller than 5mm. Several studies have suggested that microplastics can harm animals and humans in many ways, though working out their exact impact is tricky.",
+            "The study found that cheaper 'value range' products given to dogs, cats, and wild animals contained more microplastics than the expensive ones. Despite higher concentrations in dry food, wet food leads to higher daily microplastic intake because pets need to eat more of it to meet their energy requirements.",
+            "Researchers in Sussex and Exeter said that the presence of plastic pollution in pet food may also have potential implications for health, but this was not the focus of their study. The study's focus was on the presence of microplastics in pet food.",
+            "Researchers are urging the government to put in new regulations to insist processed food manufacturers test for microplastic contamination, similar to the legislation that already exists to prevent chemical contamination.",
+            "Our results are a reminder that our pets are exposed to the same chemical pollutants as ourselves,\" said University of Exeter Professor of Ecotoxicology Tamara Galloway. \"Pets may be inadvertently spreading plastic pollution through their food and faeces, affecting wildlife and the wider environment,\" added Fiona Mathews, Professor of Environmental Biology at the University of Sussex.",
+            "Researchers said that the sources of contamination were unclear. \"Further research is now needed to find out whether ingredient quality, packaging types, or processing methods, are the main contributors to the problem,\" they added."
           ],
           "paragraphTranslations": [
-            "OpenAI为ChatGPT企业版引入了新的支出控制和使用分析功能。",
-            "这些功能旨在帮助组织有效地管理成本。",
-            "支出控制允许组织对其AI使用设置限制。",
-            "使用分析提供了组织内AI使用情况的洞察。",
-            "有了这些功能，组织可以自信地扩展他们的AI工作。"
+            "一项新的研究发现，超过四分之三的宠物食品中含有微塑料。苏塞克斯大学和埃克塞特大学的研究在测试的19个品牌中发现了16个含有微塑料，包括一些非常知名的品牌。",
+            "微塑料是非常小的塑料颗粒，通常小于5毫米。一些研究表明，微塑料可能以多种方式危害动物和人类，尽管确定它们的确切影响是困难的。",
+            "研究发现，给狗、猫和野生动物的更便宜的“价值范围”产品比昂贵的产品含有更多的微塑料。尽管干食品中微塑料浓度更高，但湿食品导致每天摄入更多的微塑料，因为宠物需要吃更多的湿食品以满足它们的能量需求。",
+            "苏塞克斯和埃克塞特的研究人员表示，宠物食品中的塑料污染可能对健康有潜在影响，但这不是他们研究的重点。研究的重点是宠物食品中微塑料的存在。",
+            "研究人员敦促政府制定新法规，要求加工食品制造商测试微塑料污染，类似于已经存在的防止化学污染的法规。",
+            "我们的结果提醒我们，我们的宠物和我们自己一样暴露在相同的化学污染物中，\"埃克塞特大学生态毒理学教授塔玛拉·加洛韦说。\"宠物可能无意中通过它们的食物和粪便传播塑料污染，影响野生动物和更广泛的环境，\"苏塞克斯大学环境生物学教授菲奥娜·马修斯补充说。",
+            "研究人员表示，污染的来源尚不清楚。\"现在需要进一步的研究来找出是原料质量、包装类型还是加工方法，是问题的主要贡献者，\"他们补充说。"
           ],
-          "targetWords": 20,
+          "targetWords": 163,
           "cefr": "B1-B2"
         },
         "vocabulary": [
           {
-            "word": "features",
-            "meaningZh": "功能",
-            "phonetic": "/ˈfiː.tʃərz/",
-            "example": "The new phone has many advanced features.",
-            "exampleZh": "这部新手机有许多高级功能。"
+            "word": "microplastics",
+            "meaningZh": "微塑料",
+            "phonetic": "/ˌmaɪkrəʊˈplæstɪks/",
+            "example": "Microplastics are a big problem for the environment.",
+            "exampleZh": "微塑料对环境是个大问题。"
           },
           {
-            "word": "spend controls",
-            "meaningZh": "支出控制",
-            "phonetic": "/spend kənˈtroʊlz/",
-            "example": "The company implemented strict spend controls to reduce costs.",
-            "exampleZh": "公司实施了严格的支出控制以降低成本。"
+            "word": "particles",
+            "meaningZh": "颗粒",
+            "phonetic": "/ˈpɑːrtɪkəlz/",
+            "example": "The air is full of tiny particles.",
+            "exampleZh": "空气中充满了微小的颗粒。"
           },
           {
-            "word": "usage analytics",
-            "meaningZh": "使用分析",
-            "phonetic": "/ˈjuː.sɪdʒ ˌæn.əˈlɪt.ɪks/",
-            "example": "Usage analytics can help businesses understand customer behavior.",
-            "exampleZh": "使用分析可以帮助企业理解客户行为。"
+            "word": "pollution",
+            "meaningZh": "污染",
+            "phonetic": "/pəˈluːʃn/",
+            "example": "Water pollution is a serious problem.",
+            "exampleZh": "水污染是一个严重的问题。"
           },
           {
-            "word": "organizations",
-            "meaningZh": "组织",
-            "phonetic": "/ˌɔːr.ɡə.naɪˈzeɪ.ʃənz/",
-            "example": "Many organizations participated in the event.",
-            "exampleZh": "许多组织参加了这次活动。"
+            "word": "contamination",
+            "meaningZh": "污染",
+            "phonetic": "/kənˌtæmɪˈneɪʃn/",
+            "example": "The food was unsafe to eat because of contamination.",
+            "exampleZh": "由于污染，食物不安全食用。"
           },
           {
-            "word": "scale",
-            "meaningZh": "扩展",
-            "phonetic": "/skeɪl/",
-            "example": "The company plans to scale its operations in the new market.",
-            "exampleZh": "公司计划在新市场扩展其业务。"
+            "word": "regulations",
+            "meaningZh": "法规",
+            "phonetic": "/ˌreɡjuˈleɪʃnz/",
+            "example": "The company must follow strict safety regulations.",
+            "exampleZh": "公司必须遵守严格的安全法规。"
           },
           {
-            "word": "confidence",
-            "meaningZh": "信心",
-            "phonetic": "/ˈkɑːn.fɪ.dəns/",
-            "example": "The team played with confidence and won the game.",
-            "exampleZh": "团队充满信心地比赛并赢得了比赛。"
+            "word": "faeces",
+            "meaningZh": "粪便",
+            "phonetic": "/ˈfiːsiːz/",
+            "example": "Bacteria in human faeces can contaminate water.",
+            "exampleZh": "人类粪便中的细菌可以污染水。"
           }
         ],
-        "sourceFingerprint": "3fd169ffb8f6d210bc1a0b17d70fd91951f8e36ad7edfa6a19169fe504d52b0f",
-        "generatedAt": "2026-06-19T06:28:29Z"
+        "sourceFingerprint": "140830fd133983fac11432f5c019067aa23d3637f9004649bf9edded577e058d",
+        "generatedAt": "2026-06-19T06:40:33Z"
       }
     }
   ]
