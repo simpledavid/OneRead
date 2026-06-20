@@ -18,7 +18,8 @@ enum DomainGlossary {
     static func lookup(candidates: [String]) -> WordLookup? {
         for candidate in candidates where !candidate.isEmpty {
             let collapsed = candidate.replacingOccurrences(of: "-", with: "")
-            if let entry = index[candidate] ?? index[collapsed] {
+            if let entry = index[candidate] ?? index[collapsed],
+               isContextIndependent(entry.word) {
                 return WordLookup(
                     word: entry.word,
                     meaningZh: entry.meaningZh,
@@ -29,6 +30,22 @@ enum DomainGlossary {
             }
         }
         return nil
+    }
+
+    /// Only bypass contextual AI for terms whose spelling identifies the sense:
+    /// acronyms (ALS, BCI), exact compounds (brain-computer, open-source), and
+    /// distinctive mixed-case/digit product names (OpenAI, GPT-4). Ordinary
+    /// lowercase words such as `open`, `model`, `compute`, and `attention` remain
+    /// context-sensitive even when they also have a common technical meaning.
+    private static func isContextIndependent(_ word: String) -> Bool {
+        let letters = word.filter(\.isLetter)
+        if (2...10).contains(letters.count), letters.allSatisfy(\.isUppercase) {
+            return true
+        }
+        if word.contains("-") || word.contains(where: \.isNumber) {
+            return true
+        }
+        return word.dropFirst().contains(where: \.isUppercase)
     }
 
     private static func buildIndex() -> [String: DomainGlossaryEntry] {

@@ -859,9 +859,8 @@ enum WordLookupResolver {
             return match
         }
 
-        if let match = vocabulary.first(where: { entry in
-            let entryCandidates = entry.word.lookupCandidates
-            return candidates.contains(where: entryCandidates.contains)
+        if let match = vocabulary.first(where: {
+            vocabularyEntry($0, matches: rawWord, candidates: candidates, context: context)
         }) {
             return WordLookup(
                 word: match.word,
@@ -897,6 +896,44 @@ enum WordLookupResolver {
         // Ask the on-device model for this word's meaning in the source sentence
         // instead of letting a context-free dictionary choose a different sense.
         return fallbackLookup(rawWord: rawWord, context: context)
+    }
+
+    private static func vocabularyEntry(
+        _ entry: ArticleVocabulary,
+        matches rawWord: String,
+        candidates: [String],
+        context: String
+    ) -> Bool {
+        let headword = entry.word.trimmingCharacters(in: .whitespacesAndNewlines)
+        let entryCandidates = headword.lookupCandidates
+        guard let rawPrimary = candidates.first, let entryPrimary = entryCandidates.first else {
+            return false
+        }
+
+        // A multi-word term cannot be tapped as one token. Let its first word
+        // open the full phrase only when that exact phrase exists in this
+        // paragraph; never let another component match elsewhere by accident.
+        if headword.contains(where: \.isWhitespace) {
+            guard rawPrimary == entryPrimary else {
+                return false
+            }
+            return context.range(
+                of: headword,
+                options: [.caseInsensitive, .diacriticInsensitive]
+            ) != nil
+        }
+
+        // Hyphenated compounds are visible and tappable as one token. Require
+        // the complete compound, while accepting a hyphen-free spelling variant.
+        if headword.contains("-") {
+            let collapsedRaw = rawPrimary.replacingOccurrences(of: "-", with: "")
+            let collapsedEntry = entryPrimary.replacingOccurrences(of: "-", with: "")
+            return collapsedRaw == collapsedEntry
+        }
+
+        // Single words may match an inflected form through the normalizer
+        // (`models` → `model`, `powered` → `power`).
+        return candidates.contains(where: entryCandidates.contains)
     }
 
     private static func isUppercaseAcronym(_ rawWord: String) -> Bool {
@@ -1069,6 +1106,16 @@ struct WordLookupSheet: View {
         isEnriching = false
         if let result, !result.isEmpty {
             enrichedMeaning = result
+            if store.isSavedWord(displayWord) {
+                store.updateSavedWord(
+                    displayWord,
+                    meaningZh: result,
+                    phonetic: lookup.phonetic,
+                    example: lookup.example,
+                    exampleZh: lookup.exampleZh,
+                    context: lookup.context
+                )
+            }
         }
     }
 
@@ -1133,7 +1180,14 @@ struct WordLookupSheet: View {
         }
 
         if canSaveNewWord {
-            store.toggleSavedWord(displayWord)
+            store.toggleSavedWord(
+                displayWord,
+                meaningZh: enrichedMeaning ?? (lookup.needsAI ? "" : lookup.meaningZh),
+                phonetic: lookup.phonetic,
+                example: lookup.example,
+                exampleZh: lookup.exampleZh,
+                context: lookup.context
+            )
             onBookmarkChange?(true)
         } else {
             isPaywallPresented = true

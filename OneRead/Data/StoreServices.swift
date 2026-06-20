@@ -115,14 +115,41 @@ final class ReadingProgressService: ObservableObject {
     }
 }
 
+struct SavedVocabularyEntry: Codable, Hashable, Identifiable {
+    var id: String { word.lowercased() }
+    let word: String
+    let meaningZh: String
+    let phonetic: String
+    let example: String
+    let exampleZh: String
+    let context: String
+
+    init(
+        word: String,
+        meaningZh: String = "",
+        phonetic: String = "",
+        example: String = "",
+        exampleZh: String = "",
+        context: String = ""
+    ) {
+        self.word = word
+        self.meaningZh = meaningZh
+        self.phonetic = phonetic
+        self.example = example
+        self.exampleZh = exampleZh
+        self.context = context
+    }
+}
+
 @MainActor
 final class VocabularyService: ObservableObject {
-    @Published private(set) var savedWords: [String]
+    @Published private(set) var savedEntries: [SavedVocabularyEntry]
     @Published private(set) var knownWords: [String]
 
     private let defaults: UserDefaults
     private let cloud: NSUbiquitousKeyValueStore
     private let savedKey = "savedVocabularyWords"
+    private let savedEntriesKey = "savedVocabularyEntriesV2"
     private let knownKey = "knownVocabularyWords"
 
     init(defaults: UserDefaults, cloud: NSUbiquitousKeyValueStore = .default) {
@@ -131,13 +158,18 @@ final class VocabularyService: ObservableObject {
 
         // Prefer the iCloud copy; fall back to the local copy (offline / first run).
         let localSaved = defaults.stringArray(forKey: savedKey) ?? []
+        let localEntries = Self.decodeEntries(defaults.data(forKey: savedEntriesKey))
+        let remoteEntries = Self.decodeEntries(cloud.data(forKey: savedEntriesKey))
         let localKnown = defaults.stringArray(forKey: knownKey) ?? []
-        self.savedWords = (cloud.array(forKey: savedKey) as? [String]) ?? localSaved
+        let legacySaved = (cloud.array(forKey: savedKey) as? [String]) ?? localSaved
+        self.savedEntries = remoteEntries
+            ?? localEntries
+            ?? legacySaved.map { SavedVocabularyEntry(word: $0) }
         self.knownWords = (cloud.array(forKey: knownKey) as? [String]) ?? localKnown
 
         // First run after enabling iCloud: seed the cloud from existing local data.
-        if cloud.array(forKey: savedKey) == nil, !localSaved.isEmpty {
-            cloud.set(localSaved, forKey: savedKey)
+        if cloud.data(forKey: savedEntriesKey) == nil, !savedEntries.isEmpty {
+            cloud.set(try? JSONEncoder().encode(savedEntries), forKey: savedEntriesKey)
         }
         if cloud.array(forKey: knownKey) == nil, !localKnown.isEmpty {
             cloud.set(localKnown, forKey: knownKey)
@@ -159,9 +191,9 @@ final class VocabularyService: ObservableObject {
     // Another device changed the vocabulary; adopt the cloud values.
     @objc private func cloudStoreDidChange(_ notification: Notification) {
         Task { @MainActor in
-            if let remoteSaved = cloud.array(forKey: savedKey) as? [String] {
-                savedWords = remoteSaved
-                defaults.set(remoteSaved, forKey: savedKey)
+            if let remoteEntries = Self.decodeEntries(cloud.data(forKey: savedEntriesKey)) {
+                savedEntries = remoteEntries
+                defaults.set(try? JSONEncoder().encode(remoteEntries), forKey: savedEntriesKey)
             }
             if let remoteKnown = cloud.array(forKey: knownKey) as? [String] {
                 knownWords = remoteKnown
@@ -170,25 +202,77 @@ final class VocabularyService: ObservableObject {
         }
     }
 
+    var savedWords: [String] {
+        savedEntries.map(\.word)
+    }
+
     var learningWords: [String] {
         savedWords.filter { !isKnownWord($0) }
     }
 
     func isSavedWord(_ word: String) -> Bool {
-        savedWords.contains { $0.caseInsensitiveCompare(word) == .orderedSame }
+        savedEntries.contains { $0.word.caseInsensitiveCompare(word) == .orderedSame }
+    }
+
+    func savedEntry(for word: String) -> SavedVocabularyEntry? {
+        savedEntries.first { $0.word.caseInsensitiveCompare(word) == .orderedSame }
     }
 
     func isKnownWord(_ word: String) -> Bool {
         knownWords.contains { $0.caseInsensitiveCompare(word) == .orderedSame }
     }
 
-    func toggleSavedWord(_ word: String) {
-        if let index = savedWords.firstIndex(where: { $0.caseInsensitiveCompare(word) == .orderedSame }) {
-            savedWords.remove(at: index)
+    func toggleSavedWord(
+        _ word: String,
+        meaningZh: String = "",
+        phonetic: String = "",
+        example: String = "",
+        exampleZh: String = "",
+        context: String = ""
+    ) {
+        if let index = savedEntries.firstIndex(where: {
+            $0.word.caseInsensitiveCompare(word) == .orderedSame
+        }) {
+            savedEntries.remove(at: index)
         } else {
-            savedWords.append(word)
-            savedWords.sort { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+            savedEntries.append(
+                SavedVocabularyEntry(
+                    word: word,
+                    meaningZh: meaningZh,
+                    phonetic: phonetic,
+                    example: example,
+                    exampleZh: exampleZh,
+                    context: context
+                )
+            )
+            savedEntries.sort {
+                $0.word.localizedCaseInsensitiveCompare($1.word) == .orderedAscending
+            }
         }
+        persist()
+    }
+
+    func updateSavedWord(
+        _ word: String,
+        meaningZh: String,
+        phonetic: String,
+        example: String,
+        exampleZh: String,
+        context: String
+    ) {
+        guard let index = savedEntries.firstIndex(where: {
+            $0.word.caseInsensitiveCompare(word) == .orderedSame
+        }) else {
+            return
+        }
+        savedEntries[index] = SavedVocabularyEntry(
+            word: savedEntries[index].word,
+            meaningZh: meaningZh,
+            phonetic: phonetic,
+            example: example,
+            exampleZh: exampleZh,
+            context: context
+        )
         persist()
     }
 
@@ -202,11 +286,21 @@ final class VocabularyService: ObservableObject {
     }
 
     private func persist() {
+        let encodedEntries = try? JSONEncoder().encode(savedEntries)
+        defaults.set(encodedEntries, forKey: savedEntriesKey)
         defaults.set(savedWords, forKey: savedKey)
         defaults.set(knownWords, forKey: knownKey)
+        cloud.set(encodedEntries, forKey: savedEntriesKey)
         cloud.set(savedWords, forKey: savedKey)
         cloud.set(knownWords, forKey: knownKey)
         cloud.synchronize()
+    }
+
+    private static func decodeEntries(_ data: Data?) -> [SavedVocabularyEntry]? {
+        guard let data else {
+            return nil
+        }
+        return try? JSONDecoder().decode([SavedVocabularyEntry].self, from: data)
     }
 }
 

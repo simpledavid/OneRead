@@ -151,6 +151,10 @@ final class ArticleStore: ObservableObject {
         vocabulary.knownWords
     }
 
+    func savedWordEntry(for word: String) -> SavedVocabularyEntry? {
+        vocabulary.savedEntry(for: word)
+    }
+
     var readCount: Int {
         progress.readCount
     }
@@ -231,9 +235,41 @@ final class ArticleStore: ObservableObject {
         triggerImpact(.medium)
     }
 
-    func toggleSavedWord(_ word: String) {
-        vocabulary.toggleSavedWord(word)
+    func toggleSavedWord(
+        _ word: String,
+        meaningZh: String = "",
+        phonetic: String = "",
+        example: String = "",
+        exampleZh: String = "",
+        context: String = ""
+    ) {
+        vocabulary.toggleSavedWord(
+            word,
+            meaningZh: meaningZh,
+            phonetic: phonetic,
+            example: example,
+            exampleZh: exampleZh,
+            context: context
+        )
         triggerImpact()
+    }
+
+    func updateSavedWord(
+        _ word: String,
+        meaningZh: String,
+        phonetic: String,
+        example: String,
+        exampleZh: String,
+        context: String
+    ) {
+        vocabulary.updateSavedWord(
+            word,
+            meaningZh: meaningZh,
+            phonetic: phonetic,
+            example: example,
+            exampleZh: exampleZh,
+            context: context
+        )
     }
 
     func setKnownState(for word: String, isKnown: Bool) {

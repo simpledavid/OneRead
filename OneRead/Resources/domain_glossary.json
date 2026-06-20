@@ -50,6 +50,7 @@
   { "word": "AI", "meaningZh": "人工智能（artificial intelligence）" },
   { "word": "AGI", "meaningZh": "通用人工智能（artificial general intelligence）" },
   { "word": "LLM", "meaningZh": "大语言模型（large language model）" },
+  { "word": "WWDC", "meaningZh": "苹果全球开发者大会（Worldwide Developers Conference）" },
   { "word": "brain-computer", "meaningZh": "脑机的；连接大脑与计算机的（brain-computer interface 指“脑机接口”）" },
   { "word": "BCI", "meaningZh": "脑机接口（brain-computer interface）" },
   { "word": "ALS", "meaningZh": "肌萎缩侧索硬化症（amyotrophic lateral sclerosis），俗称“渐冻症”" },

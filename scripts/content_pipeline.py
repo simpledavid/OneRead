@@ -736,7 +736,10 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
         "condensed retelling, not a copy. It MUST be between 80 and 120 words: never fewer than 80, "
         "never more than 120; aim for about 100. If your draft is under 80 words, add more "
         "supporting facts from the source until it reaches at least 80. Count the words before "
-        "answering. Create 5-8 useful vocabulary items for tap-to-translate lookup. Chinese "
+        "answering. Create 5-8 useful vocabulary items for tap-to-translate lookup. Prefer "
+        "context-sensitive acronyms and complete hyphenated/compound terms over isolated pieces. "
+        "Every Chinese meaning must express the word's exact sense in this article, not the first "
+        "generic dictionary sense. Expand medical and technical acronyms when useful. Chinese "
         "translations must be natural. Return JSON only."
     )
     user = (

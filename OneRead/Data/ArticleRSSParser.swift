@@ -124,7 +124,6 @@ final class ArticleRSSParser: NSObject, XMLParserDelegate {
         let link = cleaned(currentLink)
         let imageURL = currentImageURL.isEmpty ? firstImageURL(in: currentSummary) : currentImageURL
         let body = articleBody(from: fullText, sourceName: source.name)
-        let searchText = ([title, subtitle, fullText] + body).joined(separator: " ")
 
         articles.append(
             Article(
@@ -140,7 +139,7 @@ final class ArticleRSSParser: NSObject, XMLParserDelegate {
                 keyPoints: keyPoints(from: body, sourceName: source.name),
                 body: body,
                 paragraphTranslations: [],
-                vocabulary: localVocabulary(for: searchText),
+                vocabulary: [],
                 urlString: link,
                 imageURLString: imageURL,
                 publishedAt: date
@@ -305,51 +304,6 @@ final class ArticleRSSParser: NSObject, XMLParserDelegate {
         return points.isEmpty ? ["Latest story from \(sourceName)"] : points
     }
 
-    private func localVocabulary(for text: String) -> [ArticleVocabulary] {
-        let rawWords = text
-            .lowercased()
-            .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
-            .map(String.init)
-        let wordSet = Set(rawWords)
-        let dictionary: [(key: String, word: String, meaning: String, phonetic: String)] = [
-            ("acquire", "acquire", "收购；获得", "/əˈkwaɪər/"),
-            ("acquisition", "acquisition", "收购；获得", "/ˌækwɪˈzɪʃən/"),
-            ("agent", "agent", "智能体；代理程序", "/ˈeɪdʒənt/"),
-            ("autonomous", "autonomous", "自主的；自动运行的", "/ɔːˈtɑːnəməs/"),
-            ("capability", "capability", "能力；功能", "/ˌkeɪpəˈbɪləti/"),
-            ("chip", "chip", "芯片", "/tʃɪp/"),
-            ("compute", "compute", "计算；算力", "/kəmˈpjuːt/"),
-            ("crypto", "crypto", "加密货币；加密领域", "/ˈkrɪptoʊ/"),
-            ("deploy", "deploy", "部署；推出", "/dɪˈplɔɪ/"),
-            ("developer", "developer", "开发者", "/dɪˈveləpər/"),
-            ("funding", "funding", "融资；资金", "/ˈfʌndɪŋ/"),
-            ("infrastructure", "infrastructure", "基础设施", "/ˈɪnfrəstrʌktʃər/"),
-            ("launch", "launch", "发布；推出", "/lɔːntʃ/"),
-            ("model", "model", "模型；AI 模型", "/ˈmɑːdəl/"),
-            ("openai", "OpenAI", "OpenAI，一家人工智能公司", ""),
-            ("policy", "policy", "政策；规则", "/ˈpɑːləsi/"),
-            ("regulation", "regulation", "监管；规定", "/ˌreɡjəˈleɪʃən/"),
-            ("research", "research", "研究", "/rɪˈsɜːrtʃ/"),
-            ("revenue", "revenue", "收入；营收", "/ˈrevənuː/"),
-            ("security", "security", "安全；安全性", "/sɪˈkjʊrəti/"),
-            ("startup", "startup", "初创公司", "/ˈstɑːrtʌp/"),
-            ("token", "token", "代币；文本 token", "/ˈtoʊkən/"),
-            ("valuation", "valuation", "估值", "/ˌvæljuˈeɪʃən/")
-        ]
-
-        return dictionary
-            .filter { wordSet.contains($0.key) }
-            .prefix(14)
-            .map {
-                ArticleVocabulary(
-                    word: $0.word,
-                    meaningZh: $0.meaning,
-                    phonetic: $0.phonetic,
-                    example: ""
-                )
-            }
-    }
-
     private func wordCount(_ text: String) -> Int {
         text.split(whereSeparator: { !$0.isLetter && !$0.isNumber }).count
     }
@@ -426,4 +380,3 @@ final class ArticleRSSParser: NSObject, XMLParserDelegate {
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
-

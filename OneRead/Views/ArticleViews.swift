@@ -730,7 +730,19 @@ struct SavedWordsView: View {
     }
 
     private func lookup(for word: String) -> WordLookup {
-        WordLookupResolver.lookup(
+        if let entry = store.savedWordEntry(for: word),
+           !entry.meaningZh.isEmpty || !entry.context.isEmpty {
+            return WordLookup(
+                word: entry.word,
+                meaningZh: entry.meaningZh,
+                phonetic: entry.phonetic,
+                example: entry.example,
+                exampleZh: entry.exampleZh,
+                context: entry.context,
+                needsAI: entry.meaningZh.isEmpty
+            )
+        }
+        return WordLookupResolver.lookup(
             rawWord: word,
             vocabulary: store.articles.flatMap(\.vocabulary),
             context: ""
@@ -1034,7 +1046,19 @@ struct WordReviewView: View {
     }
 
     private func lookup(for word: String) -> WordLookup {
-        WordLookupResolver.lookup(
+        if let entry = store.savedWordEntry(for: word),
+           !entry.meaningZh.isEmpty || !entry.context.isEmpty {
+            return WordLookup(
+                word: entry.word,
+                meaningZh: entry.meaningZh,
+                phonetic: entry.phonetic,
+                example: entry.example,
+                exampleZh: entry.exampleZh,
+                context: entry.context,
+                needsAI: entry.meaningZh.isEmpty
+            )
+        }
+        return WordLookupResolver.lookup(
             rawWord: word,
             vocabulary: store.articles.flatMap(\.vocabulary),
             context: ""
