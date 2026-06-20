@@ -78,6 +78,9 @@ struct ArticleLearningContent: Hashable, Codable, Sendable {
     let easy: ArticleLearningVersion
     let standard: ArticleLearningVersion
     let vocabulary: [ArticleVocabulary]
+    /// AI-generated meanings for every tappable word, grouped by a SHA-256
+    /// fingerprint of the exact title/paragraph context.
+    var wordMeaningsByContext: [String: [String: String]]? = nil
     let generatedAt: Date?
     // Older or model-generated editions may omit this editorial metadata.
     // It is not required to render the learning content.

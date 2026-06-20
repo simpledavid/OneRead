@@ -96,6 +96,7 @@ EDITORIAL_DIMENSION_WEIGHTS = {
     "quality": 0.30,
     "timeliness": 0.25,
 }
+WORD_TOKEN_PATTERN = re.compile(r"[A-Za-z0-9]+(?:[-’'][A-Za-z0-9]+)*")
 
 
 def iso_now() -> str:
@@ -378,6 +379,101 @@ def enrich_article(candidate: dict[str, Any]) -> dict[str, Any]:
 
 def word_count(value: str) -> int:
     return len(re.findall(r"[A-Za-z0-9][A-Za-z0-9'-]*", value))
+
+
+def normalized_word_key(value: str) -> str:
+    return value.lower().replace("’", "'").strip("'- ")
+
+
+def context_fingerprint(context: str) -> str:
+    normalized = re.sub(r"\s+", " ", context.lower()).strip()
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
+def contextual_word_requests(
+    article: dict[str, Any],
+    learning_content: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
+    contexts = [article.get("title", "")]
+    contexts.extend(article.get("body") or [])
+    contexts.extend((learning_content.get("standard") or {}).get("paragraphs") or [])
+    requests: dict[str, dict[str, str]] = {}
+    for context in contexts:
+        context = re.sub(r"\s+", " ", str(context)).strip()
+        if not context:
+            continue
+        fingerprint = context_fingerprint(context)
+        words: dict[str, str] = {}
+        for token in WORD_TOKEN_PATTERN.findall(context):
+            if not any(character.isalpha() for character in token):
+                continue
+            key = normalized_word_key(token)
+            if key and key not in words:
+                words[key] = token
+        if words:
+            requests[fingerprint] = {"context": context, "words": words}
+    return requests
+
+
+def generate_contextual_word_meanings(
+    article: dict[str, Any],
+    learning_content: dict[str, Any],
+) -> dict[str, dict[str, str]]:
+    """Pre-generate contextual meanings so taps never depend on device AI."""
+    requests = contextual_word_requests(article, learning_content)
+    output: dict[str, dict[str, str]] = {}
+    items: list[dict[str, str]] = []
+    item_targets: dict[str, tuple[str, str]] = {}
+    item_index = 0
+    for fingerprint, values in requests.items():
+        context = values["context"]
+        for key, display in values["words"].items():
+            item_id = f"W{item_index:04d}"
+            item_index += 1
+            items.append({"id": item_id, "word": display, "context": context[:500]})
+            item_targets[item_id] = (fingerprint, key)
+
+    system = (
+        "You create context-aware English-to-Simplified-Chinese word meanings for Chinese "
+        "English learners. For every item, explain ONLY the exact sense of `word` in `context`. "
+        "Treat hyphenated compounds and acronyms as whole terms. Never return an unrelated "
+        "dictionary expansion. Use a concise natural meaning, normally under 20 Chinese "
+        "characters; medical/technical acronyms may include their full Chinese name. "
+        "Return every requested id exactly once. Return JSON only."
+    )
+    for start in range(0, len(items), 60):
+        pending = items[start:start + 60]
+        resolved: dict[str, str] = {}
+        for _ in range(3):
+            missing = [item for item in pending if item["id"] not in resolved]
+            if not missing:
+                break
+            result = llm_json(
+                system,
+                'Return this shape: {"meanings":[{"id":"W0000","meaningZh":"中文释义"}]}'
+                "\n\nItems:\n"
+                + json.dumps(missing, ensure_ascii=False),
+            )
+            meanings = result.get("meanings") if isinstance(result, dict) else []
+            if not isinstance(meanings, list):
+                continue
+            for entry in meanings:
+                if not isinstance(entry, dict):
+                    continue
+                item_id = str(entry.get("id") or "")
+                meaning = re.sub(r"\s+", " ", str(entry.get("meaningZh") or "")).strip()
+                if item_id in item_targets and meaning:
+                    resolved[item_id] = meaning[:80]
+        missing_ids = [item["id"] for item in pending if item["id"] not in resolved]
+        if missing_ids:
+            raise ValueError(
+                f"contextual word meanings missing {len(missing_ids)} items: "
+                + ", ".join(missing_ids[:5])
+            )
+        for item_id, meaning in resolved.items():
+            fingerprint, key = item_targets[item_id]
+            output.setdefault(fingerprint, {})[key] = meaning
+    return output
 
 
 def story_key(candidate: dict[str, Any]) -> str:
@@ -762,12 +858,13 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
             result["sourceFingerprint"] = schema["sourceFingerprint"]
             # Only standard is generated; mirror it into easy for schema/back-compat.
             result["easy"] = result["standard"]
-            validate_learning_content(result)
+            validate_learning_content(result, require_word_meanings=False)
         except ValueError as error:
             last_error = error
             continue
         count = word_count(" ".join(result["standard"]["paragraphs"]))
         if 80 <= count <= 120:
+            result["wordMeaningsByContext"] = generate_contextual_word_meanings(article, result)
             return result
         distance = abs(count - 100)
         if distance < best_distance:
@@ -777,6 +874,7 @@ def generate_learning_content(article: dict[str, Any]) -> dict[str, Any]:
             "warning: standard word count outside 80-120 after retries; using closest attempt",
             file=sys.stderr,
         )
+        best["wordMeaningsByContext"] = generate_contextual_word_meanings(article, best)
         return best
     raise last_error  # type: ignore[misc]
 
@@ -792,7 +890,8 @@ def generate_body_translations(body: list[str]) -> list[str]:
         "You translate news for Chinese CET-4 English learners. Translate each English "
         "paragraph into natural, accurate Simplified Chinese. Preserve every name, number, "
         "fact, causal relationship, and uncertainty. Do not merge, split, summarize, reorder, "
-        "or add paragraphs. Return JSON only."
+        "normalize surprising wording, or silently replace an unusual claim with a more familiar "
+        "one. For example, trillionaire is 万亿富翁, not 亿万富翁. Return JSON only."
     )
     user = (
         f"Translate every paragraph below into Simplified Chinese. Return this exact shape with "
@@ -804,15 +903,43 @@ def generate_body_translations(body: list[str]) -> list[str]:
     last_error: Exception | None = None
     for _ in range(4):
         translations = (llm_json(system, user).get("translations")) or []
-        if len(translations) == len(paragraphs):
+        if len(translations) == len(paragraphs) and translations_preserve_critical_terms(
+            paragraphs,
+            translations,
+        ):
             return translations
         last_error = ValueError(
-            f"body translation count {len(translations)} != paragraph count {len(paragraphs)}"
+            "body translations are misaligned or changed a critical factual term"
         )
     raise last_error  # type: ignore[misc]
 
 
-def validate_learning_content(content: dict[str, Any]) -> None:
+def translations_preserve_critical_terms(
+    paragraphs: list[str],
+    translations: list[str],
+) -> bool:
+    """Reject known fact-changing normalizations and let generation retry."""
+    if len(paragraphs) != len(translations):
+        return False
+    critical_terms = {
+        "trillionaire": ("万亿富翁", "兆富翁"),
+        "billionaire": ("亿万富翁", "十亿富翁"),
+        "millionaire": ("百万富翁",),
+    }
+    for source, translation in zip(paragraphs, translations):
+        lowered = source.lower()
+        for english, accepted_chinese in critical_terms.items():
+            if re.search(rf"\b{re.escape(english)}s?\b", lowered) and not any(
+                term in translation for term in accepted_chinese
+            ):
+                return False
+    return True
+
+
+def validate_learning_content(
+    content: dict[str, Any],
+    require_word_meanings: bool = True,
+) -> None:
     # Structural checks only; length is enforced (with retries) in generation.
     for name in ("easy", "standard"):
         version = content.get(name) or {}
@@ -822,6 +949,10 @@ def validate_learning_content(content: dict[str, Any]) -> None:
             raise ValueError(f"{name} paragraphs and translations must be non-empty and aligned")
     if not 5 <= len(content.get("vocabulary") or []) <= 8:
         raise ValueError("vocabulary must contain 5-8 items")
+    if require_word_meanings:
+        meanings = content.get("wordMeaningsByContext")
+        if not isinstance(meanings, dict) or not meanings:
+            raise ValueError("learning content must include contextual word meanings")
 
 
 def fetch_source(source: dict[str, Any]) -> tuple[dict[str, Any], list[dict[str, Any]]]:

@@ -195,6 +195,46 @@ class EditorialScoringTests(unittest.TestCase):
         ):
             content_pipeline.validate_article(article)
 
+    def test_translation_validation_rejects_trillionaire_as_billionaire(self):
+        self.assertFalse(
+            content_pipeline.translations_preserve_critical_terms(
+                ["The company was founded by a trillionaire."],
+                ["这家公司由一位亿万富翁创立。"],
+            )
+        )
+        self.assertTrue(
+            content_pipeline.translations_preserve_critical_terms(
+                ["The company was founded by a trillionaire."],
+                ["这家公司由一位万亿富翁创立。"],
+            )
+        )
+
+    def test_contextual_word_requests_keep_same_word_separate_by_context(self):
+        article = {
+            "title": "Bank technology",
+            "body": [
+                "The bank approved the loan.",
+                "They rested on the river bank.",
+            ],
+        }
+        learning = {
+            "standard": {
+                "paragraphs": ["A bank can mean a company or the side of a river."]
+            }
+        }
+
+        requests = content_pipeline.contextual_word_requests(article, learning)
+
+        self.assertEqual(len(requests), 4)
+        self.assertIn(
+            "bank",
+            requests[content_pipeline.context_fingerprint("The bank approved the loan.")]["words"],
+        )
+        self.assertIn(
+            "bank",
+            requests[content_pipeline.context_fingerprint("They rested on the river bank.")]["words"],
+        )
+
     @staticmethod
     def valid_article_with_body_words(count):
         body = [" ".join(f"word{index}" for index in range(count))]
@@ -228,6 +268,12 @@ class EditorialScoringTests(unittest.TestCase):
                 "easy": learning_version,
                 "standard": learning_version,
                 "vocabulary": vocabulary,
+                "wordMeaningsByContext": {
+                    content_pipeline.context_fingerprint("A valid learning paragraph."): {
+                        "a": "一个",
+                        "valid": "有效的",
+                    }
+                },
             },
         }
 

@@ -1,4 +1,5 @@
 import SwiftUI
+import CryptoKit
 import NaturalLanguage
 import Translation
 import UIKit
@@ -186,7 +187,11 @@ struct ArticleFeaturePage: View {
                 )
                 .shadow(color: .black.opacity(0.36), radius: 22, x: 0, y: 14)
 
-            ReadingTitleView(title: article.title, vocabulary: visibleVocabulary)
+            ReadingTitleView(
+                title: article.title,
+                vocabulary: visibleVocabulary,
+                wordMeaningsByContext: article.learningContent?.wordMeaningsByContext ?? [:]
+            )
                 .padding(.top, 2)
 
             articleReadingStats
@@ -219,6 +224,7 @@ struct ArticleFeaturePage: View {
                         ),
                         isTranslationVisible: isArticleTranslationVisible,
                         vocabulary: visibleVocabulary,
+                        wordMeaningsByContext: article.learningContent?.wordMeaningsByContext ?? [:],
                         context: item.originalText,
                         onToggleTranslation: {}
                     )
@@ -478,6 +484,7 @@ private struct ReadingTitleView: View {
     @State private var selectedTokenID: Int?
     let title: String
     let vocabulary: [ArticleVocabulary]
+    let wordMeaningsByContext: [String: [String: String]]
 
     var body: some View {
         let savedCandidates = SavedWordHighlighter.candidateSet(for: store.savedWords)
@@ -493,6 +500,7 @@ private struct ReadingTitleView: View {
                     selectedLookup = WordLookupResolver.lookup(
                         rawWord: token.lookup,
                         vocabulary: vocabulary,
+                        wordMeaningsByContext: wordMeaningsByContext,
                         context: title
                     )
                 }
@@ -549,6 +557,7 @@ struct LearningParagraphView: View {
     let translation: String?
     let isTranslationVisible: Bool
     let vocabulary: [ArticleVocabulary]
+    let wordMeaningsByContext: [String: [String: String]]
     let context: String
     let onToggleTranslation: () -> Void
 
@@ -610,7 +619,12 @@ struct LearningParagraphView: View {
     }
 
     private func lookup(_ rawWord: String) -> WordLookup {
-        WordLookupResolver.lookup(rawWord: rawWord, vocabulary: vocabulary, context: context)
+        WordLookupResolver.lookup(
+            rawWord: rawWord,
+            vocabulary: vocabulary,
+            wordMeaningsByContext: wordMeaningsByContext,
+            context: context
+        )
     }
 
     private func isHighlightedToken(_ token: WordToken, savedCandidates: Set<String>) -> Bool {
@@ -847,7 +861,12 @@ struct WordLookup: Identifiable {
 }
 
 enum WordLookupResolver {
-    static func lookup(rawWord: String, vocabulary: [ArticleVocabulary], context: String) -> WordLookup {
+    static func lookup(
+        rawWord: String,
+        vocabulary: [ArticleVocabulary],
+        wordMeaningsByContext: [String: [String: String]] = [:],
+        context: String
+    ) -> WordLookup {
         let candidates = rawWord.lookupCandidates
 
         // Acronyms are highly context-sensitive. Prefer a curated expansion
@@ -870,6 +889,21 @@ enum WordLookupResolver {
                 exampleZh: match.exampleZh,
                 context: context,
                 needsAI: match.meaningZh.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            )
+        }
+
+        if let meaning = contextualMeaning(
+            candidates: candidates,
+            context: context,
+            wordMeaningsByContext: wordMeaningsByContext
+        ) {
+            return WordLookup(
+                word: rawWord.cleanedDisplayWord,
+                meaningZh: meaning,
+                example: "",
+                exampleZh: "",
+                context: context,
+                needsAI: false
             )
         }
 
@@ -896,6 +930,36 @@ enum WordLookupResolver {
         // Ask the on-device model for this word's meaning in the source sentence
         // instead of letting a context-free dictionary choose a different sense.
         return fallbackLookup(rawWord: rawWord, context: context)
+    }
+
+    private static func contextualMeaning(
+        candidates: [String],
+        context: String,
+        wordMeaningsByContext: [String: [String: String]]
+    ) -> String? {
+        guard !wordMeaningsByContext.isEmpty else {
+            return nil
+        }
+        let normalizedContext = context
+            .lowercased()
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let digest = SHA256.hash(data: Data(normalizedContext.utf8))
+            .map { String(format: "%02x", $0) }
+            .joined()
+        guard let meanings = wordMeaningsByContext[digest] else {
+            return nil
+        }
+        for candidate in candidates {
+            let key = candidate
+                .lowercased()
+                .replacingOccurrences(of: "’", with: "'")
+                .trimmingCharacters(in: CharacterSet(charactersIn: "'- "))
+            if let meaning = meanings[key], !meaning.isEmpty {
+                return meaning
+            }
+        }
+        return nil
     }
 
     private static func vocabularyEntry(
