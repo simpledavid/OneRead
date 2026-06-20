@@ -97,6 +97,12 @@ EDITORIAL_DIMENSION_WEIGHTS = {
     "timeliness": 0.25,
 }
 WORD_TOKEN_PATTERN = re.compile(r"[A-Za-z0-9]+(?:[-’'][A-Za-z0-9]+)*")
+LOCKED_CONTEXTUAL_MEANINGS = {
+    "als": "肌萎缩侧索硬化症（渐冻症）",
+    "bci": "脑机接口",
+    "brain-computer": "脑机的；连接大脑与计算机的",
+    "wwdc": "苹果全球开发者大会",
+}
 
 
 def iso_now() -> str:
@@ -472,7 +478,10 @@ def generate_contextual_word_meanings(
             )
         for item_id, meaning in resolved.items():
             fingerprint, key = item_targets[item_id]
-            output.setdefault(fingerprint, {})[key] = meaning
+            output.setdefault(fingerprint, {})[key] = LOCKED_CONTEXTUAL_MEANINGS.get(
+                key,
+                meaning,
+            )
     return output
 
 

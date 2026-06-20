@@ -235,6 +235,11 @@ class EditorialScoringTests(unittest.TestCase):
             requests[content_pipeline.context_fingerprint("They rested on the river bank.")]["words"],
         )
 
+    def test_locked_contextual_meanings_use_established_terms(self):
+        self.assertEqual(content_pipeline.LOCKED_CONTEXTUAL_MEANINGS["als"], "肌萎缩侧索硬化症（渐冻症）")
+        self.assertEqual(content_pipeline.LOCKED_CONTEXTUAL_MEANINGS["bci"], "脑机接口")
+        self.assertIn("脑机", content_pipeline.LOCKED_CONTEXTUAL_MEANINGS["brain-computer"])
+
     @staticmethod
     def valid_article_with_body_words(count):
         body = [" ".join(f"word{index}" for index in range(count))]

@@ -892,6 +892,14 @@ enum WordLookupResolver {
             )
         }
 
+        // Stable acronyms, product names, and complete compounds override the
+        // bulk AI map. This prevents one-off generation slips such as rendering
+        // `brain-computer` literally as “脑-电脑” instead of the established “脑机”.
+        if var match = DomainGlossary.lookup(candidates: candidates) {
+            match.context = context
+            return match
+        }
+
         if let meaning = contextualMeaning(
             candidates: candidates,
             context: context,
@@ -905,13 +913,6 @@ enum WordLookupResolver {
                 context: context,
                 needsAI: false
             )
-        }
-
-        // Curated AI/tech glossary keeps established terminology consistent
-        // (Claude, Gemini, token, agent…) without re-translating it.
-        if var match = DomainGlossary.lookup(candidates: candidates) {
-            match.context = context
-            return match
         }
 
         // Unknown acronyms are resolved from their sentence by the on-device AI.
