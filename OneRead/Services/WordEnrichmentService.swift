@@ -3,21 +3,20 @@ import Foundation
 import FoundationModels
 #endif
 
-/// Last-resort, key-free definition fallback for the rare word that is in neither
-/// the article vocabulary, the AI glossary, nor ECDICT. Uses the on-device Apple
-/// Intelligence model when available (iOS 26+). Results are cached in memory so a
-/// repeated tap on the same word is instant and free.
+/// Context-aware definition service for words not already covered by the
+/// server-generated article vocabulary or curated terminology. It uses the
+/// on-device Apple Intelligence model (iOS 26+) and caches repeated lookups.
 actor WordEnrichmentService {
     static let shared = WordEnrichmentService()
 
     private var cache: [String: String] = [:]
 
-    func cachedMeaning(for word: String) -> String? {
-        cache[Self.key(for: word)]
+    func cachedMeaning(for word: String, context: String) -> String? {
+        cache[Self.key(for: word, context: context)]
     }
 
     func meaning(for word: String, context: String) async -> String? {
-        let key = Self.key(for: word)
+        let key = Self.key(for: word, context: context)
         if let cached = cache[key] {
             return cached.isEmpty ? nil : cached
         }
@@ -27,8 +26,15 @@ actor WordEnrichmentService {
         return generated.isEmpty ? nil : generated
     }
 
-    private static func key(for word: String) -> String {
-        word.lowercased().trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+    private static func key(for word: String, context: String) -> String {
+        let normalizedWord = word
+            .lowercased()
+            .trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        let normalizedContext = context
+            .lowercased()
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return "\(normalizedWord)|\(normalizedContext.prefix(280))"
     }
 
     private static func generate(word: String, context: String) async -> String? {

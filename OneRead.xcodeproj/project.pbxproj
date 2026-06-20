@@ -18,9 +18,6 @@
 		01A000000000000000000017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000017 /* Assets.xcassets */; };
 		01A000000000000000000018 /* ArticleDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000018 /* ArticleDatabase.swift */; };
 		01A000000000000000000019 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000019 /* PrivacyInfo.xcprivacy */; };
-		01A000000000000000000020 /* NativeDictionaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000020 /* NativeDictionaryService.swift */; };
-		01A000000000000000000021 /* ecdict.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000021 /* ecdict.sqlite */; };
-		01A000000000000000000022 /* ECDICT-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000022 /* ECDICT-LICENSE.txt */; };
 		01A000000000000000000023 /* ArticleLevelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000023 /* ArticleLevelService.swift */; };
 		01A000000000000000000024 /* domain_glossary.json in Resources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000024 /* domain_glossary.json */; };
 		01A000000000000000000025 /* DomainGlossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B000000000000000000025 /* DomainGlossary.swift */; };
@@ -54,9 +51,6 @@
 		01B000000000000000000017 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01B000000000000000000018 /* ArticleDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDatabase.swift; sourceTree = "<group>"; };
 		01B000000000000000000019 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		01B000000000000000000020 /* NativeDictionaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeDictionaryService.swift; sourceTree = "<group>"; };
-		01B000000000000000000021 /* ecdict.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = ecdict.sqlite; sourceTree = "<group>"; };
-		01B000000000000000000022 /* ECDICT-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ECDICT-LICENSE.txt"; sourceTree = "<group>"; };
 		01B000000000000000000023 /* ArticleLevelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleLevelService.swift; sourceTree = "<group>"; };
 		01B000000000000000000024 /* domain_glossary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = domain_glossary.json; sourceTree = "<group>"; };
 		01B000000000000000000025 /* DomainGlossary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainGlossary.swift; sourceTree = "<group>"; };
@@ -139,7 +133,6 @@
 			isa = PBXGroup;
 			children = (
 				01B000000000000000000005 /* SpeechService.swift */,
-				01B000000000000000000020 /* NativeDictionaryService.swift */,
 				01B000000000000000000023 /* ArticleLevelService.swift */,
 				01B000000000000000000037 /* NotificationService.swift */,
 				01B000000000000000000038 /* ArticleCurationService.swift */,
@@ -174,8 +167,6 @@
 		01C000000000000000000008 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				01B000000000000000000021 /* ecdict.sqlite */,
-				01B000000000000000000022 /* ECDICT-LICENSE.txt */,
 				01B000000000000000000024 /* domain_glossary.json */,
 			);
 			path = Resources;
@@ -240,8 +231,6 @@
 			files = (
 				01A000000000000000000017 /* Assets.xcassets in Resources */,
 				01A000000000000000000019 /* PrivacyInfo.xcprivacy in Resources */,
-				01A000000000000000000021 /* ecdict.sqlite in Resources */,
-				01A000000000000000000022 /* ECDICT-LICENSE.txt in Resources */,
 				01A000000000000000000024 /* domain_glossary.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,7 +261,6 @@
 				01A000000000000000000035 /* ArticleReadingViews.swift in Sources */,
 				01A000000000000000000036 /* ArticleComponents.swift in Sources */,
 				01A000000000000000000018 /* ArticleDatabase.swift in Sources */,
-				01A000000000000000000020 /* NativeDictionaryService.swift in Sources */,
 				01A000000000000000000023 /* ArticleLevelService.swift in Sources */,
 				01A000000000000000000037 /* NotificationService.swift in Sources */,
 				01A000000000000000000038 /* ArticleCurationService.swift in Sources */,

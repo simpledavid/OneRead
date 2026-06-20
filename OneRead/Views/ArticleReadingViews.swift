@@ -874,16 +874,14 @@ enum WordLookupResolver {
             )
         }
 
-        // Curated AI/tech glossary — checked before ECDICT so the domain sense wins
-        // (Claude, Gemini, token, agent…) instead of the generic dictionary entry.
+        // Curated AI/tech glossary keeps established terminology consistent
+        // (Claude, Gemini, token, agent…) without re-translating it.
         if var match = DomainGlossary.lookup(candidates: candidates) {
             match.context = context
             return match
         }
 
-        // Unknown acronyms should be resolved from the sentence context by the
-        // on-device enrichment path instead of accepting ECDICT's first,
-        // potentially unrelated expansion.
+        // Unknown acronyms are resolved from their sentence by the on-device AI.
         if isUppercaseAcronym(rawWord) {
             return WordLookup(
                 word: rawWord.cleanedDisplayWord,
@@ -895,18 +893,9 @@ enum WordLookupResolver {
             )
         }
 
-        if let match = NativeDictionaryService.shared.lookup(candidates: candidates) {
-            return WordLookup(
-                word: match.word,
-                meaningZh: match.translation,
-                phonetic: match.phonetic,
-                example: "",
-                exampleZh: "",
-                context: context,
-                needsAI: false
-            )
-        }
-
+        // The paragraph translation is AI-generated but has no word alignment.
+        // Ask the on-device model for this word's meaning in the source sentence
+        // instead of letting a context-free dictionary choose a different sense.
         return fallbackLookup(rawWord: rawWord, context: context)
     }
 
@@ -1049,7 +1038,7 @@ struct WordLookupSheet: View {
                 ProgressView()
                     .controlSize(.small)
                     .tint(Palette.accent)
-                Text("正在离线生成释义…")
+                Text("正在结合上下文生成释义…")
                     .font(.system(size: 15, weight: .semibold, design: .rounded))
                     .foregroundStyle(Palette.muted)
             }
@@ -1065,7 +1054,10 @@ struct WordLookupSheet: View {
             return
         }
 
-        if let cached = await WordEnrichmentService.shared.cachedMeaning(for: displayWord) {
+        if let cached = await WordEnrichmentService.shared.cachedMeaning(
+            for: displayWord,
+            context: lookup.context
+        ) {
             if !cached.isEmpty {
                 enrichedMeaning = cached
             }

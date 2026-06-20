@@ -2,10 +2,8 @@ import Foundation
 
 /// Curated AI/tech glossary loaded from `domain_glossary.json`.
 ///
-/// ECDICT is broad but misses modern AI jargon (tokenizer, agentic, embeddings)
-/// and returns the wrong sense for product/company names (Claude → "克劳德男子名",
-/// Gemini → "双生子"). This glossary is consulted *before* ECDICT so the AI-context
-/// meaning wins, and it can be extended just by editing the JSON.
+/// It keeps modern AI and technical terms (tokenizer, agentic, embeddings,
+/// acronyms and product names) consistent. It can be extended by editing JSON.
 struct DomainGlossaryEntry: Decodable {
     let word: String
     let meaningZh: String

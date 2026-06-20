@@ -1041,7 +1041,7 @@ struct WordReviewView: View {
         )
     }
 
-    // Trim an ECDICT translation to one concise sense for a quiz option.
+    // Trim a generated or curated meaning to one concise quiz option.
     private func conciseGloss(_ raw: String) -> String {
         var text = raw
         if let newline = text.firstIndex(where: { $0 == "\n" || $0 == "\r" }) {
