@@ -50,6 +50,8 @@
   { "word": "AI", "meaningZh": "人工智能（artificial intelligence）" },
   { "word": "AGI", "meaningZh": "通用人工智能（artificial general intelligence）" },
   { "word": "LLM", "meaningZh": "大语言模型（large language model）" },
+  { "word": "brain-computer", "meaningZh": "脑机的；连接大脑与计算机的（brain-computer interface 指“脑机接口”）" },
+  { "word": "BCI", "meaningZh": "脑机接口（brain-computer interface）" },
   { "word": "model", "meaningZh": "模型；此处通常指 AI 模型" },
   { "word": "models", "meaningZh": "模型（model 的复数）；通常指 AI 模型" },
   { "word": "foundation", "meaningZh": "基础；此处常指基础模型（foundation model）" },
