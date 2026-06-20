@@ -36,6 +36,19 @@ MIN_BODY_WORDS = 120
 
 
 USER_AGENT = "OneRead-Editorial/1.0 (+https://github.com/)"
+ARTICLE_BOILERPLATE_PATTERNS = (
+    re.compile(
+        r"posts from this (?:topic|author) will be added to your "
+        r"daily email digest and your homepage feed",
+        re.I,
+    ),
+    re.compile(r"loading the player|jwplayer\s*\(", re.I),
+)
+ARTICLE_END_PATTERNS = (
+    re.compile(r"^subscribe to\b", re.I),
+    re.compile(r"^sign in to see your notifications\b", re.I),
+    re.compile(r"^get an inside look at what it takes to\b", re.I),
+)
 IMPACT_TERMS = (
     "launch", "release", "introduce", "unveil", "new model", "research",
     "regulation", "lawsuit", "security", "funding", "acquisition", "merger",
@@ -312,13 +325,39 @@ class ArticleHTMLParser(HTMLParser):
         self.current = []
 
 
+def clean_article_paragraphs(paragraphs: list[str]) -> list[str]:
+    """Remove publisher chrome and repeated DOM copies from extracted prose."""
+    cleaned: list[str] = []
+    seen: set[str] = set()
+    for paragraph in paragraphs:
+        text = re.sub(r"\s+", " ", paragraph.replace("\ufeff", " ")).strip()
+        if not text:
+            continue
+        if any(pattern.search(text) for pattern in ARTICLE_END_PATTERNS):
+            break
+        if any(pattern.search(text) for pattern in ARTICLE_BOILERPLATE_PATTERNS):
+            continue
+        fingerprint = re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+        if fingerprint in seen:
+            continue
+        seen.add(fingerprint)
+        cleaned.append(text)
+    return cleaned
+
+
+def is_reading_candidate(candidate: dict[str, Any]) -> bool:
+    """Daily readings must be prose pages, not player or podcast shells."""
+    path = urllib.parse.urlparse(candidate.get("urlString") or "").path.lower()
+    return not any(marker in path for marker in ("/video/", "/videos/", "/podcast/", "/podcasts/"))
+
+
 def enrich_article(candidate: dict[str, Any]) -> dict[str, Any]:
     body: list[str] = []
     if candidate.get("urlString"):
         try:
             parser = ArticleHTMLParser()
             parser.feed(fetch_bytes(candidate["urlString"]).decode("utf-8", errors="ignore"))
-            body = parser.paragraphs[:12]
+            body = clean_article_paragraphs(parser.paragraphs)[:12]
             if not candidate.get("imageURLString"):
                 candidate["imageURLString"] = parser.og_image
         except (OSError, urllib.error.URLError, ValueError):
@@ -848,11 +887,11 @@ def prepare(args: argparse.Namespace) -> None:
     clustered = cluster_candidates(raw)
     annotate_kept(stats, clustered)
     source_health_report(stats)
-    ranked = sorted(
-        clustered,
-        key=lambda item: local_score(item, now),
-        reverse=True,
-    )[:16]
+    ranked = [
+        item
+        for item in sorted(clustered, key=lambda item: local_score(item, now), reverse=True)
+        if is_reading_candidate(item)
+    ][:16]
     candidates = []
     for index, article in enumerate(enrich_in_parallel(ranked)):
         body_words = word_count(" ".join(article.get("body") or []))
@@ -901,6 +940,8 @@ def validate_article(article: dict[str, Any]) -> None:
     if article["editionSlot"] not in ("morning", "afternoon"):
         raise ValueError("invalid edition slot")
     body_paragraphs = [p for p in article["body"] if p and p.strip()]
+    if len(clean_article_paragraphs(body_paragraphs)) != len(body_paragraphs):
+        raise ValueError("original article body contains duplicate or boilerplate paragraphs")
     body_words = word_count(" ".join(body_paragraphs))
     if body_words < MIN_BODY_WORDS:
         raise ValueError(
@@ -968,11 +1009,15 @@ def auto(args: argparse.Namespace) -> None:
     if trending:
         print(f"trending entities from smol.ai: {len(trending)}", file=sys.stderr)
 
-    ranked = sorted(
-        clustered,
-        key=lambda item: local_score(item, now, trending),
-        reverse=True,
-    )[:16]
+    ranked = [
+        item
+        for item in sorted(
+            clustered,
+            key=lambda item: local_score(item, now, trending),
+            reverse=True,
+        )
+        if is_reading_candidate(item)
+    ][:16]
     candidates = []
     for index, article in enumerate(enrich_in_parallel(ranked)):
         body_words = word_count(" ".join(article.get("body") or []))

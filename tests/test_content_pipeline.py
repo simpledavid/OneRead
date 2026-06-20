@@ -148,6 +148,53 @@ class EditorialScoringTests(unittest.TestCase):
     def test_validate_article_accepts_original_at_120_words(self):
         content_pipeline.validate_article(self.valid_article_with_body_words(120))
 
+    def test_clean_article_paragraphs_removes_publisher_chrome_and_duplicates(self):
+        paragraphs = [
+            "Posts from this topic will be added to your daily email digest and your homepage feed.",
+            'Loading the player… var playerInstance = jwplayer("video");',
+            "\ufeffRelativity Space will launch NASA's Aeolus payload to Mars in 2028.",
+            "Relativity Space will launch NASA's Aeolus payload to Mars in 2028.",
+            "NASA says the instruments will study winds, temperatures, dust, and clouds.",
+            "Subscribe to this show on YouTube and all podcast apps.",
+            "A related story that must not leak into the article body.",
+        ]
+
+        self.assertEqual(
+            content_pipeline.clean_article_paragraphs(paragraphs),
+            [
+                "Relativity Space will launch NASA's Aeolus payload to Mars in 2028.",
+                "NASA says the instruments will study winds, temperatures, dust, and clouds.",
+            ],
+        )
+
+    def test_reading_candidate_rejects_video_and_podcast_pages(self):
+        self.assertFalse(
+            content_pipeline.is_reading_candidate(
+                {"urlString": "https://techcrunch.com/video/example/"}
+            )
+        )
+        self.assertFalse(
+            content_pipeline.is_reading_candidate(
+                {"urlString": "https://example.com/podcasts/daily-show"}
+            )
+        )
+        self.assertTrue(
+            content_pipeline.is_reading_candidate(
+                {"urlString": "https://example.com/science/mars-mission"}
+            )
+        )
+
+    def test_validate_article_rejects_duplicate_original_paragraphs(self):
+        article = self.valid_article_with_body_words(120)
+        article["body"] = article["body"] * 2
+        article["paragraphTranslations"] = article["paragraphTranslations"] * 2
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "duplicate or boilerplate paragraphs",
+        ):
+            content_pipeline.validate_article(article)
+
     @staticmethod
     def valid_article_with_body_words(count):
         body = [" ".join(f"word{index}" for index in range(count))]

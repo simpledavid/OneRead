@@ -993,6 +993,9 @@ struct WordLookupSheet: View {
             }
         }
         .task(id: lookup.id) {
+            if !speech.isSpeaking(displayWord) {
+                speech.speak(displayWord)
+            }
             await enrichIfNeeded()
         }
         .sheet(isPresented: $isPaywallPresented) {
