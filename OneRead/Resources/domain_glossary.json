@@ -52,6 +52,7 @@
   { "word": "LLM", "meaningZh": "大语言模型（large language model）" },
   { "word": "brain-computer", "meaningZh": "脑机的；连接大脑与计算机的（brain-computer interface 指“脑机接口”）" },
   { "word": "BCI", "meaningZh": "脑机接口（brain-computer interface）" },
+  { "word": "ALS", "meaningZh": "肌萎缩侧索硬化症（amyotrophic lateral sclerosis），俗称“渐冻症”" },
   { "word": "model", "meaningZh": "模型；此处通常指 AI 模型" },
   { "word": "models", "meaningZh": "模型（model 的复数）；通常指 AI 模型" },
   { "word": "foundation", "meaningZh": "基础；此处常指基础模型（foundation model）" },

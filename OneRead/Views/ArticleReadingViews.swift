@@ -850,6 +850,15 @@ enum WordLookupResolver {
     static func lookup(rawWord: String, vocabulary: [ArticleVocabulary], context: String) -> WordLookup {
         let candidates = rawWord.lookupCandidates
 
+        // Acronyms are highly context-sensitive. Prefer a curated expansion
+        // (ALS, BCI, API...) before broad dictionaries that may return an
+        // unrelated expansion for the same letters.
+        if isUppercaseAcronym(rawWord),
+           var match = DomainGlossary.lookup(candidates: candidates) {
+            match.context = context
+            return match
+        }
+
         if let match = vocabulary.first(where: { entry in
             let entryCandidates = entry.word.lookupCandidates
             return candidates.contains(where: entryCandidates.contains)
@@ -872,6 +881,20 @@ enum WordLookupResolver {
             return match
         }
 
+        // Unknown acronyms should be resolved from the sentence context by the
+        // on-device enrichment path instead of accepting ECDICT's first,
+        // potentially unrelated expansion.
+        if isUppercaseAcronym(rawWord) {
+            return WordLookup(
+                word: rawWord.cleanedDisplayWord,
+                meaningZh: "缩写（需结合上下文理解）",
+                example: "",
+                exampleZh: "",
+                context: context,
+                needsAI: true
+            )
+        }
+
         if let match = NativeDictionaryService.shared.lookup(candidates: candidates) {
             return WordLookup(
                 word: match.word,
@@ -885,6 +908,13 @@ enum WordLookupResolver {
         }
 
         return fallbackLookup(rawWord: rawWord, context: context)
+    }
+
+    private static func isUppercaseAcronym(_ rawWord: String) -> Bool {
+        let cleaned = rawWord.cleanedDisplayWord
+        let letters = cleaned.filter(\.isLetter)
+        return (2...8).contains(letters.count)
+            && letters.allSatisfy(\.isUppercase)
     }
 
     /// Guarantees a tap always yields something useful, even for a word in no
