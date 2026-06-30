@@ -1,12 +1,12 @@
 {
-  "date": "2026-06-29",
-  "generatedAt": "2026-06-29T23:13:44Z",
+  "date": "2026-06-30",
+  "generatedAt": "2026-06-30T23:36:38Z",
   "sources": [
     {
       "name": "OpenAI News",
       "fetched": 20,
       "kept": 20,
-      "aiRatio": 0.95,
+      "aiRatio": 0.9,
       "error": null
     },
     {
@@ -26,7 +26,7 @@
     {
       "name": "The Verge AI",
       "fetched": 10,
-      "kept": 9,
+      "kept": 10,
       "aiRatio": 1.0,
       "error": null
     },
@@ -34,13 +34,13 @@
       "name": "Ars Technica AI",
       "fetched": 20,
       "kept": 19,
-      "aiRatio": 1.0,
+      "aiRatio": 0.95,
       "error": null
     },
     {
       "name": "TechCrunch AI",
       "fetched": 20,
-      "kept": 19,
+      "kept": 20,
       "aiRatio": 1.0,
       "error": null
     },
@@ -54,35 +54,35 @@
     {
       "name": "WIRED AI",
       "fetched": 10,
-      "kept": 10,
+      "kept": 9,
       "aiRatio": 0.9,
       "error": null
     },
     {
       "name": "The Verge Tech",
-      "fetched": 3,
-      "kept": 0,
+      "fetched": 6,
+      "kept": 4,
       "aiRatio": 1.0,
       "error": null
     },
     {
       "name": "Ars Technica Tech",
-      "fetched": 5,
-      "kept": 3,
-      "aiRatio": 0.8,
+      "fetched": 4,
+      "kept": 0,
+      "aiRatio": 0.75,
       "error": null
     },
     {
       "name": "BBC Science",
-      "fetched": 2,
-      "kept": 2,
-      "aiRatio": 1.0,
+      "fetched": 6,
+      "kept": 6,
+      "aiRatio": 0.67,
       "error": null
     },
     {
       "name": "BBC World",
-      "fetched": 4,
-      "kept": 4,
+      "fetched": 8,
+      "kept": 8,
       "aiRatio": 1.0,
       "error": null
     }
