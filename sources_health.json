@@ -1,6 +1,6 @@
 {
-  "date": "2026-07-01",
-  "generatedAt": "2026-07-01T23:39:22Z",
+  "date": "2026-07-02",
+  "generatedAt": "2026-07-02T23:20:05Z",
   "sources": [
     {
       "name": "OpenAI News",
@@ -54,35 +54,35 @@
     {
       "name": "WIRED AI",
       "fetched": 10,
-      "kept": 9,
-      "aiRatio": 0.9,
+      "kept": 10,
+      "aiRatio": 0.8,
       "error": null
     },
     {
       "name": "The Verge Tech",
-      "fetched": 4,
-      "kept": 4,
+      "fetched": 5,
+      "kept": 5,
       "aiRatio": 1.0,
       "error": null
     },
     {
       "name": "Ars Technica Tech",
       "fetched": 8,
-      "kept": 6,
+      "kept": 5,
       "aiRatio": 1.0,
       "error": null
     },
     {
       "name": "BBC Science",
-      "fetched": 4,
-      "kept": 4,
-      "aiRatio": 0.75,
+      "fetched": 3,
+      "kept": 3,
+      "aiRatio": 1.0,
       "error": null
     },
     {
       "name": "BBC World",
-      "fetched": 6,
-      "kept": 6,
+      "fetched": 7,
+      "kept": 7,
       "aiRatio": 1.0,
       "error": null
     }
