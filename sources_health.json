@@ -1,6 +1,6 @@
 {
-  "date": "2026-07-06",
-  "generatedAt": "2026-07-06T23:21:03Z",
+  "date": "2026-07-07",
+  "generatedAt": "2026-07-07T23:12:35Z",
   "sources": [
     {
       "name": "OpenAI News",
@@ -33,8 +33,8 @@
     {
       "name": "Ars Technica AI",
       "fetched": 20,
-      "kept": 19,
-      "aiRatio": 0.95,
+      "kept": 20,
+      "aiRatio": 0.9,
       "error": null
     },
     {
@@ -47,7 +47,7 @@
     {
       "name": "MIT Technology Review AI",
       "fetched": 10,
-      "kept": 9,
+      "kept": 8,
       "aiRatio": 1.0,
       "error": null
     },
@@ -55,35 +55,35 @@
       "name": "WIRED AI",
       "fetched": 10,
       "kept": 10,
-      "aiRatio": 0.8,
+      "aiRatio": 0.7,
       "error": null
     },
     {
       "name": "The Verge Tech",
-      "fetched": 3,
-      "kept": 3,
+      "fetched": 8,
+      "kept": 6,
       "aiRatio": 1.0,
       "error": null
     },
     {
       "name": "Ars Technica Tech",
-      "fetched": 6,
-      "kept": 5,
-      "aiRatio": 0.67,
+      "fetched": 4,
+      "kept": 2,
+      "aiRatio": 0.5,
       "error": null
     },
     {
       "name": "BBC Science",
-      "fetched": 9,
-      "kept": 7,
-      "aiRatio": 0.67,
+      "fetched": 11,
+      "kept": 10,
+      "aiRatio": 0.64,
       "error": null
     },
     {
       "name": "BBC World",
-      "fetched": 5,
-      "kept": 5,
-      "aiRatio": 0.8,
+      "fetched": 9,
+      "kept": 9,
+      "aiRatio": 1.0,
       "error": null
     }
   ]
